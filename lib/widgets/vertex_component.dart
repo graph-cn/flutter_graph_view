@@ -5,12 +5,18 @@
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
+///
+/// Flame Component.
+/// Used to handle the presentation and interaction of node
+///
+/// 引擎组件
+/// 用于处理节点的展示与交互
+///
 class VertexComponent extends CircleComponent with TapCallbacks, Hoverable {
   late Vertex vertex;
   ValueNotifier<double>? scaleNotifier;

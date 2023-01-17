@@ -2,7 +2,6 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/palette.dart';
@@ -10,6 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 import 'dart:math' as math;
 
+///
+/// Flame Component.
+/// Logic used to handle the connecting line between nodes (display & interaction)
+///
+/// 引擎组件
+/// 用于处理节点之间连接线的逻辑（展示+交互）
+///
 class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   late final Edge edge;
   ValueNotifier<double>? scaleNotifier;
