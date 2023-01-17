@@ -4,7 +4,6 @@
 
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
-import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 import 'dart:math' as math;
@@ -20,18 +19,21 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   late final Edge edge;
   ValueNotifier<double>? scaleNotifier;
   double strokeWidth = 2;
+  Graph graph;
+  BuildContext context;
 
-  EdgeComponent(this.edge)
+  EdgeComponent(this.edge, this.graph, this.context)
       : super(
           position: edge.start.position,
           anchor: Anchor.centerLeft,
-          paint: BasicPalette.white.paint(),
         );
 
-  double len() => math.sqrt(
-        math.pow((edge.start.position.x) - (edge.end.position.x), 2) +
-            math.pow((edge.end.position.y) - (edge.start.position.y), 2),
-      );
+  double len() => edge.end == null
+      ? 10
+      : math.sqrt(
+          math.pow((edge.start.position.x) - (edge.end!.position.x), 2) +
+              math.pow((edge.end!.position.y) - (edge.start.position.y), 2),
+        );
 
   @override
   onLoad() {
@@ -44,9 +46,16 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
     super.update(dt);
     position = edge.start.position;
     size = Vector2(len().toDouble(), strokeWidth);
+    if (graph.hoverVertex != null && graph.hoverVertex != edge.start) {
+      paint = Paint()..color = Colors.white10;
+    } else {
+      paint = Paint()..color = Colors.white;
+    }
     Offset offset = Offset(
-      (edge.end.position.x) - (edge.start.position.x),
-      (edge.end.position.y) - (edge.start.position.y),
+      (edge.end == null ? edge.start.position.x : edge.end!.position.x) -
+          (edge.start.position.x),
+      (edge.end == null ? edge.start.position.y : edge.end!.position.y) -
+          (edge.start.position.y),
     );
 
     angle = offset.direction;

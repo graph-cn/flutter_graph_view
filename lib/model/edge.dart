@@ -6,11 +6,15 @@ import 'dart:ui';
 
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
+///
+/// Data model of edge component.
+/// 关系【边】组件的数据模型
+///
 class Edge {
   late int ranking;
   late String edgeName;
   late dynamic data;
   late Vertex start;
-  late Vertex end;
+  Vertex? end;
   late List<Color> colors;
 }

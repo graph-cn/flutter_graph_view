@@ -5,13 +5,19 @@
 library flutter_graph_view;
 
 /// data models
+export './model/graph.dart';
 export './model/vertex.dart';
 export './model//edge.dart';
 
 /// widgets
-export './widgets/flutter_graph_view.dart';
+export 'flutter_graph_widget.dart';
+export './widgets/graph_component.dart';
 export './widgets/vertex_component.dart';
 export './widgets/edge_component.dart';
+
+/// data convertors
+export 'package:flutter_graph_view/core/data_convertor.dart';
+export 'package:flutter_graph_view/core/convertor/map_convertor.dart';
 
 /// algorithm
 export 'core/graph_algorithm.dart';
