@@ -6,6 +6,21 @@ on:
 
 jobs:
   publish:
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: build  
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - run: flutter channel master
+      - run: flutter upgrade
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: publish to pub dev
+        run: flutter pub publish --force
     # with:
     #   working-directory: path/to/package/within/repository

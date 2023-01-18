@@ -5,7 +5,8 @@
  -->
 
 # Flutter Graph View
-An open source project which can display beautiful graph data structure, such as force-directed. 
+Widgets for beautiful graphic data structures, such as force-oriented diagrams.
+
 ![image](https://user-images.githubusercontent.com/15630211/213280967-443460e8-6ccd-4707-8bf9-8ba970a1f27d.png)
 
 ## Features

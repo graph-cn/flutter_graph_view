@@ -11,8 +11,6 @@ void main() {
   test('adds one to input values', () {
     for (var i = 0; i < 100; i++) {
       Vector2 v = forceDirected.randomInCircle(Offset.zero, 1, 0);
-      print(v);
-
       expect(v.x < 1 && v.y < 1 && v.x > -1 && v.y > -1, true);
     }
   });
