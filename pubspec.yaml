@@ -1,6 +1,6 @@
 name: flutter_graph_view
-description: A new Flutter package project.
-version: 0.0.1
+description: An open source project which can display beautiful graph data structure.
+version: 0.0.1+1
 homepage: https://github.com/dudu-ltd/flutter_graph_view
 
 environment:

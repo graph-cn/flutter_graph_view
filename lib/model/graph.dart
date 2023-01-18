@@ -9,14 +9,27 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 图组件的数据模型
 ///
 class Graph<ID> {
+  /// All the vertexes' data in graph.
+  /// 图中所有的节点数据
   List<Vertex<ID>> vertexes = [];
+
+  /// All the edges' data in graph.
+  /// 图中所有的关系数据
   Set<Edge> edges = {};
 
+  /// Cache the key and vertex in order to get vertex by id.
+  /// 对节点的 id 进行缓存，为了方便通过 id 获取到接点
   Map<ID, Vertex<ID>> keyCache = {};
 
+  /// The vertex which is focused by mouse.
+  /// 鼠标浮入所命中的节点，用于做高亮显示。
   Vertex<ID>? hoverVertex;
 
+  /// The vertexes selected by the user.
+  /// 被用户所选中的节点
   List<Vertex<ID>> pickedVertex = [];
 
+  /// The origin business data of graph.
+  /// 图的原始业务数据。
   dynamic data;
 }

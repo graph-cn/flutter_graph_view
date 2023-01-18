@@ -1,22 +1,24 @@
+
 <!-- 
   Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
 
   This source code is licensed under Apache 2.0 License.
  -->
- 
+
 # Flutter Graph View
-An open source project which can display beautiful graph data structure, such as force-directed. 
+致力于图数据的可视化组件
 
 ## Features
 
 TODO: 
-- [ ] Data converter: convert business data into graphic view data.
-- [ ] Algorithm: calculate vertex layout.
-  - [ ] Force directed algorithm.
-  - [x] Random algorithm (In example folder).
-- [ ] Data panel embedding.
-- [ ] Style configuration.
-- [ ] More graphical interactions.
+- [ ] 数据转换器：用于将业务数据转换成组件可以接收的数据格式
+- [ ] 节点定位：用于将节点合理排布在界面上
+  - [x] 随机定位法 (example 中已给出样例).
+  - [x] 力导向图法，雏形已实现
+    - [ ] 节点碰撞检测 
+- [ ] 提供数据面板的嵌入
+- [ ] 提供样式配置
+- [ ] 提供更多交互能力
 
 ## Getting started
 
@@ -70,4 +72,4 @@ void main() {
 
 ## Licence
 
-flutter_graph_view is under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+flutter_graph_view 遵循 [Apache 2.0 协议](https://www.apache.org/licenses/LICENSE-2.0).

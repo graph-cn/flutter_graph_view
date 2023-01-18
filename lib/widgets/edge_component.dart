@@ -28,6 +28,8 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
           anchor: Anchor.centerLeft,
         );
 
+  /// Compute the line length by two vertex.
+  /// 通过两个节点的坐标，计算线的长度。
   double len() => edge.end == null
       ? 10
       : math.sqrt(
@@ -41,6 +43,8 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
     size = Vector2(len().toDouble(), strokeWidth);
   }
 
+  /// Update edge display by data of `edge`.
+  /// 根据节点数据，对界面进行更新
   @override
   void update(double dt) {
     super.update(dt);
@@ -61,11 +65,17 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
     angle = offset.direction;
   }
 
+  /// Line will be wider after mouse enter.
+  /// 对被鼠标浮入的线增加显视宽度
+  @override
   bool onHoverEnter(PointerHoverInfo info) {
     strokeWidth = 4;
     return true;
   }
 
+  /// Change the line to its original width ater mouse exists.
+  /// 当鼠标浮出时，将线变回原来的宽度。
+  @override
   bool onHoverLeave(PointerHoverInfo info) {
     strokeWidth = 2;
     return true;

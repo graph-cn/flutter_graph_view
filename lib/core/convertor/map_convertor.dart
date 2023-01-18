@@ -9,6 +9,14 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 默认的数据转换器，将 map 里 key 作为属性名转换成实体结构。
 ///
 class MapConvertor extends DataConvertor<Map, Map> {
+  /// Convert data from map to Vertex.
+  /// 将数据从Map的格式官宦成Vertex的格式
+  /// Map struc:
+  /// {
+  ///   "id": "",
+  ///   "tag": "",
+  ///   "tags": [],
+  /// }
   @override
   Vertex convertVertex(v, g) {
     Vertex vertex = Vertex();
@@ -19,6 +27,15 @@ class MapConvertor extends DataConvertor<Map, Map> {
     return vertex;
   }
 
+  /// Convert data from map to Edge.
+  /// 将数据从Map的格式官宦成Edge的格式
+  /// Map struc:
+  /// {
+  ///   "ranking": 1112,
+  ///   "edgeName": "",
+  ///   "srcId": "",
+  ///   "dstId": "",
+  /// }
   @override
   Edge convertEdge(e, g) {
     Edge result = Edge();
@@ -33,6 +50,13 @@ class MapConvertor extends DataConvertor<Map, Map> {
     return result;
   }
 
+  /// Convert data from map to Graph.
+  /// 将数据从Map的格式官宦成Graph的格式
+  /// Map struc:
+  /// {
+  ///   "edges": [],
+  ///   "vertexes": [],
+  /// }
   @override
   Graph convertGraph(data) {
     var result = Graph();

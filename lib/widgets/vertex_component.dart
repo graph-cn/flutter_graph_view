@@ -5,10 +5,8 @@
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
-import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
-import 'package:flame/src/geometry/ray2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 

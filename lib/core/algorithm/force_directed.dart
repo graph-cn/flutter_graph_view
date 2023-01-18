@@ -13,6 +13,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 class ForceDirected extends GraphAlgorithm {
   ForceDirected([decorate]) : super(decorate);
+
   @override
   void compute(
     Vertex v,
@@ -38,6 +39,10 @@ class ForceDirected extends GraphAlgorithm {
 
   Random random = Random();
 
+  ///
+  /// Generates random positions in a specific circle.
+  /// 在一个指定的圆周区域内生成随机位置
+  ///
   Vector2 randomInCircle(Offset center, double distance, double rOffset) {
     var dr = random.nextDouble() * distance;
     var angle = random.nextDouble() * pi;

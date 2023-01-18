@@ -46,10 +46,4 @@ class GraphComponent extends FlameGame
       // collisionDetection.add(vc);
     }
   }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    removeFromParent();
-  }
 }
