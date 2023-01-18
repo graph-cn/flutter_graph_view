@@ -11,7 +11,7 @@
 ## Features
 
 TODO: 
-- [ ] 数据转换器：用于将业务数据转换成组件可以接收的数据格式
+- [x] 数据转换器：用于将业务数据转换成组件可以接收的数据格式
 - [ ] 节点定位：用于将节点合理排布在界面上
   - [x] 随机定位法 (example 中已给出样例).
   - [x] 力导向图法，雏形已实现
@@ -28,8 +28,7 @@ flutter pub add flutter_graph_view
 
 ## Usage
 
-```dart
-// Copyright (c) 20// Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
+```dart// Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
 //
 // This source code is licensed under Apache 2.0 License.
 
@@ -63,7 +62,8 @@ void main() {
   runApp(MaterialApp(
     home: FlutterGraphWidget(
       data: data,
-      // algorithm: RandomAlgorithm(),
+      algorithm: ForceDirected(),
+      convertor: MapConvertor(),
     ),
   ));
 }

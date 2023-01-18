@@ -114,9 +114,4 @@ class VertexComponent extends CircleComponent
     removeFromParent();
     event.handled = true;
   }
-
-  @override
-  bool get isColliding {
-    return graph.vertexes.isNotEmpty;
-  }
 }

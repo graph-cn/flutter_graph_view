@@ -3,14 +3,14 @@
 
   This source code is licensed under Apache 2.0 License.
  -->
- 
+
 # Flutter Graph View
 An open source project which can display beautiful graph data structure, such as force-directed. 
 
 ## Features
 
 TODO: 
-- [ ] Data converter: convert business data into graphic view data.
+- [x] Data converter: convert business data into graphic view data.
 - [ ] Algorithm: calculate vertex layout.
   - [ ] Force directed algorithm.
   - [x] Random algorithm (In example folder).
@@ -27,7 +27,7 @@ flutter pub add flutter_graph_view
 ## Usage
 
 ```dart
-// Copyright (c) 20// Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
+// Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
 //
 // This source code is licensed under Apache 2.0 License.
 
@@ -61,7 +61,8 @@ void main() {
   runApp(MaterialApp(
     home: FlutterGraphWidget(
       data: data,
-      // algorithm: RandomAlgorithm(),
+      algorithm: ForceDirected(),
+      convertor: MapConvertor(),
     ),
   ));
 }
