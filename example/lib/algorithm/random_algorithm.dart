@@ -11,11 +11,10 @@ class RandomAlgorithm extends GraphAlgorithm {
   RandomAlgorithm() : super(null);
 
   @override
-  void compute(Vertex element, Graph graph) {
-    if (element.position == Vector2(0, 0)) {
-      element.radius = math.log(element.degree * 10 + 1) + 5;
-      element.position = Vector2(
-          math.Random().nextDouble() * (size!.width - 50) + 25,
+  void compute(Vertex v, Graph graph) {
+    if (v.position == Vector2(0, 0)) {
+      v.radius = math.log(v.degree * 10 + 1) + 5;
+      v.position = Vector2(math.Random().nextDouble() * (size!.width - 50) + 25,
           math.Random().nextDouble() * (size!.height - 50) + 25);
     }
   }

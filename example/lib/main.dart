@@ -15,10 +15,16 @@ void main() {
   }
   var edges = <Map>{};
 
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 110; i++) {
     edges.add({
       'srcId': 'node${(i % 10) + 60}',
       'dstId': 'node${i % 3 + 1}',
+      'edgeName': 'edge${r.nextInt(3)}',
+      'ranking': r.nextInt(DateTime.now().millisecond),
+    });
+    edges.add({
+      'srcId': 'node${r.nextInt(vertexes.length)}',
+      'dstId': 'node${r.nextInt(vertexes.length)}',
       'edgeName': 'edge${r.nextInt(3)}',
       'ranking': r.nextInt(DateTime.now().millisecond),
     });
@@ -29,11 +35,9 @@ void main() {
     'edges': edges,
   };
 
-  runApp(MaterialApp(
-    home: FlutterGraphWidget(
-      data: data,
-      algorithm: ForceDirected(),
-      convertor: MapConvertor(),
-    ),
+  runApp(FlutterGraphWidget(
+    data: data,
+    algorithm: ForceDirected(),
+    convertor: MapConvertor(),
   ));
 }

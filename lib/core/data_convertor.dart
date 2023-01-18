@@ -38,6 +38,7 @@ abstract class DataConvertor<V, E> {
       result.start.nextEdges.add(result);
       result.end!.degree++;
       result.end!.prevVertexes.add(result.start);
+      result.end!.prevEdges.add(result);
     }
     result.start.degree++;
     result.data = e;

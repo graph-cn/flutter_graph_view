@@ -6,7 +6,8 @@ import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
-import 'dart:math' as math;
+
+import '../core/util.dart';
 
 ///
 /// Flame Component.
@@ -18,7 +19,7 @@ import 'dart:math' as math;
 class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   late final Edge edge;
   ValueNotifier<double>? scaleNotifier;
-  double strokeWidth = 2;
+  double strokeWidth = 1;
   Graph graph;
   BuildContext context;
 
@@ -30,12 +31,10 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
 
   /// Compute the line length by two vertex.
   /// 通过两个节点的坐标，计算线的长度。
-  double len() => edge.end == null
-      ? 10
-      : math.sqrt(
-          math.pow((edge.start.position.x) - (edge.end!.position.x), 2) +
-              math.pow((edge.end!.position.y) - (edge.start.position.y), 2),
-        );
+  double len() =>
+      edge.end == null || edge.start.cpn == null || edge.end!.cpn == null
+          ? 10
+          : Util.distance(edge.start.cpn!.position, edge.end!.cpn!.position);
 
   @override
   onLoad() {
@@ -48,18 +47,23 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   @override
   void update(double dt) {
     super.update(dt);
-    position = edge.start.position;
+    position = edge.start.cpn!.position;
     size = Vector2(len().toDouble(), strokeWidth);
-    if (graph.hoverVertex != null && graph.hoverVertex != edge.start) {
-      paint = Paint()..color = Colors.white10;
+    if (graph.hoverVertex != null &&
+        !graph.hoverVertex!.neighborEdges.contains(edge)) {
+      paint = Paint()..color = Colors.white.withOpacity(0);
     } else {
       paint = Paint()..color = Colors.white;
     }
     Offset offset = Offset(
-      (edge.end == null ? edge.start.position.x : edge.end!.position.x) -
-          (edge.start.position.x),
-      (edge.end == null ? edge.start.position.y : edge.end!.position.y) -
-          (edge.start.position.y),
+      (edge.end == null
+              ? edge.start.cpn!.position.x
+              : edge.end!.cpn!.position.x) -
+          (edge.start.cpn!.position.x),
+      (edge.end == null
+              ? edge.start.cpn!.position.y
+              : edge.end!.cpn!.position.y) -
+          (edge.start.cpn!.position.y),
     );
 
     angle = offset.direction;
@@ -77,7 +81,7 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   /// 当鼠标浮出时，将线变回原来的宽度。
   @override
   bool onHoverLeave(PointerHoverInfo info) {
-    strokeWidth = 2;
+    strokeWidth = 1;
     return true;
   }
 }

@@ -1,5 +1,5 @@
-## 0.0.1+2
-- Complete dartdoc.
+## 0.0.1
+- Provide placement scheme of random positions in the circle with collision detection.
 - Integrated game engine to do data display. ( nodes | relationships )
-- Provided algorithm interface.
+- Provided layout algorithm interface.
 - Provided data convertor interface.

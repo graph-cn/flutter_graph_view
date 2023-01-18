@@ -5,23 +5,27 @@
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
+import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 ///
-/// Flame Component.
-/// Used to handle the presentation and interaction of node
+/// Flame Component: Used to handle the presentation and interaction of node
 ///
-/// 引擎组件
-/// 用于处理节点的展示与交互
+/// 引擎组件：用于处理节点的展示与交互
 ///
 class VertexComponent extends CircleComponent
-    with TapCallbacks, Hoverable, HasGameRef {
+    with
+        TapCallbacks,
+        Hoverable,
+        HasGameRef<GraphComponent>,
+        CollisionCallbacks {
   late Vertex vertex;
   ValueNotifier<double>? scaleNotifier;
-  static const speed = 3;
+  static const speed = 20;
   Graph graph;
   BuildContext context;
   GraphAlgorithm algorithm;
@@ -37,9 +41,17 @@ class VertexComponent extends CircleComponent
   double offsetY = 0;
 
   bool breathDirect = false;
+  bool collisionEnable = false;
+  late final CircleHitbox hitBox;
 
   @override
   Future<void> onLoad() {
+    add(hitBox = CircleHitbox(
+      radius: vertex.radius * 2,
+      isSolid: true,
+      position: position,
+      anchor: anchor,
+    ));
     breathDirect = math.Random().nextBool();
     return super.onLoad();
   }
@@ -47,19 +59,22 @@ class VertexComponent extends CircleComponent
   @override
   void update(double dt) {
     super.update(dt);
-
     // TODO 移到 Style Config
     {
       algorithm.compute(vertex, graph);
-      // radius = vertex.radius = math.log(vertex.degree * 10 + 1) * 3 + 5;
-      if (graph.hoverVertex != null && vertex != graph.hoverVertex) {
+      radius = vertex.radius = math.log(vertex.degree * 10 + 1) + 8;
+      hitBox.position = position;
+      hitBox.radius = radius * 2;
+      if (graph.hoverVertex != null &&
+          (vertex != graph.hoverVertex &&
+              !graph.hoverVertex!.neighbors.contains(vertex))) {
         paint = Paint()
           ..shader = ui.Gradient.radial(
             Offset(vertex.radius, vertex.radius),
             vertex.radius,
             List.generate(
               vertex.colors.length,
-              (index) => vertex.colors[index].withOpacity(.2),
+              (index) => vertex.colors[index].withOpacity(.5),
             ),
           );
       } else {
@@ -85,14 +100,16 @@ class VertexComponent extends CircleComponent
         vertex.position.x += offsetX;
         vertex.position.y += offsetY;
       }
+      count++;
     }
 
-    position = vertex.position;
+    position.x += (vertex.position.x - position.x) * dt * speed;
+    position.y += (vertex.position.y - position.y) * dt * speed;
     double scaleV = scaleNotifier?.value ?? 1.0;
     scale = Vector2(scaleV, scaleV);
-    angle += speed * dt * (isHovered ? 0 : 3);
-    angle %= 2 * math.pi;
-    count++;
+    if (Util.distance(position, vertex.position) < 1 && !collisionEnable) {
+      collisionEnable = true;
+    }
   }
 
   @override
@@ -111,7 +128,28 @@ class VertexComponent extends CircleComponent
 
   @override
   void onTapDown(TapDownEvent event) {
-    removeFromParent();
     event.handled = true;
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is VertexComponent && collisionEnable && this != other) {
+      takeHit(other);
+    }
+  }
+
+  void takeHit(VertexComponent other) {
+    var dx = other.position.x - position.x;
+    var dy = other.position.y - position.y;
+    if (!isHovered) {
+      vertex.position.x = other.position.x - 2 * dx;
+      vertex.position.y = other.position.y - 2 * dy;
+    }
+    if (!other.isHovered) {
+      other.vertex.position.x = position.x + 2 * dx;
+      other.vertex.position.y = position.y + 2 * dy;
+    }
   }
 }

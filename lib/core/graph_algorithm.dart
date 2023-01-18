@@ -22,11 +22,16 @@ abstract class GraphAlgorithm {
   ///
   GraphAlgorithm(this.decorate);
 
+  /// Notify the size change event.
+  ///
+  /// 植入对容器尺寸的监听，用于捕捉窗口变化对画布产生的影响
+  ValueNotifier<Size?> $size = ValueNotifier(null);
+
   ///
   /// Stage size.
   /// 图形展示的区域边界
   ///
-  Size? size;
+  Size? get size => $size.value;
 
   /// Center of stage.
   /// 图形展示的中心点

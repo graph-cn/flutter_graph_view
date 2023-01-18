@@ -25,8 +25,16 @@ class Vertex<I> {
   List<String>? tags;
 
   /// Cache all the next edges of this vertex.
-  /// 对当前节点的所有关系记录进行缓存。
+  /// 对当前节点的后向关系记录进行缓存。
   Set<Edge> nextEdges = {};
+
+  /// Cache all the prev edges of this vertex.
+  /// 对当前节点的前向关系记录进行缓存。
+  Set<Edge> prevEdges = {};
+
+  /// get the neighbor vertexes of this vertex.
+  /// 获取当前节点的所有关系。
+  List<Edge> get neighborEdges => [...nextEdges, ...prevEdges];
 
   /// Cache all the next vertexes of this vertex.
   /// 对当前节点的所有下游节点进行缓存。
@@ -35,6 +43,10 @@ class Vertex<I> {
   /// Cache all the previous vertexes of this vertex.
   /// 对当前节点的所有上游节点进行缓存。
   Set<Vertex<I>> prevVertexes = {};
+
+  /// get the neighbor vertexes of this vertex.
+  /// 获取当前节点的邻居节点。
+  List<Vertex<I>> get neighbors => [...nextVertexes, ...prevVertexes];
 
   /// The degree of this vertex.
   /// 当前节点总的【度】数量
@@ -74,4 +86,6 @@ class Vertex<I> {
   late double radius = 10;
 
   Vertex();
+
+  VertexComponent? cpn;
 }

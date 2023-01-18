@@ -10,7 +10,6 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// Provide an external Api interface to pass in data and policy specification.
 /// 提供一个对外Api接口，用来传入数据与策略指定（风格策略、布局策略）
 ///
-
 class FlutterGraphWidget extends StatefulWidget {
   final dynamic data;
   final GraphAlgorithm algorithm;
@@ -33,11 +32,25 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
   addEdge() {}
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+      if (widget.algorithm.$size.value != context.size) {
+        graphCpn.clearPosition();
+        widget.algorithm.$size.value = context.size;
+      }
+    });
+  }
+
+  late GraphComponent graphCpn;
+
+  @override
   Widget build(BuildContext context) {
-    widget.algorithm.size =
-        widget.algorithm.size ?? MediaQuery.of(context).size;
     return GameWidget(
-      game: GraphComponent(
+      backgroundBuilder: (context) => Container(
+        color: Colors.black54,
+      ),
+      game: graphCpn = GraphComponent(
         data: widget.data,
         convertor: widget.convertor,
         algorithm: widget.algorithm,

@@ -1,0 +1,11 @@
+name: Publish to pub.dev
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  publish:
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml
+    # with:
+    #   working-directory: path/to/package/within/repository

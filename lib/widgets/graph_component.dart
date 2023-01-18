@@ -31,9 +31,11 @@ class GraphComponent extends FlameGame
     required this.convertor,
   });
 
+  late Graph graph;
+
   @override
   Future<void> onLoad() async {
-    Graph graph = convertor.convertGraph(data);
+    graph = convertor.convertGraph(data);
     graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
 
@@ -42,8 +44,17 @@ class GraphComponent extends FlameGame
     }
     for (var vertex in graph.vertexes) {
       var vc = VertexComponent(vertex, graph, context, algorithm);
+      vertex.cpn = vc;
       add(vc);
-      // collisionDetection.add(vc);
+    }
+  }
+
+  /// Clear all vertexes' position value.
+  ///
+  /// 将所有点的位置清空，重新计算位置
+  clearPosition() {
+    for (var element in graph.vertexes) {
+      element.position = Vector2.zero();
     }
   }
 }
