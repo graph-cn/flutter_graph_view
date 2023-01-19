@@ -15,6 +15,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 class GraphComponent extends FlameGame
     with
+        PanDetector,
         HasTappableComponents,
         HasHoverables,
         PanDetector,
@@ -55,6 +56,17 @@ class GraphComponent extends FlameGame
   clearPosition() {
     for (var element in graph.vertexes) {
       element.position = Vector2.zero();
+    }
+  }
+
+  @override
+  void onPanUpdate(DragUpdateInfo info) {
+    if (graph.hoverVertex != null) {
+      algorithm.onDrag(graph.hoverVertex!, info);
+    } else {
+      for (var vertex in graph.vertexes) {
+        vertex.position += info.delta.game;
+      }
     }
   }
 }

@@ -1,3 +1,7 @@
+## 0.0.1+4
+- Support global drag and vertex drag.
+- Support custom reposition collision callbacks.
+
 ## 0.0.1+3
 - Provide placement scheme of random positions in the circle with collision detection.
 

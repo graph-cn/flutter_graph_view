@@ -5,6 +5,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 ///
@@ -17,22 +18,19 @@ class ForceDirected extends GraphAlgorithm {
   @override
   void compute(
     Vertex v,
-    Graph graph, [
-    Offset? c,
-    int deep = 1,
-  ]) {
+    Graph graph,
+  ) {
     if (v.position == Vector2(0, 0)) {
-      var ct = c ?? center / 2;
-      v.position = randomInCircle(ct, 1 / deep * offset, v.radius);
+      var ct = Util.toOffsetByVector2(v.prevVertex?.position) ?? center / 2;
+      var distanceFromCenter = 1 / v.deep * offset;
+      var noAllowCircleRadius = .3 * distanceFromCenter;
+      v.position = randomInCircle(ct, distanceFromCenter, noAllowCircleRadius);
 
-      var vchildren = <Vertex>[...v.nextVertexes, ...v.prevVertexes];
-      for (var n in vchildren) {
-        compute(
-          n,
-          graph,
-          Offset(v.position.x, v.position.y),
-          deep + 1,
-        );
+      for (var n in v.nextVertexes) {
+        if (n.prevVertex == null) {
+          n.prevVertex = v;
+          n.deep = v.deep + 1;
+        }
       }
     }
   }
@@ -44,7 +42,7 @@ class ForceDirected extends GraphAlgorithm {
   /// 在一个指定的圆周区域内生成随机位置
   ///
   Vector2 randomInCircle(Offset center, double distance, double rOffset) {
-    var dr = random.nextDouble() * distance;
+    var dr = random.nextDouble() * distance + rOffset;
     var angle = random.nextDouble() * pi;
     var s = sin(angle);
     var c = cos(angle);

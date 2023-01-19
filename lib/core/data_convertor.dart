@@ -2,6 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 ///
@@ -25,6 +26,7 @@ abstract class DataConvertor<V, E> {
 
   /// Create vertex and graph relationship in memory.
   /// 将节点纳入图的全局管理
+  @mustCallSuper
   void vertexAsGraphComponse(V v, Graph<dynamic> g, Vertex<dynamic> vertex) {
     vertex.data = v;
     g.keyCache[vertex.id] = vertex;
@@ -32,6 +34,7 @@ abstract class DataConvertor<V, E> {
 
   /// Create edge and graph relationship in memory.
   /// 将边纳入图的全局管理
+  @mustCallSuper
   void edgeAsGraphComponse(E e, Graph<dynamic> g, Edge result) {
     if (result.end != null) {
       result.start.nextVertexes.add(result.end!);

@@ -59,6 +59,13 @@ class Vertex<I> {
   /// Whether this vertex being picked.
   bool picked = false;
 
+  /// To get the center datum point , etc.
+  ///
+  /// 为了获得定位时的中心基准点，或者其他信息
+  Vertex<I>? prevVertex;
+
+  int deep = 1;
+
   late List<Color> colors = [
     Color.fromRGBO(
       Random().nextInt(160) + 80,
