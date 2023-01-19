@@ -136,20 +136,7 @@ class VertexComponent extends CircleComponent
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is VertexComponent && collisionEnable && this != other) {
-      takeHit(other);
-    }
-  }
-
-  void takeHit(VertexComponent other) {
-    var dx = other.position.x - position.x;
-    var dy = other.position.y - position.y;
-    if (!isHovered) {
-      vertex.position.x = other.position.x - 2 * dx;
-      vertex.position.y = other.position.y - 2 * dy;
-    }
-    if (!other.isHovered) {
-      other.vertex.position.x = position.x + 2 * dx;
-      other.vertex.position.y = position.y + 2 * dy;
+      algorithm.repositionWhenCollision(vertex, other.vertex);
     }
   }
 }

@@ -46,4 +46,29 @@ abstract class GraphAlgorithm {
   /// 对节点进行定位设值
   ///
   void compute(Vertex v, Graph graph);
+
+  /// Vertexes will be reposition when they collided with another.
+  ///
+  /// 当节点发生碰撞时触发，从而对节点做重新定位。
+  void repositionWhenCollision(Vertex me, Vertex another) {
+    var thisCpn = me.cpn!;
+    var position = me.cpn!.position;
+    var other = another.cpn!;
+
+    // Coordinate difference of collision point
+    // 碰撞点的坐标差
+    var dx = other.position.x - position.x;
+    var dy = other.position.y - position.y;
+
+    // When not activated by the mouse, stay away from each other
+    // 当不被鼠标激活时，向着碰撞点相反的方向运动。
+    if (!thisCpn.isHovered) {
+      me.position.x = other.position.x - 2 * dx;
+      me.position.y = other.position.y - 2 * dy;
+    }
+    if (!other.isHovered) {
+      other.vertex.position.x = position.x + 2 * dx;
+      other.vertex.position.y = position.y + 2 * dy;
+    }
+  }
 }
