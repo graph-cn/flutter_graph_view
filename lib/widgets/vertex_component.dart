@@ -24,7 +24,7 @@ class VertexComponent extends CircleComponent
         HasGameRef<GraphComponent>,
         CollisionCallbacks {
   late Vertex vertex;
-  ValueNotifier<double>? scaleNotifier;
+  late ValueNotifier<double> scaleNotifier;
   static const speed = 20;
   Graph graph;
   BuildContext context;
@@ -62,7 +62,7 @@ class VertexComponent extends CircleComponent
     // TODO 移到 Style Config
     {
       algorithm.compute(vertex, graph);
-      radius = vertex.radius = math.log(vertex.degree * 10 + 1) + 8;
+      radius = vertex.radius;
       hitBox.position = position;
       hitBox.radius = radius * 2;
       if (graph.hoverVertex != null &&
@@ -105,8 +105,6 @@ class VertexComponent extends CircleComponent
 
     position.x += (vertex.position.x - position.x) * dt * speed;
     position.y += (vertex.position.y - position.y) * dt * speed;
-    double scaleV = scaleNotifier?.value ?? 1.0;
-    scale = Vector2(scaleV, scaleV);
     if (Util.distance(position, vertex.position) < 1 && !collisionEnable) {
       collisionEnable = true;
     }

@@ -2,7 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -50,7 +50,14 @@ class Vertex<I> {
 
   /// The degree of this vertex.
   /// 当前节点总的【度】数量
-  int degree = 0;
+  int _degree = 0;
+
+  int get degree => _degree;
+
+  set degree(d) {
+    _degree = d;
+    radius = (math.log(degree * 10 + 1)) + 8;
+  }
 
   /// Is this vertex under focus now
   /// 当前节点是否有鼠标浮入
@@ -68,15 +75,15 @@ class Vertex<I> {
 
   late List<Color> colors = [
     Color.fromRGBO(
-      Random().nextInt(160) + 80,
-      Random().nextInt(160) + 80,
-      Random().nextInt(160) + 80,
+      math.Random().nextInt(160) + 80,
+      math.Random().nextInt(160) + 80,
+      math.Random().nextInt(160) + 80,
       1,
     ),
     Color.fromRGBO(
-      Random().nextInt(160) + 80,
-      Random().nextInt(160) + 80,
-      Random().nextInt(160) + 80,
+      math.Random().nextInt(160) + 80,
+      math.Random().nextInt(160) + 80,
+      math.Random().nextInt(160) + 80,
       1,
     ),
   ];

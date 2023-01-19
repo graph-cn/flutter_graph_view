@@ -19,11 +19,15 @@ class GraphComponent extends FlameGame
         HasTappableComponents,
         HasHoverables,
         PanDetector,
+        ScrollDetector,
         HasCollisionDetection {
   dynamic data;
   late GraphAlgorithm algorithm;
   late DataConvertor convertor;
   BuildContext context;
+
+  ValueNotifier<double> scale = ValueNotifier(1);
+  Vector2? pointLocation;
 
   GraphComponent({
     required this.data,
@@ -41,10 +45,11 @@ class GraphComponent extends FlameGame
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
 
     for (var edge in graph.edges) {
-      add(EdgeComponent(edge, graph, context));
+      add(EdgeComponent(edge, graph, context)..scaleNotifier = scale);
     }
     for (var vertex in graph.vertexes) {
-      var vc = VertexComponent(vertex, graph, context, algorithm);
+      var vc = VertexComponent(vertex, graph, context, algorithm)
+        ..scaleNotifier = scale;
       vertex.cpn = vc;
       add(vc);
     }
@@ -67,6 +72,24 @@ class GraphComponent extends FlameGame
       for (var vertex in graph.vertexes) {
         vertex.position += info.delta.game;
       }
+    }
+  }
+
+  @override
+  void onMouseMove(PointerHoverInfo info) {
+    super.onMouseMove(info);
+    pointLocation = info.eventPosition.game;
+    print(pointLocation);
+  }
+
+  @override
+  void onScroll(PointerScrollInfo info) {
+    var delta = info.scrollDelta.game.g;
+    for (var vertex in graph.vertexes) {
+      algorithm.onZoomVertex(vertex, pointLocation!, delta);
+    }
+    for (var edge in graph.edges) {
+      algorithm.onZoomEdge(edge, pointLocation!, delta);
     }
   }
 }

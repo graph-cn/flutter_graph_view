@@ -18,7 +18,7 @@ import '../core/util.dart';
 ///
 class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   late final Edge edge;
-  ValueNotifier<double>? scaleNotifier;
+  late ValueNotifier<double> scaleNotifier;
   double strokeWidth = 1;
   Graph graph;
   BuildContext context;

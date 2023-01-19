@@ -1,4 +1,5 @@
 ## 0.0.1+4
+- Support zoom in and zoom out.
 - Support global drag and vertex drag.
 - Support custom reposition collision callbacks.
 

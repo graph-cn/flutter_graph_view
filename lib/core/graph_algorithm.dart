@@ -4,7 +4,7 @@
 
 import 'dart:math';
 
-import 'package:flame/src/gestures/events.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -82,4 +82,17 @@ abstract class GraphAlgorithm {
       }
     }
   }
+
+  void onZoomVertex(Vertex vertex, Vector2 pointLocation, double delta) {
+    if (vertex.cpn?.isHovered ?? false) return;
+    var vp = vertex.position;
+    var zoomRate = delta > 0 ? 2 : -2; // delta > 0 缩小，delta < 0 放大
+    var dx = (pointLocation.x - vp.x) / zoomRate;
+    var dy = (pointLocation.y - vp.y) / zoomRate;
+    vp.x += dx;
+    vp.y += dy;
+    vertex.radius -= zoomRate;
+  }
+
+  void onZoomEdge(Edge edge, Vector2 pointLocation, double delta) {}
 }

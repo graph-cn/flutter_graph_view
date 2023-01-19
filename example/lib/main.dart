@@ -22,12 +22,12 @@ void main() {
       'edgeName': 'edge${r.nextInt(3)}',
       'ranking': r.nextInt(DateTime.now().millisecond),
     });
-    edges.add({
-      'srcId': 'node${r.nextInt(vertexes.length)}',
-      'dstId': 'node${r.nextInt(vertexes.length)}',
-      'edgeName': 'edge${r.nextInt(3)}',
-      'ranking': r.nextInt(DateTime.now().millisecond),
-    });
+    // edges.add({
+    //   'srcId': 'node${r.nextInt(vertexes.length)}',
+    //   'dstId': 'node${r.nextInt(vertexes.length)}',
+    //   'edgeName': 'edge${r.nextInt(3)}',
+    //   'ranking': r.nextInt(DateTime.now().millisecond),
+    // });
   }
 
   var data = {
