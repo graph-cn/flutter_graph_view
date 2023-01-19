@@ -79,7 +79,6 @@ class GraphComponent extends FlameGame
   void onMouseMove(PointerHoverInfo info) {
     super.onMouseMove(info);
     pointLocation = info.eventPosition.game;
-    print(pointLocation);
   }
 
   @override
