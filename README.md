@@ -5,7 +5,7 @@
  -->
 
 # Flutter Graph View
-Widgets for beautiful graphic data structures, such as force-oriented diagrams. (Deleloping.)
+Widgets for beautiful graphic data structures, such as force-oriented diagrams. (Under development.)
 
 https://user-images.githubusercontent.com/15630211/214360687-93a3683c-0935-46bd-9584-5cb997d518b8.mp4
 
