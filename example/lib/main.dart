@@ -11,7 +11,12 @@ void main() {
   var vertexes = <Map>{};
   var r = Random();
   for (var i = 0; i < 200; i++) {
-    vertexes.add({'id': 'node$i', 'tag': 'tag${r.nextInt(9)}'});
+    vertexes.add(
+      {
+        'id': 'node$i',
+        'tag': 'tag${r.nextInt(9)}',
+      },
+    );
   }
   var edges = <Map>{};
 
@@ -22,12 +27,15 @@ void main() {
       'edgeName': 'edge${r.nextInt(3)}',
       'ranking': r.nextInt(DateTime.now().millisecond),
     });
-    // edges.add({
-    //   'srcId': 'node${r.nextInt(vertexes.length)}',
-    //   'dstId': 'node${r.nextInt(vertexes.length)}',
-    //   'edgeName': 'edge${r.nextInt(3)}',
-    //   'ranking': r.nextInt(DateTime.now().millisecond),
-    // });
+  }
+
+  for (var i = 0; i < 20; i++) {
+    edges.add({
+      'srcId': 'node${r.nextInt(vertexes.length)}',
+      'dstId': 'node${r.nextInt(vertexes.length)}',
+      'edgeName': 'edge${r.nextInt(3)}',
+      'ranking': r.nextInt(DateTime.now().millisecond),
+    });
   }
 
   var data = {
@@ -35,9 +43,41 @@ void main() {
     'edges': edges,
   };
 
-  runApp(FlutterGraphWidget(
-    data: data,
-    algorithm: ForceDirected(),
-    convertor: MapConvertor(),
+  runApp(MaterialApp(
+    home: Scaffold(
+      body: FlutterGraphWidget(
+        data: data,
+        algorithm: ForceDirected(),
+        convertor: MapConvertor(),
+        options: Options()
+          ..vertexPanelBuilder = (hoverVertex) {
+            if (hoverVertex == null) {
+              return Container();
+            }
+            return Stack(
+              children: [
+                Positioned(
+                  left:
+                      hoverVertex.cpn!.position.x + hoverVertex.cpn!.radius + 5,
+                  top: hoverVertex.cpn!.position.y - 20,
+                  child: SizedBox(
+                    width: 120,
+                    child: ColoredBox(
+                      color: Colors.white,
+                      child: ListTile(
+                        title: Text(
+                          'Id: ${hoverVertex.id}',
+                        ),
+                        subtitle: Text(
+                            'Tag: ${hoverVertex.data['tag']}\nDegree: ${hoverVertex.degree}'),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
+      ),
+    ),
   ));
 }

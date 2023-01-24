@@ -115,6 +115,8 @@ class VertexComponent extends CircleComponent
   bool onHoverEnter(PointerHoverInfo info) {
     info.handled = true;
     graph.hoverVertex = vertex;
+    vertex.hover = true;
+    gameRef.overlays.add('vertex');
     return super.onHoverEnter(info);
   }
 
@@ -122,6 +124,10 @@ class VertexComponent extends CircleComponent
   bool onHoverLeave(PointerHoverInfo info) {
     info.handled = false;
     graph.hoverVertex = null;
+    vertex.hover = false;
+    Future.delayed(const Duration(milliseconds: 300), () {
+      gameRef.overlays.remove('vertex');
+    });
     return super.onHoverLeave(info);
   }
 

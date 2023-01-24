@@ -1,6 +1,6 @@
 name: flutter_graph_view
 description: Widgets for beautiful graphic data structures, such as force-oriented diagrams.
-version: 0.0.1+4
+version: 0.0.1+5
 homepage: https://github.com/dudu-ltd/flutter_graph_view
 
 environment:

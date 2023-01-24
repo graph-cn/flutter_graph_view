@@ -1,5 +1,6 @@
 ## 0.0.1+5
 - Keep children vertexes around the parent vertex.
+- Data panel embedding.
 
 ## 0.0.1+4
 - Support zoom in and zoom out.

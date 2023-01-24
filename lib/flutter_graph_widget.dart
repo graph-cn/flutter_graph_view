@@ -6,20 +6,21 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
-///
 /// Provide an external Api interface to pass in data and policy specification.
-/// 提供一个对外Api接口，用来传入数据与策略指定（风格策略、布局策略）
 ///
+/// 提供一个对外Api接口，用来传入数据与策略指定（风格策略、布局策略）
 class FlutterGraphWidget extends StatefulWidget {
   final dynamic data;
   final GraphAlgorithm algorithm;
   final DataConvertor convertor;
+  final Options? options;
 
   const FlutterGraphWidget({
     Key? key,
     required this.data,
     required this.convertor,
     required this.algorithm,
+    this.options,
   }) : super(key: key);
 
   @override
@@ -39,10 +40,18 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
         graphCpn.clearPosition();
         widget.algorithm.$size.value = context.size;
       }
+
+      graphCpn.overlays.addEntry('vertex', (_, game) {
+        return widget.options?.vertexPanelBuilder!
+                .call(graphCpn.graph.hoverVertex) ??
+            Container();
+      });
     });
   }
 
   late GraphComponent graphCpn;
+  Map<String, Widget Function(BuildContext, GraphComponent)>
+      overlayBuilderMap2 = {};
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +59,7 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
       backgroundBuilder: (context) => Container(
         color: Colors.black54,
       ),
+      overlayBuilderMap: overlayBuilderMap2,
       game: graphCpn = GraphComponent(
         data: widget.data,
         convertor: widget.convertor,

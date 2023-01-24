@@ -20,6 +20,7 @@ export 'package:flutter_graph_view/core/data_convertor.dart';
 export 'package:flutter_graph_view/core/convertor/map_convertor.dart';
 
 /// algorithm
+export 'core/options.dart';
 export 'core/graph_algorithm.dart';
 export 'core/algorithm/force_directed.dart';
 

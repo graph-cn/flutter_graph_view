@@ -14,11 +14,11 @@
 
 TODO: 
 - [x] 数据转换器：用于将业务数据转换成组件可以接收的数据格式
-- [ ] 节点定位：用于将节点合理排布在界面上
+- [x] 节点定位：用于将节点合理排布在界面上
   - [x] 随机定位法 (example 中已给出样例).
   - [x] 力导向图法，雏形已实现
-    - [ ] 节点碰撞检测 
-- [ ] 提供数据面板的嵌入
+    - [x] 节点碰撞检测 
+- [x] 提供数据面板的嵌入
 - [ ] 提供样式配置
 - [ ] 提供更多交互能力
 
@@ -30,7 +30,8 @@ flutter pub add flutter_graph_view
 
 ## Usage
 
-```dart// Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
+```dart
+// Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
 //
 // This source code is licensed under Apache 2.0 License.
 
@@ -43,14 +44,28 @@ void main() {
   var vertexes = <Map>{};
   var r = Random();
   for (var i = 0; i < 200; i++) {
-    vertexes.add({'id': 'node$i', 'tag': 'tag${r.nextInt(9)}'});
+    vertexes.add(
+      {
+        'id': 'node$i',
+        'tag': 'tag${r.nextInt(9)}',
+      },
+    );
   }
   var edges = <Map>{};
 
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 200; i++) {
     edges.add({
-      'srcId': 'node${(i % 10) + 60}',
-      'dstId': 'node${i % 3 + 1}',
+      'srcId': 'node${i % 4}',
+      'dstId': 'node$i',
+      'edgeName': 'edge${r.nextInt(3)}',
+      'ranking': r.nextInt(DateTime.now().millisecond),
+    });
+  }
+
+  for (var i = 0; i < 20; i++) {
+    edges.add({
+      'srcId': 'node${r.nextInt(vertexes.length)}',
+      'dstId': 'node${r.nextInt(vertexes.length)}',
       'edgeName': 'edge${r.nextInt(3)}',
       'ranking': r.nextInt(DateTime.now().millisecond),
     });
@@ -62,10 +77,40 @@ void main() {
   };
 
   runApp(MaterialApp(
-    home: FlutterGraphWidget(
-      data: data,
-      algorithm: ForceDirected(),
-      convertor: MapConvertor(),
+    home: Scaffold(
+      body: FlutterGraphWidget(
+        data: data,
+        algorithm: ForceDirected(),
+        convertor: MapConvertor(),
+        options: Options()
+          ..vertexPanelBuilder = (hoverVertex) {
+            if (hoverVertex == null) {
+              return Container();
+            }
+            return Stack(
+              children: [
+                Positioned(
+                  left:
+                      hoverVertex.cpn!.position.x + hoverVertex.cpn!.radius + 5,
+                  top: hoverVertex.cpn!.position.y - 20,
+                  child: SizedBox(
+                    width: 120,
+                    child: ColoredBox(
+                      color: Colors.white,
+                      child: ListTile(
+                        title: Text(
+                          'Id: ${hoverVertex.id}',
+                        ),
+                        subtitle: Text(
+                            'Tag: ${hoverVertex.data['tag']}\nDegree: ${hoverVertex.degree}'),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
+      ),
     ),
   ));
 }

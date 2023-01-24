@@ -4,7 +4,6 @@
 
 import 'dart:math' as math;
 import 'package:flame/extensions.dart';
-import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// Common tools.
 ///

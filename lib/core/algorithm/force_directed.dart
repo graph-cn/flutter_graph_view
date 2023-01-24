@@ -35,7 +35,7 @@ class ForceDirected extends GraphAlgorithm {
     }
 
     // Keep children vertexes around the parent vertex.
-    if (v.prevVertex != null) {
+    if (v.prevVertex != null && !v.hover) {
       if (Util.distance(v.position, v.prevVertex!.position) <
           5 * v.prevVertex!.radius) {
         v.position += (v.position - v.prevVertex!.position) / 100;
