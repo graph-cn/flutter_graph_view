@@ -18,4 +18,16 @@ class RandomAlgorithm extends GraphAlgorithm {
           math.Random().nextDouble() * (size!.height - 50) + 25);
     }
   }
+
+  @override
+  void onZoomVertex(Vertex vertex, Vector2 pointLocation, double delta) {
+    // if (vertex.cpn?.isHovered ?? false) return;
+    // var vp = vertex.position;
+    // var zoomRate = delta > 0 ? 2 : -2; // delta > 0 缩小，delta < 0 放大
+    // var dx = (pointLocation.x - vp.x) / zoomRate;
+    // var dy = (pointLocation.y - vp.y) / zoomRate;
+    // vp.x += dx;
+    // vp.y += dy;
+    // vertex.radius -= delta > 0 ? .1 : -.1;
+  }
 }

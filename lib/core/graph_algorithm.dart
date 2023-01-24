@@ -86,9 +86,11 @@ abstract class GraphAlgorithm {
   void onZoomVertex(Vertex vertex, Vector2 pointLocation, double delta) {
     if (vertex.cpn?.isHovered ?? false) return;
     var vp = vertex.position;
+    Offset c = Offset(pointLocation.x, pointLocation.y);
+
     var zoomRate = delta > 0 ? 2 : -2; // delta > 0 缩小，delta < 0 放大
-    var dx = (pointLocation.x - vp.x) / zoomRate;
-    var dy = (pointLocation.y - vp.y) / zoomRate;
+    var dx = (c.dx - vp.x) / zoomRate;
+    var dy = (c.dy - vp.y) / zoomRate;
     vp.x += dx;
     vp.y += dy;
     vertex.radius -= zoomRate;

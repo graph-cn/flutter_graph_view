@@ -33,6 +33,17 @@ class ForceDirected extends GraphAlgorithm {
         }
       }
     }
+
+    // Keep children vertexes around the parent vertex.
+    if (v.prevVertex != null) {
+      if (Util.distance(v.position, v.prevVertex!.position) <
+          5 * v.prevVertex!.radius) {
+        v.position += (v.position - v.prevVertex!.position) / 100;
+      } else if (Util.distance(v.position, v.prevVertex!.position) >
+          20 * v.prevVertex!.radius) {
+        v.position -= (v.position - v.prevVertex!.position) / 100;
+      }
+    }
   }
 
   Random random = Random();

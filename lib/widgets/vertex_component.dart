@@ -59,6 +59,7 @@ class VertexComponent extends CircleComponent
   @override
   void update(double dt) {
     super.update(dt);
+    algorithm.$size.value = Size(gameRef.size.x, gameRef.size.y);
     // TODO 移到 Style Config
     {
       algorithm.compute(vertex, graph);
