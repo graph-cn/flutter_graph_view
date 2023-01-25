@@ -8,7 +8,7 @@
 # Flutter Graph View
 致力于图数据的可视化组件
 
-![image](https://foruda.gitee.com/images/1674072032729548735/1e629f03_1043207.png)
+![demo](https://foruda.gitee.com/images/1674684822685415888/5033481e_1043207.png)
 
 ## Features
 
@@ -83,36 +83,56 @@ void main() {
         algorithm: ForceDirected(),
         convertor: MapConvertor(),
         options: Options()
-          ..vertexPanelBuilder = (hoverVertex) {
-            if (hoverVertex == null) {
-              return Container();
-            }
-            return Stack(
-              children: [
-                Positioned(
-                  left:
-                      hoverVertex.cpn!.position.x + hoverVertex.cpn!.radius + 5,
-                  top: hoverVertex.cpn!.position.y - 20,
-                  child: SizedBox(
-                    width: 120,
-                    child: ColoredBox(
-                      color: Colors.white,
-                      child: ListTile(
-                        title: Text(
-                          'Id: ${hoverVertex.id}',
-                        ),
-                        subtitle: Text(
-                            'Tag: ${hoverVertex.data['tag']}\nDegree: ${hoverVertex.degree}'),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            );
-          },
+          ..edgePanelBuilder = edgePanelBuilder
+          ..vertexPanelBuilder = vertexPanelBuilder,
       ),
     ),
   ));
+}
+
+Widget edgePanelBuilder(Edge edge) {
+  var c = (edge.start.cpn!.position + edge.end!.cpn!.position) / 2;
+  return Stack(
+    children: [
+      Positioned(
+        left: c.x + 5,
+        top: c.y,
+        child: SizedBox(
+          width: 150,
+          child: ColoredBox(
+            color: Colors.white,
+            child: ListTile(
+              title: Text('${edge.edgeName} @${edge.ranking}'),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
+}
+
+Widget vertexPanelBuilder(hoverVertex) {
+  return Stack(
+    children: [
+      Positioned(
+        left: hoverVertex.cpn!.position.x + hoverVertex.cpn!.radius + 5,
+        top: hoverVertex.cpn!.position.y - 20,
+        child: SizedBox(
+          width: 120,
+          child: ColoredBox(
+            color: Colors.white,
+            child: ListTile(
+              title: Text(
+                'Id: ${hoverVertex.id}',
+              ),
+              subtitle: Text(
+                  'Tag: ${hoverVertex.data['tag']}\nDegree: ${hoverVertex.degree}'),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
 }
 
 ```

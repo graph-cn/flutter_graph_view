@@ -35,7 +35,7 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (widget.algorithm.$size.value != context.size) {
         graphCpn.clearPosition();
         widget.algorithm.$size.value = context.size;
@@ -45,6 +45,10 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
 
       addEdgeOverlays();
     });
+
+    WidgetsBinding.instance.addPersistentFrameCallback(((timeStamp) {
+      graphCpn.updateViewport(context.size!.width, context.size!.height);
+    }));
   }
 
   /// set overlays callback for vertex data panel on vertex hover.
@@ -53,8 +57,8 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
   void addVertexOverlays() {
     graphCpn.overlays.addEntry('vertex', (_, game) {
       if (graphCpn.graph.hoverVertex == null) return const SizedBox();
-      return widget.options?.vertexPanelBuilder!
-              .call(graphCpn.graph.hoverVertex!) ??
+      return widget.options?.vertexPanelBuilder
+              ?.call(graphCpn.graph.hoverVertex!) ??
           const SizedBox();
     });
   }
@@ -62,8 +66,8 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
   void addEdgeOverlays() {
     graphCpn.overlays.addEntry('edge', (_, game) {
       if (graphCpn.graph.hoverEdge == null) return const SizedBox();
-      return widget.options?.edgePanelBuilder!
-              .call(graphCpn.graph.hoverEdge!) ??
+      return widget.options?.edgePanelBuilder
+              ?.call(graphCpn.graph.hoverEdge!) ??
           const SizedBox();
     });
   }

@@ -1,5 +1,7 @@
 ## 0.0.1+6
 - Data panel embedding. ( For edge )
+- Fixed: components overflow game window.
+- Fixed: `Options.vertexPanelBuilder` nullable as expected.
 
 ## 0.0.1+5
 - Keep children vertexes around the parent vertex.

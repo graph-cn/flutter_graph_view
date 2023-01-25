@@ -57,6 +57,10 @@ class GraphComponent extends FlameGame
     }
   }
 
+  updateViewport(x, y) {
+    camera.viewport = FixedResolutionViewport(Vector2(x, y));
+  }
+
   /// Clear all vertexes' position value.
   ///
   /// 将所有点的位置清空，重新计算位置

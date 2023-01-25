@@ -4,7 +4,7 @@ version: 0.0.1+6
 homepage: https://github.com/dudu-ltd/flutter_graph_view
 
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: ^2.18.6
   flutter: ">=1.17.0"
 
 dependencies:
