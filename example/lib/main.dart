@@ -50,34 +50,54 @@ void main() {
         algorithm: ForceDirected(),
         convertor: MapConvertor(),
         options: Options()
-          ..vertexPanelBuilder = (hoverVertex) {
-            if (hoverVertex == null) {
-              return Container();
-            }
-            return Stack(
-              children: [
-                Positioned(
-                  left:
-                      hoverVertex.cpn!.position.x + hoverVertex.cpn!.radius + 5,
-                  top: hoverVertex.cpn!.position.y - 20,
-                  child: SizedBox(
-                    width: 120,
-                    child: ColoredBox(
-                      color: Colors.white,
-                      child: ListTile(
-                        title: Text(
-                          'Id: ${hoverVertex.id}',
-                        ),
-                        subtitle: Text(
-                            'Tag: ${hoverVertex.data['tag']}\nDegree: ${hoverVertex.degree}'),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            );
-          },
+          ..edgePanelBuilder = edgePanelBuilder
+          ..vertexPanelBuilder = vertexPanelBuilder,
       ),
     ),
   ));
+}
+
+Widget edgePanelBuilder(Edge edge) {
+  var c = (edge.start.cpn!.position + edge.end!.cpn!.position) / 2;
+  return Stack(
+    children: [
+      Positioned(
+        left: c.x + 5,
+        top: c.y,
+        child: SizedBox(
+          width: 150,
+          child: ColoredBox(
+            color: Colors.white,
+            child: ListTile(
+              title: Text('${edge.edgeName} @${edge.ranking}'),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
+}
+
+Widget vertexPanelBuilder(hoverVertex) {
+  return Stack(
+    children: [
+      Positioned(
+        left: hoverVertex.cpn!.position.x + hoverVertex.cpn!.radius + 5,
+        top: hoverVertex.cpn!.position.y - 20,
+        child: SizedBox(
+          width: 120,
+          child: ColoredBox(
+            color: Colors.white,
+            child: ListTile(
+              title: Text(
+                'Id: ${hoverVertex.id}',
+              ),
+              subtitle: Text(
+                  'Tag: ${hoverVertex.data['tag']}\nDegree: ${hoverVertex.degree}'),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
 }

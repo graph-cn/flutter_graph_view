@@ -16,7 +16,8 @@ import '../core/util.dart';
 /// 引擎组件
 /// 用于处理节点之间连接线的逻辑（展示+交互）
 ///
-class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
+class EdgeComponent extends RectangleComponent
+    with HasGameRef<GraphComponent>, TapCallbacks, Hoverable {
   late final Edge edge;
   late ValueNotifier<double> scaleNotifier;
   double strokeWidth = 1;
@@ -74,6 +75,8 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   @override
   bool onHoverEnter(PointerHoverInfo info) {
     strokeWidth = 4;
+    gameRef.graph.hoverEdge = edge;
+    gameRef.overlays.add('edge');
     return true;
   }
 
@@ -82,6 +85,10 @@ class EdgeComponent extends RectangleComponent with TapCallbacks, Hoverable {
   @override
   bool onHoverLeave(PointerHoverInfo info) {
     strokeWidth = 1;
+    gameRef.graph.hoverEdge = null;
+    Future.delayed(const Duration(milliseconds: 300), () {
+      gameRef.overlays.remove('edge');
+    });
     return true;
   }
 }

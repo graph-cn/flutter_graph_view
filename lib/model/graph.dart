@@ -25,6 +25,11 @@ class Graph<ID> {
   /// 鼠标浮入所命中的节点，用于做高亮显示。
   Vertex<ID>? hoverVertex;
 
+  /// The edge which is focused by mouse.
+  ///
+  /// 鼠标浮入所命中的边时存储当前边，用于做快速访问做处理。
+  Edge? hoverEdge;
+
   /// The vertexes selected by the user.
   /// 被用户所选中的节点
   List<Vertex<ID>> pickedVertex = [];
