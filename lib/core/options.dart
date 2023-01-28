@@ -18,4 +18,9 @@ class Options {
   ///
   /// 边数据面板的构建器，鼠标悬停到对应节点时触发。
   Widget Function(Edge hoverVertex)? edgePanelBuilder;
+
+  /// set shape strategy for components of vertex or edge.
+  ///
+  /// 给点跟边设置形状
+  OptionShape shape = CircleShape();
 }

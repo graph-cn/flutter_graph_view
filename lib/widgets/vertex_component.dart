@@ -2,7 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'dart:ui' as ui;
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flame/collisions.dart';
@@ -17,7 +17,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 引擎组件：用于处理节点的展示与交互
 ///
-class VertexComponent extends CircleComponent
+class VertexComponent extends ShapeComponent
     with
         TapCallbacks,
         Hoverable,
@@ -33,7 +33,6 @@ class VertexComponent extends CircleComponent
   VertexComponent(this.vertex, this.graph, this.context, this.algorithm)
       : super(
           position: vertex.position,
-          radius: vertex.radius,
           anchor: Anchor.center,
         );
   int count = 0;
@@ -42,51 +41,32 @@ class VertexComponent extends CircleComponent
 
   bool breathDirect = false;
   bool collisionEnable = false;
-  late final CircleHitbox hitBox;
+  late final ShapeHitbox hitBox;
 
   @override
-  Future<void> onLoad() {
-    add(hitBox = CircleHitbox(
-      radius: vertex.radius * 2,
-      isSolid: true,
-      position: position,
-      anchor: anchor,
-    ));
+  FutureOr<void> onLoad() {
+    add(hitBox = shape.hitBox(vertex, this));
     breathDirect = math.Random().nextBool();
     return super.onLoad();
   }
 
   @override
+  void render(Canvas canvas) =>
+      shape.render(vertex, canvas, paint, paintLayers);
+
+  OptionShape get shape => gameRef.options.shape;
+
+  @override
   void update(double dt) {
     super.update(dt);
+    size.x = shape.width(vertex);
+    size.y = shape.height(vertex);
     algorithm.$size.value = Size(gameRef.size.x, gameRef.size.y);
-    // TODO 移到 Style Config
-    {
-      algorithm.compute(vertex, graph);
-      radius = vertex.radius;
-      hitBox.position = position;
-      hitBox.radius = radius * 2;
-      if (graph.hoverVertex != null &&
-          (vertex != graph.hoverVertex &&
-              !graph.hoverVertex!.neighbors.contains(vertex))) {
-        paint = Paint()
-          ..shader = ui.Gradient.radial(
-            Offset(vertex.radius, vertex.radius),
-            vertex.radius,
-            List.generate(
-              vertex.colors.length,
-              (index) => vertex.colors[index].withOpacity(.5),
-            ),
-          );
-      } else {
-        paint = Paint()
-          ..shader = ui.Gradient.radial(
-            Offset(vertex.radius, vertex.radius),
-            vertex.radius,
-            vertex.colors,
-          );
-      }
-    }
+
+    algorithm.compute(vertex, graph);
+    hitBox.position = position;
+    shape.updateHitBox(vertex, hitBox);
+    shape.setPaint(vertex);
 
     // TODO 移到 Layout 中
     {

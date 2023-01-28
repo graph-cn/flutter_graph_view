@@ -19,10 +19,14 @@ export './widgets/edge_component.dart';
 export 'package:flutter_graph_view/core/data_convertor.dart';
 export 'package:flutter_graph_view/core/convertor/map_convertor.dart';
 
-/// algorithm
+/// core interfaces
 export 'core/options.dart';
 export 'core/graph_algorithm.dart';
+export 'core/option_shape.dart';
+
+/// interfaces' default impl
 export 'core/algorithm/force_directed.dart';
+export 'core/shape/circle_shape.dart';
 
 /// third party
 export 'package:flame/flame.dart';

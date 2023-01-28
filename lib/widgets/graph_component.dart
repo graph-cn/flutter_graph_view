@@ -25,7 +25,7 @@ class GraphComponent extends FlameGame
   late GraphAlgorithm algorithm;
   late DataConvertor convertor;
   BuildContext context;
-  Options? options;
+  late Options options;
 
   ValueNotifier<double> scale = ValueNotifier(1);
   Vector2? pointLocation;
@@ -35,8 +35,10 @@ class GraphComponent extends FlameGame
     required this.algorithm,
     required this.context,
     required this.convertor,
-    this.options,
-  });
+    Options? options,
+  }) {
+    this.options = options ?? Options();
+  }
 
   late Graph graph;
 

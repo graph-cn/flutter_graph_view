@@ -1,3 +1,6 @@
+## 0.0.1+7
+- feat: supported customize vertex ui.
+
 ## 0.0.1+6
 - Data panel embedding. ( For edge )
 - Fixed: components overflow game window.
