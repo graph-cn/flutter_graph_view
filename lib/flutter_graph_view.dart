@@ -22,11 +22,13 @@ export 'package:flutter_graph_view/core/convertor/map_convertor.dart';
 /// core interfaces
 export 'core/options.dart';
 export 'core/graph_algorithm.dart';
-export 'core/option_shape.dart';
+export 'core/options/shape/vertex_shape.dart';
+export 'core/options/shape/edge_shape.dart';
 
 /// interfaces' default impl
 export 'core/algorithm/force_directed.dart';
-export 'core/shape/circle_shape.dart';
+export 'core/options/shape/vertex/vertex_circle_shape.dart';
+export 'core/options/shape/edge/edge_line_shape.dart';
 
 /// third party
 export 'package:flame/flame.dart';

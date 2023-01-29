@@ -10,9 +10,9 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
+/// Boot of graph.
 ///
 /// 图构建器
-///
 class GraphComponent extends FlameGame
     with
         PanDetector,
@@ -49,7 +49,9 @@ class GraphComponent extends FlameGame
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
 
     for (var edge in graph.edges) {
-      add(EdgeComponent(edge, graph, context)..scaleNotifier = scale);
+      var ec = EdgeComponent(edge, graph, context)..scaleNotifier = scale;
+      edge.cpn = ec;
+      add(ec);
     }
     for (var vertex in graph.vertexes) {
       var vc = VertexComponent(vertex, graph, context, algorithm)

@@ -59,10 +59,6 @@ class Vertex<I> {
     radius = (math.log(degree * 10 + 1)) + 8;
   }
 
-  /// Is this vertex under focus now
-  /// 当前节点是否有鼠标浮入
-  bool hover = false;
-
   /// Whether this vertex being picked.
   bool picked = false;
 
@@ -102,4 +98,15 @@ class Vertex<I> {
   Vertex();
 
   VertexComponent? cpn;
+
+  /// Is this vertex under focus now
+  ///
+  /// 当前节点是否有鼠标浮入
+  @Deprecated("will remove in v0.0.2. use isHovered insteads of")
+  bool hover = false;
+
+  /// Is this vertex under focus now
+  ///
+  /// 当前节点是否有鼠标浮入
+  bool get isHovered => cpn?.isHovered ?? false;
 }

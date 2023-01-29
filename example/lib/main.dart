@@ -52,7 +52,8 @@ void main() {
         options: Options()
           ..edgePanelBuilder = edgePanelBuilder
           ..vertexPanelBuilder = vertexPanelBuilder
-          ..shape = CircleShape(), // default is CircleShape.
+          ..edgeShape = EdgeLineShape() // default is EdgeLineShape.
+          ..vertexShape = VertexCircleShape(), // default is VertexCircleShape.
       ),
     ),
   ));

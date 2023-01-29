@@ -12,11 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
-///
 /// Flame Component: Used to handle the presentation and interaction of node
 ///
 /// 引擎组件：用于处理节点的展示与交互
-///
 class VertexComponent extends ShapeComponent
     with
         TapCallbacks,
@@ -45,28 +43,27 @@ class VertexComponent extends ShapeComponent
 
   @override
   FutureOr<void> onLoad() {
-    add(hitBox = shape.hitBox(vertex, this));
+    add(hitBox = vertexShape.hitBox(vertex, this));
     breathDirect = math.Random().nextBool();
     return super.onLoad();
   }
 
   @override
   void render(Canvas canvas) =>
-      shape.render(vertex, canvas, paint, paintLayers);
+      vertexShape.render(vertex, canvas, paint, paintLayers);
 
-  OptionShape get shape => gameRef.options.shape;
+  VertexShape get vertexShape => gameRef.options.vertexShape;
 
   @override
   void update(double dt) {
     super.update(dt);
-    size.x = shape.width(vertex);
-    size.y = shape.height(vertex);
+    size = vertexShape.size(vertex);
     algorithm.$size.value = Size(gameRef.size.x, gameRef.size.y);
 
     algorithm.compute(vertex, graph);
     hitBox.position = position;
-    shape.updateHitBox(vertex, hitBox);
-    shape.setPaint(vertex);
+    vertexShape.updateHitBox(vertex, hitBox);
+    vertexShape.setPaint(vertex);
 
     // TODO 移到 Layout 中
     {
@@ -95,7 +92,6 @@ class VertexComponent extends ShapeComponent
   bool onHoverEnter(PointerHoverInfo info) {
     info.handled = true;
     graph.hoverVertex = vertex;
-    vertex.hover = true;
     gameRef.overlays.add('vertex');
     return super.onHoverEnter(info);
   }
@@ -104,7 +100,6 @@ class VertexComponent extends ShapeComponent
   bool onHoverLeave(PointerHoverInfo info) {
     info.handled = false;
     graph.hoverVertex = null;
-    vertex.hover = false;
     Future.delayed(const Duration(milliseconds: 300), () {
       gameRef.overlays.remove('vertex');
     });

@@ -10,7 +10,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// The default shape impl.
 ///
 /// 默认使用 圆型做节点。
-class CircleShape implements OptionShape {
+class VertexCircleShape extends VertexShape {
   @override
   render(Vertex vertex, Canvas canvas, paint, paintLayers) {
     canvas.drawCircle(
@@ -48,10 +48,7 @@ class CircleShape implements OptionShape {
   @override
   void setPaint(Vertex vertex) {
     var cpn = vertex.cpn!;
-    var graph = cpn.gameRef.graph;
-    if (graph.hoverVertex != null &&
-        (vertex != graph.hoverVertex &&
-            !graph.hoverVertex!.neighbors.contains(vertex))) {
+    if (isWeaken(vertex)) {
       cpn.paint = Paint()
         ..shader = Gradient.radial(
           Offset(vertex.radius, vertex.radius),

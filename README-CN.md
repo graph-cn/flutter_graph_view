@@ -84,7 +84,9 @@ void main() {
         convertor: MapConvertor(),
         options: Options()
           ..edgePanelBuilder = edgePanelBuilder
-          ..vertexPanelBuilder = vertexPanelBuilder,
+          ..vertexPanelBuilder = vertexPanelBuilder
+          ..edgeShape = EdgeLineShape() // default is EdgeLineShape.
+          ..vertexShape = VertexCircleShape(), // default is VertexCircleShape.
       ),
     ),
   ));
@@ -115,7 +117,7 @@ Widget vertexPanelBuilder(hoverVertex) {
   return Stack(
     children: [
       Positioned(
-        left: hoverVertex.cpn!.position.x + hoverVertex.cpn!.radius + 5,
+        left: hoverVertex.cpn!.position.x + hoverVertex.radius + 5,
         top: hoverVertex.cpn!.position.y - 20,
         child: SizedBox(
           width: 120,

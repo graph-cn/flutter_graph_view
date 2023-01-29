@@ -1,5 +1,6 @@
 ## 0.0.1+7
 - feat: supported customize vertex ui.
+- feat: supported customize edge ui.
 
 ## 0.0.1+6
 - Data panel embedding. ( For edge )
