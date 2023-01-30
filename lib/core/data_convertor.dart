@@ -30,6 +30,11 @@ abstract class DataConvertor<V, E> {
   void vertexAsGraphComponse(V v, Graph<dynamic> g, Vertex<dynamic> vertex) {
     vertex.data = v;
     g.keyCache[vertex.id] = vertex;
+
+    vertex.tags?.forEach((tag) {
+      var absent = !g.allTags.contains(tag);
+      if (absent) g.allTags.add(tag);
+    });
   }
 
   /// Create edge and graph relationship in memory.
@@ -45,5 +50,8 @@ abstract class DataConvertor<V, E> {
     }
     result.start.degree++;
     result.data = e;
+
+    var absent = !g.allEdgeNames.contains(result.edgeName);
+    if (absent) g.allEdgeNames.add(result.edgeName);
   }
 }

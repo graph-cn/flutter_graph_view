@@ -59,6 +59,7 @@ class GraphComponent extends FlameGame
       vertex.cpn = vc;
       add(vc);
     }
+    options.graphStyle.graphColor(graph);
   }
 
   updateViewport(x, y) {

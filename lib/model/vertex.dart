@@ -69,20 +69,7 @@ class Vertex<I> {
 
   int deep = 1;
 
-  late List<Color> colors = [
-    Color.fromRGBO(
-      math.Random().nextInt(160) + 80,
-      math.Random().nextInt(160) + 80,
-      math.Random().nextInt(160) + 80,
-      1,
-    ),
-    Color.fromRGBO(
-      math.Random().nextInt(160) + 80,
-      math.Random().nextInt(160) + 80,
-      math.Random().nextInt(160) + 80,
-      1,
-    ),
-  ];
+  List<Color> colors = [];
 
   /// Default position of current vertex in graph.
   /// 节点在图中的默认位置。

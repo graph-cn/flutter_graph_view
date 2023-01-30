@@ -79,14 +79,13 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
   @override
   Widget build(BuildContext context) {
     return GameWidget(
-      backgroundBuilder: (context) => Container(
-        color: Colors.black54,
-      ),
+      backgroundBuilder: widget.options?.backgroundBuilder,
       overlayBuilderMap: overlayBuilderMap2,
       game: graphCpn = GraphComponent(
         data: widget.data,
         convertor: widget.convertor,
         algorithm: widget.algorithm,
+        options: widget.options,
         context: context,
       ),
     );

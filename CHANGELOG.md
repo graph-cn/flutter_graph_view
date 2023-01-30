@@ -1,3 +1,7 @@
+## 0.0.1+8
+- feat(convert): cache the edge names and vertex tags in graph.
+- feat: support customize background.
+
 ## 0.0.1+7
 - feat: supported customize vertex ui.
 - feat: supported customize edge ui.

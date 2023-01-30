@@ -2,9 +2,10 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flame/collisions.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// The default shape impl.
@@ -48,22 +49,26 @@ class VertexCircleShape extends VertexShape {
   @override
   void setPaint(Vertex vertex) {
     var cpn = vertex.cpn!;
+    var colors = vertex.colors;
+
     if (isWeaken(vertex)) {
       cpn.paint = Paint()
-        ..shader = Gradient.radial(
+        ..shader = ui.Gradient.radial(
           Offset(vertex.radius, vertex.radius),
           vertex.radius,
           List.generate(
-            vertex.colors.length,
-            (index) => vertex.colors[index].withOpacity(.5),
+            colors.length,
+            (index) => colors[index].withOpacity(.5),
           ),
+          List.generate(colors.length, (index) => (index + 1) / colors.length),
         );
     } else {
       cpn.paint = Paint()
-        ..shader = Gradient.radial(
+        ..shader = ui.Gradient.radial(
           Offset(vertex.radius, vertex.radius),
           vertex.radius,
-          vertex.colors,
+          colors,
+          List.generate(colors.length, (index) => (index + 1) / colors.length),
         );
     }
   }

@@ -37,4 +37,14 @@ class Graph<ID> {
   /// The origin business data of graph.
   /// 图的原始业务数据。
   dynamic data;
+
+  /// cache the all tags of vertexes.
+  ///
+  /// 缓存所有的节点标签
+  List<String> allTags = [];
+
+  /// cache the all edge name
+  ///
+  /// 缓存所有的边类型
+  List<String> allEdgeNames = [];
 }

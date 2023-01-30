@@ -48,6 +48,11 @@ void main() {
       {
         'id': 'node$i',
         'tag': 'tag${r.nextInt(9)}',
+        'tags': [
+          'tag${r.nextInt(4)}',
+          if (r.nextBool()) 'tag${r.nextInt(4)}',
+          if (r.nextBool()) 'tag${r.nextInt(8)}'
+        ],
       },
     );
   }
@@ -83,6 +88,15 @@ void main() {
         algorithm: ForceDirected(),
         convertor: MapConvertor(),
         options: Options()
+          ..graphStyle = (GraphStyle()
+            // tagColor is prior to tagColorByIndex. use vertex.tags to get color
+            ..tagColor = {'tag3': Colors.purple}
+            ..tagColorByIndex = [
+              Colors.blue,
+              Colors.red,
+              Colors.green,
+              Colors.yellow,
+            ])
           ..edgePanelBuilder = edgePanelBuilder
           ..vertexPanelBuilder = vertexPanelBuilder
           ..edgeShape = EdgeLineShape() // default is EdgeLineShape.

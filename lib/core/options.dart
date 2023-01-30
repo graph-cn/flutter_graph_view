@@ -2,7 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// The core api for Graph Options.
@@ -28,4 +28,13 @@ class Options {
   ///
   /// 给边设置形状
   EdgeShape edgeShape = EdgeLineShape();
+
+  /// use for create background widget.
+  ///
+  /// 用于创建背景
+  Widget Function(BuildContext) backgroundBuilder = (context) => Container(
+        color: Colors.black54,
+      );
+
+  GraphStyle graphStyle = GraphStyle();
 }

@@ -30,6 +30,8 @@ export 'core/algorithm/force_directed.dart';
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
 
+export 'core/options/style/graph_style.dart';
+
 /// third party
 export 'package:flame/flame.dart';
 export 'package:flame/components.dart';
