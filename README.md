@@ -4,10 +4,28 @@
   This source code is licensed under Apache 2.0 License.
  -->
 
-# Flutter Graph View
+<h1 align="center"> Flutter Graph View </h1>
+
+
+<p align="center">
+  <a title="Pub" href="https://flame-engine.org" >
+      <img src="https://img.shields.io/badge/Powered%20by-%F0%9F%94%A5-orange.svg" />
+  </a>
+  <a title="Powered by Flame" href="https://pub.dev/packages/flutter_graph_view" >
+      <img src="https://img.shields.io/badge/Pub-v0.0.1+x-red?style=popout" />
+  </a>
+  <a href="https://github.com/dudu-ltd/flutter_graph_view/stargazers">
+      <img src="https://img.shields.io/github/stars/dudu-ltd/flutter_graph_view" alt="GitHub stars" />
+  </a>
+  <a href="https://github.com/dudu-ltd/flutter_graph_view/network/members">
+      <img src="https://img.shields.io/github/forks/dudu-ltd/flutter_graph_view" alt="GitHub forks" />
+  </a>
+</p>
+
 Widgets for beautiful graphic data structures, such as force-oriented diagrams. (Under development.)
 
-![image](https://user-images.githubusercontent.com/15630211/214703510-17ccfe4d-e3f6-49b9-9bc1-6ce84bd825a8.png)
+![image](https://user-images.githubusercontent.com/15630211/216155004-0d6dc826-c589-41cf-bf7c-a51685582c05.png)
+
 
 https://user-images.githubusercontent.com/15630211/214360687-93a3683c-0935-46bd-9584-5cb997d518b8.mp4
 
@@ -19,7 +37,7 @@ TODO:
   - [x] Force directed algorithm.
   - [x] Random algorithm (In example folder).
 - [x] Data panel embedding.
-- [ ] Style configuration.
+- [x] Style configuration.
 - [ ] More graphical interactions.
 
 ## Getting started
@@ -49,7 +67,7 @@ void main() {
         'id': 'node$i',
         'tag': 'tag${r.nextInt(9)}',
         'tags': [
-          'tag${r.nextInt(4)}',
+          'tag${r.nextInt(9)}',
           if (r.nextBool()) 'tag${r.nextInt(4)}',
           if (r.nextBool()) 'tag${r.nextInt(8)}'
         ],
@@ -90,13 +108,20 @@ void main() {
         options: Options()
           ..graphStyle = (GraphStyle()
             // tagColor is prior to tagColorByIndex. use vertex.tags to get color
-            ..tagColor = {'tag3': Colors.purple}
+            ..tagColor = {'tag8': Colors.orangeAccent.shade200}
             ..tagColorByIndex = [
-              Colors.blue,
-              Colors.red,
-              Colors.green,
-              Colors.yellow,
+              Colors.red.shade200,
+              Colors.orange.shade200,
+              Colors.yellow.shade200,
+              Colors.green.shade200,
+              Colors.blue.shade200,
+              Colors.blueAccent.shade200,
+              Colors.purple.shade200,
+              Colors.pink.shade200,
+              Colors.blueGrey.shade200,
+              Colors.deepOrange.shade200,
             ])
+          ..useLegend = true // default true
           ..edgePanelBuilder = edgePanelBuilder
           ..vertexPanelBuilder = vertexPanelBuilder
           ..edgeShape = EdgeLineShape() // default is EdgeLineShape.

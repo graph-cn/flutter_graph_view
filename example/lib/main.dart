@@ -16,7 +16,7 @@ void main() {
         'id': 'node$i',
         'tag': 'tag${r.nextInt(9)}',
         'tags': [
-          'tag${r.nextInt(4)}',
+          'tag${r.nextInt(9)}',
           if (r.nextBool()) 'tag${r.nextInt(4)}',
           if (r.nextBool()) 'tag${r.nextInt(8)}'
         ],
@@ -57,13 +57,20 @@ void main() {
         options: Options()
           ..graphStyle = (GraphStyle()
             // tagColor is prior to tagColorByIndex. use vertex.tags to get color
-            ..tagColor = {'tag3': Colors.purple}
+            ..tagColor = {'tag8': Colors.orangeAccent.shade200}
             ..tagColorByIndex = [
-              Colors.blue,
-              Colors.red,
-              Colors.green,
-              Colors.yellow,
+              Colors.red.shade200,
+              Colors.orange.shade200,
+              Colors.yellow.shade200,
+              Colors.green.shade200,
+              Colors.blue.shade200,
+              Colors.blueAccent.shade200,
+              Colors.purple.shade200,
+              Colors.pink.shade200,
+              Colors.blueGrey.shade200,
+              Colors.deepOrange.shade200,
             ])
+          ..useLegend = true // default true
           ..edgePanelBuilder = edgePanelBuilder
           ..vertexPanelBuilder = vertexPanelBuilder
           ..edgeShape = EdgeLineShape() // default is EdgeLineShape.

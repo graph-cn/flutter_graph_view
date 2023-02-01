@@ -114,19 +114,16 @@ class GraphComponent extends FlameGame
   }
 
   void createLegend() {
+    if (!options.useLegend) return;
+    var graphStyle = options.graphStyle;
     for (var i = 0; i < graph.allTags.length; i++) {
       var tag = graph.allTags[i];
 
       add(
         RectangleComponent.fromRect(
-            Rect.fromLTWH(
-              40,
-              50.0 + 30 * i,
-              30,
-              18,
-            ),
-            paint: Paint()
-              ..color = options.graphStyle.colorByTag(tag, graph.allTags)!),
+          Rect.fromLTWH(40, 50.0 + 30 * i, 30, 18),
+          paint: Paint()..color = graphStyle.colorByTag(tag, graph.allTags)!,
+        ),
       );
 
       add(TextComponent(text: tag, position: Vector2(40 + 40, 44.0 + 30 * i)));
