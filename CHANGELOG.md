@@ -1,5 +1,6 @@
 ## 0.0.1+9
 - feat: create random color for tag.
+- feat: add legend in graph.
 
 ## 0.0.1+8
 - feat(convert): cache the edge names and vertex tags in graph.

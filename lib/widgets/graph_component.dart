@@ -47,7 +47,7 @@ class GraphComponent extends FlameGame
     graph = convertor.convertGraph(data);
     graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
-
+    setDefaultVertexColor();
     for (var edge in graph.edges) {
       var ec = EdgeComponent(edge, graph, context)..scaleNotifier = scale;
       edge.cpn = ec;
@@ -59,7 +59,17 @@ class GraphComponent extends FlameGame
       vertex.cpn = vc;
       add(vc);
     }
+
+    createLegend();
     options.graphStyle.graphColor(graph);
+  }
+
+  setDefaultVertexColor() {
+    var tagColorByIndex = options.graphStyle.tagColorByIndex;
+    var needCount = graph.allTags.length - tagColorByIndex.length;
+    for (var i = 0; i < needCount; i++) {
+      tagColorByIndex.add(options.graphStyle.defaultColor()[0]);
+    }
   }
 
   updateViewport(x, y) {
@@ -100,6 +110,26 @@ class GraphComponent extends FlameGame
     }
     for (var edge in graph.edges) {
       algorithm.onZoomEdge(edge, pointLocation!, delta);
+    }
+  }
+
+  void createLegend() {
+    for (var i = 0; i < graph.allTags.length; i++) {
+      var tag = graph.allTags[i];
+
+      add(
+        RectangleComponent.fromRect(
+            Rect.fromLTWH(
+              40,
+              50.0 + 30 * i,
+              30,
+              18,
+            ),
+            paint: Paint()
+              ..color = options.graphStyle.colorByTag(tag, graph.allTags)!),
+      );
+
+      add(TextComponent(text: tag, position: Vector2(40 + 40, 44.0 + 30 * i)));
     }
   }
 }
