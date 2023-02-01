@@ -46,14 +46,7 @@ class GraphStyle {
     List<Color> colors = [];
 
     for (var tag in tags) {
-      Color? color;
-      if (tagColor != null) {
-        color = tagColor![tag];
-      }
-      if (color == null) {
-        var idx = allTags.indexOf(tag);
-        if (idx < tagColorByIndex.length) color = tagColorByIndex[idx];
-      }
+      Color? color = colorByTag(tag, allTags);
       if (color != null) {
         colors.add(color);
       }
@@ -63,6 +56,18 @@ class GraphStyle {
       return defaultColor();
     }
     return colors;
+  }
+
+  Color? colorByTag(String tag, List<String> allTags) {
+    Color? color;
+    if (tagColor != null) {
+      color = tagColor![tag];
+    }
+    if (color == null) {
+      var idx = allTags.indexOf(tag);
+      if (idx < tagColorByIndex.length) color = tagColorByIndex[idx];
+    }
+    return color;
   }
 
   /// when there is not color matched in [tagColor] on [tagColorByIndex], return random color.

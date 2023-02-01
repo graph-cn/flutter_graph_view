@@ -1,6 +1,10 @@
+## 0.0.1+9
+- feat: create random color for tag.
+
 ## 0.0.1+8
 - feat(convert): cache the edge names and vertex tags in graph.
 - feat: support customize background.
+- feat(options style): support assigning colors to vertexes through tags (name or index).
 
 ## 0.0.1+7
 - feat: supported customize vertex ui.
