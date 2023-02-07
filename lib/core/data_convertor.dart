@@ -53,5 +53,36 @@ abstract class DataConvertor<V, E> {
 
     var absent = !g.allEdgeNames.contains(result.edgeName);
     if (absent) g.allEdgeNames.add(result.edgeName);
+
+    fillEdgesBetween(g, result);
+  }
+
+  /// cache for edge list between two vertex.
+  ///
+  /// 对两个节点间的边集合进行缓存，以计算边的位置偏移量
+  void fillEdgesBetween(Graph g, Edge result) {
+    var end = result.end;
+    if (end == null) return;
+    var start = result.start;
+
+    if (g.edgesBetween[start] == null && g.edgesBetween[end] == null) {
+      g.edgesBetween[start] = {
+        end: [result]
+      };
+    } else {
+      if (g.edgesBetween[start] != null) {
+        if (g.edgesBetween[start]![end] != null) {
+          g.edgesBetween[start]![end]!.add(result);
+        } else {
+          g.edgesBetween[start]![end] = [result];
+        }
+      } else if (g.edgesBetween[end] != null) {
+        if (g.edgesBetween[end]![start] != null) {
+          g.edgesBetween[end]![start]!.add(result);
+        } else {
+          g.edgesBetween[end]![start] = [result];
+        }
+      }
+    }
   }
 }

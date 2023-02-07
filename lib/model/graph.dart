@@ -47,4 +47,11 @@ class Graph<ID> {
   ///
   /// 缓存所有的边类型
   List<String> allEdgeNames = [];
+
+  Map<Vertex, Map<Vertex, List<Edge>>> edgesBetween = {};
+
+  List<Edge> edgesFromTwoVertex(Vertex start, Vertex? end) {
+    if (end == null) return [];
+    return edgesBetween[start]?[end] ?? edgesBetween[end]?[start] ?? [];
+  }
 }

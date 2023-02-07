@@ -2,6 +2,9 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'dart:async';
+
+import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +32,15 @@ class EdgeComponent extends ShapeComponent
 
   EdgeShape get edgeShape => gameRef.options.edgeShape;
 
+  late final ShapeHitbox? hitBox;
+
+  @override
+  FutureOr<void> onLoad() {
+    hitBox = edgeShape.hitBox(edge, this);
+    if (hitBox != null) add(hitBox!);
+    return super.onLoad();
+  }
+
   @override
   void render(Canvas canvas) =>
       edgeShape.render(edge, canvas, paint, paintLayers);
@@ -52,6 +64,13 @@ class EdgeComponent extends ShapeComponent
     gameRef.graph.hoverEdge = edge;
     gameRef.overlays.add('edge');
     return true;
+  }
+
+  @override
+  containsPoint(Vector2 point) {
+    var hover = edgeShape.hoverTest(point, edge, this);
+    if (hover == null) return super.containsPoint(point);
+    return hover;
   }
 
   /// Change the line to its original width ater mouse exists.

@@ -1,3 +1,6 @@
+## 0.0.1+10
+- feat:  support multi line between two vertexes.
+
 ## 0.0.1+9
 - feat: create random color for tag.
 - feat: add legend in graph.

@@ -4,6 +4,7 @@
 
 import 'dart:ui';
 
+import 'package:flame/collisions.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -73,5 +74,11 @@ abstract class EdgeShape {
     );
 
     return offset.direction;
+  }
+
+  ShapeHitbox? hitBox(Edge edge, EdgeComponent edgeComponent);
+
+  bool? hoverTest(Vector2 point, Edge edge, EdgeComponent edgeComponent) {
+    return null;
   }
 }

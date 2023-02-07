@@ -25,19 +25,19 @@ void main() {
   }
   var edges = <Map>{};
 
-  for (var i = 0; i < 200; i++) {
-    edges.add({
-      'srcId': 'node${i % 4}',
-      'dstId': 'node$i',
-      'edgeName': 'edge${r.nextInt(3)}',
-      'ranking': r.nextInt(DateTime.now().millisecond),
-    });
-  }
+  // for (var i = 0; i < 200; i++) {
+  //   edges.add({
+  //     'srcId': 'node${i % 4}',
+  //     'dstId': 'node$i',
+  //     'edgeName': 'edge${r.nextInt(3)}',
+  //     'ranking': r.nextInt(DateTime.now().millisecond),
+  //   });
+  // }
 
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 50; i++) {
     edges.add({
-      'srcId': 'node${r.nextInt(vertexes.length)}',
-      'dstId': 'node${r.nextInt(vertexes.length)}',
+      'srcId': 'node1',
+      'dstId': 'node2',
       'edgeName': 'edge${r.nextInt(3)}',
       'ranking': r.nextInt(DateTime.now().millisecond),
     });

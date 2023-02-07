@@ -11,7 +11,7 @@
   <a title="Pub" href="https://flame-engine.org" >
       <img src="https://img.shields.io/badge/Powered%20by-%F0%9F%94%A5-orange.svg" />
   </a>
-  <a title="Powered by Flame" href="https://pub.dev/packages/flutter_graph_view" >
+  <a title="Powered by Flame" href="https://pub.flutter-io.cn/packages/flutter_graph_view" >
       <img src="https://img.shields.io/badge/Pub-v0.0.1+x-red?style=popout" />
   </a>
   <a href="https://github.com/dudu-ltd/flutter_graph_view/stargazers">

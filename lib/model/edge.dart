@@ -49,4 +49,6 @@ class Edge {
   ///
   /// 当前边是否有鼠标浮入
   bool get isHovered => cpn?.isHovered ?? false;
+
+  Path? path;
 }
