@@ -26,6 +26,7 @@ Widgets for beautiful graphic data structures, such as force-oriented diagrams. 
 
 ![image](https://user-images.githubusercontent.com/15630211/216155004-0d6dc826-c589-41cf-bf7c-a51685582c05.png)
 
+![image](https://user-images.githubusercontent.com/15630211/217449742-1eb95787-c53a-450d-bff9-08f3ed2b1b8c.png)
 
 https://user-images.githubusercontent.com/15630211/214360687-93a3683c-0935-46bd-9584-5cb997d518b8.mp4
 
