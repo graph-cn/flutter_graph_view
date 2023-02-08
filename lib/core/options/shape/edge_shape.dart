@@ -46,8 +46,10 @@ abstract class EdgeShape {
   /// 当一些元素被激活且不包含当前元素
   bool isWeaken(Edge edge) {
     var graph = edge.cpn!.gameRef.graph;
-    return graph.hoverVertex != null &&
+    var isHoverVertexEdge = graph.hoverVertex != null &&
         !graph.hoverVertex!.neighborEdges.contains(edge);
+    var isHoverEdge = graph.hoverEdge != null && graph.hoverEdge != edge;
+    return isHoverVertexEdge || isHoverEdge;
   }
 
   /// Compute the line length by two vertex.

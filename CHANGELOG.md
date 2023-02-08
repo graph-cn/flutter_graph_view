@@ -1,5 +1,10 @@
 ## 0.0.1+10
 - feat:  support multi line between two vertexes.
+- enhance: optimized edge experience. 
+  - hover height 1->3
+  - edge highlight when component hovered.
+      ![image](https://user-images.githubusercontent.com/15630211/217449742-1eb95787-c53a-450d-bff9-08f3ed2b1b8c.png)
+
 
 ## 0.0.1+9
 - feat: create random color for tag.

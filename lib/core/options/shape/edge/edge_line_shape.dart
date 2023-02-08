@@ -19,18 +19,24 @@ class EdgeLineShape extends EdgeShape {
     paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
     var endPoint = Offset(len(edge), paint.strokeWidth);
-    // canvas.drawLine(startPoint, endPoint, paint);
+
+    var distance = Util.distance(edge.cpn!.position, edge.end!.position);
+
+    var edgesBetweenTwoVertex =
+        edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+
+    /// 法线点
+    var normalPoint = Vector2(
+      distance / 2,
+      computeIndex(edge) * distance / edgesBetweenTwoVertex.length * 2,
+    );
 
     Path path = Path();
     path.cubicTo(
       startPoint.dx,
       startPoint.dy,
-      Util.distance(edge.cpn!.position, edge.end!.position) / 2,
-      computeIndex(edge) *
-          Util.distance(edge.cpn!.position, edge.end!.position) /
-          (edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [])
-              .length *
-          2,
+      normalPoint.x,
+      normalPoint.y,
       endPoint.dx,
       endPoint.dy,
     );
@@ -43,7 +49,7 @@ class EdgeLineShape extends EdgeShape {
   @override
   void setPaint(Edge edge) {
     if (isWeaken(edge)) {
-      edge.cpn!.paint = Paint()..color = Colors.white.withOpacity(0);
+      edge.cpn!.paint = Paint()..color = Colors.white.withOpacity(0.05);
     } else {
       edge.cpn!.paint = Paint()..color = Colors.white;
     }
@@ -51,7 +57,7 @@ class EdgeLineShape extends EdgeShape {
 
   @override
   double height(Edge edge) {
-    return 1.0;
+    return 3.0;
   }
 
   @override

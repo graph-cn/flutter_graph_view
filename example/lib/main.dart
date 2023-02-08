@@ -25,14 +25,14 @@ void main() {
   }
   var edges = <Map>{};
 
-  // for (var i = 0; i < 200; i++) {
-  //   edges.add({
-  //     'srcId': 'node${i % 4}',
-  //     'dstId': 'node$i',
-  //     'edgeName': 'edge${r.nextInt(3)}',
-  //     'ranking': r.nextInt(DateTime.now().millisecond),
-  //   });
-  // }
+  for (var i = 0; i < 200; i++) {
+    edges.add({
+      'srcId': 'node${i % 4}',
+      'dstId': 'node$i',
+      'edgeName': 'edge${r.nextInt(3)}',
+      'ranking': r.nextInt(DateTime.now().millisecond),
+    });
+  }
 
   for (var i = 0; i < 50; i++) {
     edges.add({
