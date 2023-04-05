@@ -2,9 +2,8 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'dart:ui';
-
 import 'package:flame/collisions.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// Used to customize the vertex UI.

@@ -27,6 +27,7 @@ export 'core/options/shape/edge_shape.dart';
 
 /// interfaces' default impl
 export 'core/algorithm/force_directed.dart';
+export 'core/algorithm/breathe_decorator.dart';
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
 

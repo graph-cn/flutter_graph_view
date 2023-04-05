@@ -3,7 +3,6 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
@@ -33,19 +32,35 @@ class VertexComponent extends ShapeComponent
           position: vertex.position,
           anchor: Anchor.center,
         );
-  int count = 0;
-  double offsetX = 0;
-  double offsetY = 0;
 
-  bool breathDirect = false;
+  final Map<String, dynamic> properties = {};
+
   bool collisionEnable = false;
   late final ShapeHitbox hitBox;
 
   @override
   FutureOr<void> onLoad() {
     add(hitBox = vertexShape.hitBox(vertex, this));
-    breathDirect = math.Random().nextBool();
+    algorithmOnLoad(algorithm);
     return super.onLoad();
+  }
+
+  /// Recursively call the onLoad method of the algorithm,
+  ///   assign values to the parameters of each algorithm
+  /// 递归调用算法的onLoad方法，为各个算法的参数赋值
+  void algorithmOnLoad(GraphAlgorithm? algorithm) {
+    if (algorithm == null) return;
+    algorithm.onLoad(vertex);
+    algorithmOnLoad(algorithm.decorator);
+  }
+
+  /// Recursively call the compute method of the algorithm,
+  ///  and then call the compute method of the next algorithm
+  /// 递归调用算法的compute方法，然后调用下一个算法的compute方法
+  void algorithmCompute(GraphAlgorithm? algorithm) {
+    if (algorithm == null) return;
+    algorithm.compute(vertex, graph);
+    algorithmCompute(algorithm.decorator);
   }
 
   @override
@@ -60,26 +75,10 @@ class VertexComponent extends ShapeComponent
     size = vertexShape.size(vertex);
     algorithm.$size.value = Size(gameRef.size.x, gameRef.size.y);
 
-    algorithm.compute(vertex, graph);
+    algorithmCompute(algorithm);
     hitBox.position = position;
     vertexShape.updateHitBox(vertex, hitBox);
     vertexShape.setPaint(vertex);
-
-    // TODO 移到 Layout 中
-    {
-      if (count % 150 == 0) {
-        breathDirect = !breathDirect;
-        offsetY = (breathDirect ? 1 : -1) * .1;
-      }
-      // offsetX =
-      //     (math.Random().nextBool() ? 1 : -1) * math.Random().nextDouble() * .8;
-
-      if (vertex != graph.hoverVertex) {
-        vertex.position.x += offsetX;
-        vertex.position.y += offsetY;
-      }
-      count++;
-    }
 
     position.x += (vertex.position.x - position.x) * dt * speed;
     position.y += (vertex.position.y - position.y) * dt * speed;

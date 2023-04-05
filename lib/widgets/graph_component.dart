@@ -5,7 +5,6 @@
 import 'dart:async';
 
 import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -16,7 +15,6 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class GraphComponent extends FlameGame
     with
         PanDetector,
-        HasTappableComponents,
         HasHoverables,
         PanDetector,
         ScrollDetector,

@@ -1,3 +1,19 @@
+## 0.0.2
+- feat: enable decorator for vertex.
+    - Remove the breath effect. To use the breath effect, please pass in BreatheDecorator() when creating the GraphAlgorithm object, such as:
+    ```dart
+    FlutterGraphWidget(
+        ...
+        algorithm: ForceDirected(BreatheDecorator()),
+        ...
+    )
+    ```
+    
+- feat: adding custom properties to vertex components helps the algorithm create more effects.
+<!-- 将对flame的依赖升级到最新版本 -->
+- dependency: upgrade flame from 1.6.0 to 1.7.0
+
+
 ## 0.0.1+10
 - feat:  support multi line between two vertexes.
 - enhance: optimized edge experience. 

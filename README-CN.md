@@ -28,25 +28,25 @@
 
 ![多边节点](https://foruda.gitee.com/images/1675837598136195029/03b27259_1043207.png "屏幕截图")
 
-## Features
+## 特性
 
-TODO: 
 - [x] 数据转换器：用于将业务数据转换成组件可以接收的数据格式
 - [x] 节点定位：用于将节点合理排布在界面上
   - [x] 随机定位法 (example 中已给出样例).
   - [x] 力导向图法，雏形已实现
-    - [x] 节点碰撞检测 
+  - [x] 支持定位算法装饰器
+    - [x] 提供呼吸效果的自定义装饰器（可选特性）
 - [x] 提供数据面板的嵌入
 - [x] 提供样式配置
 - [ ] 提供更多交互能力
 
-## Getting started
+## 如何开始
 
 ```sh
 flutter pub add flutter_graph_view
 ```
 
-## Usage
+## 用法
 
 ```dart
 // Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
@@ -85,10 +85,10 @@ void main() {
     });
   }
 
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 50; i++) {
     edges.add({
-      'srcId': 'node${r.nextInt(vertexes.length)}',
-      'dstId': 'node${r.nextInt(vertexes.length)}',
+      'srcId': 'node1',
+      'dstId': 'node2',
       'edgeName': 'edge${r.nextInt(3)}',
       'ranking': r.nextInt(DateTime.now().millisecond),
     });
@@ -103,7 +103,7 @@ void main() {
     home: Scaffold(
       body: FlutterGraphWidget(
         data: data,
-        algorithm: ForceDirected(),
+        algorithm: ForceDirected(BreatheDecorator()),
         convertor: MapConvertor(),
         options: Options()
           ..graphStyle = (GraphStyle()

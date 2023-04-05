@@ -52,7 +52,7 @@ void main() {
     home: Scaffold(
       body: FlutterGraphWidget(
         data: data,
-        algorithm: ForceDirected(),
+        algorithm: ForceDirected(BreatheDecorator()),
         convertor: MapConvertor(),
         options: Options()
           ..graphStyle = (GraphStyle()

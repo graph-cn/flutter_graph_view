@@ -13,7 +13,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 力导向图布局算法
 ///
 class ForceDirected extends GraphAlgorithm {
-  ForceDirected([decorate]) : super(decorate);
+  ForceDirected([decorator]) : super(decorator);
 
   @override
   void compute(

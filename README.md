@@ -22,7 +22,7 @@
   </a>
 </p>
 
-Widgets for beautiful graphic data structures, such as force-oriented diagrams. (Under development.)
+Widgets for beautiful graphic data structures, such as force-oriented diagrams.
 
 ![image](https://user-images.githubusercontent.com/15630211/216155004-0d6dc826-c589-41cf-bf7c-a51685582c05.png)
 
@@ -32,11 +32,12 @@ https://user-images.githubusercontent.com/15630211/214360687-93a3683c-0935-46bd-
 
 ## Features
 
-TODO: 
 - [x] Data converter: convert business data into graphic view data.
 - [x] Algorithm: calculate vertex layout.
   - [x] Force directed algorithm.
   - [x] Random algorithm (In example folder).
+  - [x] Support algorithm decorator.
+    - [x] Breathe decorator (optional).
 - [x] Data panel embedding.
 - [x] Style configuration.
 - [ ] More graphical interactions.
@@ -86,10 +87,10 @@ void main() {
     });
   }
 
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 50; i++) {
     edges.add({
-      'srcId': 'node${r.nextInt(vertexes.length)}',
-      'dstId': 'node${r.nextInt(vertexes.length)}',
+      'srcId': 'node1',
+      'dstId': 'node2',
       'edgeName': 'edge${r.nextInt(3)}',
       'ranking': r.nextInt(DateTime.now().millisecond),
     });
@@ -104,7 +105,7 @@ void main() {
     home: Scaffold(
       body: FlutterGraphWidget(
         data: data,
-        algorithm: ForceDirected(),
+        algorithm: ForceDirected(BreatheDecorator()),
         convertor: MapConvertor(),
         options: Options()
           ..graphStyle = (GraphStyle()
