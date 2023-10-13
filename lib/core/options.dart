@@ -2,6 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -42,4 +43,19 @@ class Options {
   ///
   /// 是否展示图例
   bool useLegend = true;
+
+  /// @en: event callback when tap down on vertex.
+  ///
+  /// @zh: 点下顶点时的回调
+  dynamic Function(Vertex vertex, TapDownEvent)? onVertexTapDown;
+
+  /// @en: event callback when tap up on vertex.
+  ///
+  /// @zh: 抬起顶点时的回调
+  dynamic Function(Vertex vertex, TapUpEvent)? onVertexTapUp;
+
+  /// @en: event callback when tap cancel on vertex.
+  ///
+  /// @zh: 取消顶点时的回调
+  dynamic Function(Vertex vertex, TapCancelEvent)? onVertexTapCancel;
 }

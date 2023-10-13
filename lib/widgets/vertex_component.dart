@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -17,7 +16,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class VertexComponent extends ShapeComponent
     with
         TapCallbacks,
-        Hoverable,
+        HoverCallbacks,
         HasGameRef<GraphComponent>,
         CollisionCallbacks {
   late Vertex vertex;
@@ -26,9 +25,17 @@ class VertexComponent extends ShapeComponent
   Graph graph;
   BuildContext context;
   GraphAlgorithm algorithm;
+  Options? options;
+  GraphComponent? graphComponent;
 
-  VertexComponent(this.vertex, this.graph, this.context, this.algorithm)
-      : super(
+  VertexComponent(
+    this.vertex,
+    this.graph,
+    this.context,
+    this.algorithm, {
+    this.options,
+    this.graphComponent,
+  }) : super(
           position: vertex.position,
           anchor: Anchor.center,
         );
@@ -88,25 +95,35 @@ class VertexComponent extends ShapeComponent
   }
 
   @override
-  bool onHoverEnter(PointerHoverInfo info) {
-    info.handled = true;
+  void onHoverEnter() {
     graph.hoverVertex = vertex;
     gameRef.overlays.add('vertex');
-    return super.onHoverEnter(info);
   }
 
   @override
-  bool onHoverLeave(PointerHoverInfo info) {
-    info.handled = false;
+  void onHoverExit() {
     graph.hoverVertex = null;
     Future.delayed(const Duration(milliseconds: 300), () {
       gameRef.overlays.remove('vertex');
     });
-    return super.onHoverLeave(info);
   }
 
   @override
   void onTapDown(TapDownEvent event) {
+    options?.onVertexTapDown?.call(vertex, event);
+    event.handled = true;
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    var graphData = options?.onVertexTapUp?.call(vertex, event);
+    _refresh(graphData);
+    event.handled = true;
+  }
+
+  @override
+  void onTapCancel(TapCancelEvent event) {
+    options?.onVertexTapCancel?.call(vertex, event);
     event.handled = true;
   }
 
@@ -116,6 +133,13 @@ class VertexComponent extends ShapeComponent
     super.onCollisionStart(intersectionPoints, other);
     if (other is VertexComponent && collisionEnable && this != other) {
       algorithm.repositionWhenCollision(vertex, other.vertex);
+    }
+  }
+
+  void _refresh(graphData) {
+    if (graphData != null) {
+      // refresh data
+      graphComponent?.refreshData(graphData);
     }
   }
 }

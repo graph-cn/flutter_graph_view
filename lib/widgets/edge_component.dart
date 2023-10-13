@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -18,7 +17,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 用于处理节点之间连接线的逻辑（展示+交互）
 ///
 class EdgeComponent extends ShapeComponent
-    with HasGameRef<GraphComponent>, TapCallbacks, Hoverable {
+    with HasGameRef<GraphComponent>, TapCallbacks, HoverCallbacks {
   late final Edge edge;
   late ValueNotifier<double> scaleNotifier;
   Graph graph;
@@ -59,11 +58,10 @@ class EdgeComponent extends ShapeComponent
   /// Line will be wider after mouse enter.
   /// 对被鼠标浮入的线增加显视宽度
   @override
-  bool onHoverEnter(PointerHoverInfo info) {
+  void onHoverEnter() {
     paint.strokeWidth = 4;
     gameRef.graph.hoverEdge = edge;
     gameRef.overlays.add('edge');
-    return true;
   }
 
   @override
@@ -76,12 +74,11 @@ class EdgeComponent extends ShapeComponent
   /// Change the line to its original width ater mouse exists.
   /// 当鼠标浮出时，将线变回原来的宽度。
   @override
-  bool onHoverLeave(PointerHoverInfo info) {
+  void onHoverExit() {
     paint.strokeWidth = 1;
     gameRef.graph.hoverEdge = null;
     Future.delayed(const Duration(milliseconds: 300), () {
       gameRef.overlays.remove('edge');
     });
-    return true;
   }
 }

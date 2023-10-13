@@ -55,6 +55,10 @@ void main() {
         algorithm: ForceDirected(BreatheDecorator()),
         convertor: MapConvertor(),
         options: Options()
+          ..onVertexTapUp = ((vertex, event) {
+            // new data render to graph
+            return data;
+          })
           ..graphStyle = (GraphStyle()
             // tagColor is prior to tagColorByIndex. use vertex.tags to get color
             ..tagColor = {'tag8': Colors.orangeAccent.shade200}

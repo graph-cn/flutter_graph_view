@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:flame/events.dart';
+import 'package:flame/src/events/messages/pointer_move_event.dart' as pme;
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -15,7 +16,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class GraphComponent extends FlameGame
     with
         PanDetector,
-        HasHoverables,
+        HoverCallbacks,
         PanDetector,
         ScrollDetector,
         HasCollisionDetection {
@@ -27,6 +28,8 @@ class GraphComponent extends FlameGame
 
   ValueNotifier<double> scale = ValueNotifier(1);
   Vector2? pointLocation;
+  final world = World();
+  late final CameraComponent cameraComponent;
 
   GraphComponent({
     required this.data,
@@ -42,6 +45,14 @@ class GraphComponent extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    cameraComponent = CameraComponent(world: world);
+    addAll([cameraComponent, world]);
+    refreshData(data);
+  }
+
+  void refreshData(data) {
+    // ignore: invalid_use_of_internal_member
+    children.clear();
     graph = convertor.convertGraph(data);
     graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
@@ -52,8 +63,14 @@ class GraphComponent extends FlameGame
       add(ec);
     }
     for (var vertex in graph.vertexes) {
-      var vc = VertexComponent(vertex, graph, context, algorithm)
-        ..scaleNotifier = scale;
+      var vc = VertexComponent(
+        vertex,
+        graph,
+        context,
+        algorithm,
+        options: options,
+        graphComponent: this,
+      )..scaleNotifier = scale;
       vertex.cpn = vc;
       add(vc);
     }
@@ -71,7 +88,7 @@ class GraphComponent extends FlameGame
   }
 
   updateViewport(x, y) {
-    camera.viewport = FixedResolutionViewport(Vector2(x, y));
+    cameraComponent.viewport.size = Vector2(x, y);
   }
 
   /// Clear all vertexes' position value.
@@ -89,20 +106,20 @@ class GraphComponent extends FlameGame
       algorithm.onDrag(graph.hoverVertex!, info);
     } else {
       for (var vertex in graph.vertexes) {
-        vertex.position += info.delta.game;
+        vertex.position += info.delta.global;
       }
     }
   }
 
   @override
-  void onMouseMove(PointerHoverInfo info) {
-    super.onMouseMove(info);
-    pointLocation = info.eventPosition.game;
+  void onPointerMove(pme.PointerMoveEvent event) {
+    super.onPointerMove(event);
+    pointLocation = event.localPosition;
   }
 
   @override
   void onScroll(PointerScrollInfo info) {
-    var delta = info.scrollDelta.game.g;
+    var delta = info.raw.scrollDelta.dy;
     for (var vertex in graph.vertexes) {
       algorithm.onZoomVertex(vertex, pointLocation!, delta);
     }

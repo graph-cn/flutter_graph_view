@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:flame/events.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -77,7 +78,7 @@ abstract class GraphAlgorithm {
   }
 
   void onDrag(Vertex hoverVertex, DragUpdateInfo info) {
-    var deltaPosition = info.delta.game;
+    var deltaPosition = info.delta.global;
     hoverVertex.position += deltaPosition;
     for (var neighbor in hoverVertex.neighbors) {
       if (neighbor.degree < hoverVertex.degree) {

@@ -8,23 +8,28 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// Data format converter interface:
 ///     used to convert business data into data required by component format.
+///
 /// 数据格式转换器接口：
 ///     用于将业务数据转换成组件格式要求的数据
 ///
 abstract class DataConvertor<V, E> {
   /// Convert data struc from business to Vertex.
+  ///
   /// 将业务数据转换成节点数据
   Vertex convertVertex(V v, Graph graph);
 
   /// Convert data struc from business to Edge.
+  ///
   /// 将业务数据转换成 【边 | 关系】 数据
   Edge convertEdge(E e, Graph graph);
 
   /// Convert data struc from business to Graph.
+  ///
   /// 将业务数据转换成 图数据，同时提取点跟线便于使用的数据格式。
   Graph convertGraph(dynamic data);
 
   /// Create vertex and graph relationship in memory.
+  ///
   /// 将节点纳入图的全局管理
   @mustCallSuper
   void vertexAsGraphComponse(V v, Graph<dynamic> g, Vertex<dynamic> vertex) {
@@ -38,6 +43,7 @@ abstract class DataConvertor<V, E> {
   }
 
   /// Create edge and graph relationship in memory.
+  ///
   /// 将边纳入图的全局管理
   @mustCallSuper
   void edgeAsGraphComponse(E e, Graph<dynamic> g, Edge result) {
