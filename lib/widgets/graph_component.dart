@@ -123,14 +123,17 @@ class GraphComponent extends FlameGame
 
   @override
   void onScroll(PointerScrollInfo info) {
-    var start = camera.viewfinder.globalToLocal(info.eventPosition.widget);
-    camera.viewfinder.zoom +=
-        info.scrollDelta.global.y.sign * zoomPerScrollUnit;
+    var wp = info.eventPosition.widget;
+    var zoomDelta = info.scrollDelta.global.y.sign * zoomPerScrollUnit;
+    camera.viewfinder.zoom += zoomDelta;
+
     clampZoom();
 
-    var end = camera.viewfinder.localToGlobal(start);
-    var delta = end - info.eventPosition.widget;
-    camera.viewfinder.position += delta;
+    var zoom = camera.viewfinder.zoom;
+    var delta = 1 - zoom;
+    var wpDelta = wp * delta;
+    camera.viewfinder.position = camera.viewfinder.globalToLocal(
+        camera.viewfinder.localToGlobal(Vector2.zero()) - wpDelta);
   }
 
   void createLegend() {
