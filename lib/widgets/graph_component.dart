@@ -19,7 +19,8 @@ class GraphComponent extends FlameGame
         HoverCallbacks,
         PanDetector,
         ScrollDetector,
-        HasCollisionDetection {
+        HasCollisionDetection,
+        ScaleDetector {
   dynamic data;
   late GraphAlgorithm algorithm;
   late DataConvertor convertor;
@@ -28,8 +29,7 @@ class GraphComponent extends FlameGame
 
   ValueNotifier<double> scale = ValueNotifier(1);
   Vector2? pointLocation;
-  final world = World();
-  late final CameraComponent cameraComponent;
+  // late final CameraComponent cameraComponent;
 
   GraphComponent({
     required this.data,
@@ -38,6 +38,7 @@ class GraphComponent extends FlameGame
     required this.convertor,
     Options? options,
   }) {
+    super.camera = CameraComponent(world: world)..ancestors(includeSelf: true);
     this.options = options ?? Options();
   }
 
@@ -45,14 +46,13 @@ class GraphComponent extends FlameGame
 
   @override
   Future<void> onLoad() async {
-    cameraComponent = CameraComponent(world: world);
-    addAll([cameraComponent, world]);
+    camera.viewfinder.anchor = Anchor.topLeft;
     refreshData(data);
   }
 
   void refreshData(data) {
     // ignore: invalid_use_of_internal_member
-    children.clear();
+    // world.children.clear();
     graph = convertor.convertGraph(data);
     graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
@@ -60,7 +60,7 @@ class GraphComponent extends FlameGame
     for (var edge in graph.edges) {
       var ec = EdgeComponent(edge, graph, context)..scaleNotifier = scale;
       edge.cpn = ec;
-      add(ec);
+      world.add(ec);
     }
     for (var vertex in graph.vertexes) {
       var vc = VertexComponent(
@@ -72,7 +72,7 @@ class GraphComponent extends FlameGame
         graphComponent: this,
       )..scaleNotifier = scale;
       vertex.cpn = vc;
-      add(vc);
+      world.add(vc);
     }
 
     createLegend();
@@ -88,7 +88,7 @@ class GraphComponent extends FlameGame
   }
 
   updateViewport(x, y) {
-    cameraComponent.viewport.size = Vector2(x, y);
+    camera.viewport.size = Vector2(x, y);
   }
 
   /// Clear all vertexes' position value.
@@ -103,11 +103,9 @@ class GraphComponent extends FlameGame
   @override
   void onPanUpdate(DragUpdateInfo info) {
     if (graph.hoverVertex != null) {
-      algorithm.onDrag(graph.hoverVertex!, info);
+      algorithm.onDrag(graph.hoverVertex!, info, camera.viewfinder);
     } else {
-      for (var vertex in graph.vertexes) {
-        vertex.position += info.delta.global;
-      }
+      camera.viewfinder.position -= info.delta.global / camera.viewfinder.zoom;
     }
   }
 
@@ -117,15 +115,22 @@ class GraphComponent extends FlameGame
     pointLocation = event.localPosition;
   }
 
+  void clampZoom() {
+    camera.viewfinder.zoom = camera.viewfinder.zoom.clamp(0.05, 3.0);
+  }
+
+  static const zoomPerScrollUnit = -0.05;
+
   @override
   void onScroll(PointerScrollInfo info) {
-    var delta = info.raw.scrollDelta.dy;
-    for (var vertex in graph.vertexes) {
-      algorithm.onZoomVertex(vertex, pointLocation!, delta);
-    }
-    for (var edge in graph.edges) {
-      algorithm.onZoomEdge(edge, pointLocation!, delta);
-    }
+    var start = camera.viewfinder.globalToLocal(info.eventPosition.widget);
+    camera.viewfinder.zoom +=
+        info.scrollDelta.global.y.sign * zoomPerScrollUnit;
+    clampZoom();
+
+    var end = camera.viewfinder.localToGlobal(start);
+    var delta = end - info.eventPosition.widget;
+    camera.viewfinder.position += delta;
   }
 
   void createLegend() {

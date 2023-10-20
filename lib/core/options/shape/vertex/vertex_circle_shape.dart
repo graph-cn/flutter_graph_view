@@ -5,7 +5,6 @@
 import 'dart:ui' as ui;
 
 import 'package:flame/collisions.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// The default shape impl.
@@ -13,22 +12,22 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 默认使用 圆型做节点。
 class VertexCircleShape extends VertexShape {
   @override
-  render(Vertex vertex, Canvas canvas, paint, paintLayers) {
+  render(Vertex vertex, ui.Canvas canvas, paint, paintLayers) {
     canvas.drawCircle(
-      Offset(vertex.radius, vertex.radius),
-      vertex.radius,
+      ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
+      vertex.radiusZoom,
       paint,
     );
   }
 
   @override
   double height(Vertex vertex) {
-    return vertex.radius * 2;
+    return vertex.radiusZoom * 2;
   }
 
   @override
   double width(Vertex vertex) {
-    return vertex.radius * 2;
+    return vertex.radiusZoom * 2;
   }
 
   @override
@@ -43,7 +42,7 @@ class VertexCircleShape extends VertexShape {
   @override
   void updateHitBox(Vertex vertex, ShapeHitbox hitBox) {
     hitBox as CircleHitbox;
-    hitBox.radius = vertex.radius * 2;
+    hitBox.radius = vertex.radiusZoom * 2;
   }
 
   @override
@@ -52,10 +51,10 @@ class VertexCircleShape extends VertexShape {
     var colors = vertex.colors;
 
     if (isWeaken(vertex)) {
-      cpn.paint = Paint()
+      cpn.paint = ui.Paint()
         ..shader = ui.Gradient.radial(
-          Offset(vertex.radius, vertex.radius),
-          vertex.radius,
+          ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
+          vertex.radiusZoom,
           List.generate(
             colors.length,
             (index) => colors[index].withOpacity(.5),
@@ -63,10 +62,10 @@ class VertexCircleShape extends VertexShape {
           List.generate(colors.length, (index) => (index + 1) / colors.length),
         );
     } else {
-      cpn.paint = Paint()
+      cpn.paint = ui.Paint()
         ..shader = ui.Gradient.radial(
-          Offset(vertex.radius, vertex.radius),
-          vertex.radius,
+          ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
+          vertex.radiusZoom,
           colors,
           List.generate(colors.length, (index) => (index + 1) / colors.length),
         );

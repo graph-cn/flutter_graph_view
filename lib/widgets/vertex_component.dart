@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:flame/collisions.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
@@ -18,7 +19,8 @@ class VertexComponent extends ShapeComponent
         TapCallbacks,
         HoverCallbacks,
         HasGameRef<GraphComponent>,
-        CollisionCallbacks {
+        CollisionCallbacks
+    implements SizeProvider {
   late Vertex vertex;
   late ValueNotifier<double> scaleNotifier;
   static const speed = 20;
@@ -27,6 +29,7 @@ class VertexComponent extends ShapeComponent
   GraphAlgorithm algorithm;
   Options? options;
   GraphComponent? graphComponent;
+  ShapeHitbox? hitBox;
 
   VertexComponent(
     this.vertex,
@@ -43,11 +46,12 @@ class VertexComponent extends ShapeComponent
   final Map<String, dynamic> properties = {};
 
   bool collisionEnable = false;
-  late final ShapeHitbox hitBox;
 
   @override
   FutureOr<void> onLoad() {
-    add(hitBox = vertexShape.hitBox(vertex, this));
+    if (options?.enableHit != false) {
+      add(hitBox = vertexShape.hitBox(vertex, this));
+    }
     algorithmOnLoad(algorithm);
     return super.onLoad();
   }
@@ -83,8 +87,8 @@ class VertexComponent extends ShapeComponent
     algorithm.$size.value = Size(gameRef.size.x, gameRef.size.y);
 
     algorithmCompute(algorithm);
-    hitBox.position = position;
-    vertexShape.updateHitBox(vertex, hitBox);
+    hitBox?.position = position;
+    if (hitBox != null) vertexShape.updateHitBox(vertex, hitBox!);
     vertexShape.setPaint(vertex);
 
     position.x += (vertex.position.x - position.x) * dt * speed;

@@ -2,6 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -13,12 +14,12 @@ class Options {
   /// The builder of the vertex panel, triggered when the mouse hovers.
   ///
   /// 顶点数据面板的构建器，鼠标悬停到对应节点时触发。
-  Widget Function(Vertex hoverVertex)? vertexPanelBuilder;
+  Widget Function(Vertex hoverVertex, Viewfinder zoom)? vertexPanelBuilder;
 
   /// The builder of the edge data panel, triggered when the mouse hovers.
   ///
   /// 边数据面板的构建器，鼠标悬停到对应节点时触发。
-  Widget Function(Edge hoverVertex)? edgePanelBuilder;
+  Widget Function(Edge hoverVertex, Viewfinder zoom)? edgePanelBuilder;
 
   /// set shape strategy for components of vertex.
   ///
@@ -43,6 +44,11 @@ class Options {
   ///
   /// 是否展示图例
   bool useLegend = true;
+
+  /// if enable hit.
+  ///
+  /// 是否开启碰撞检测
+  bool enableHit = true;
 
   /// @en: event callback when tap down on vertex.
   ///

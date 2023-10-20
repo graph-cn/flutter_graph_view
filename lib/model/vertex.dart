@@ -56,7 +56,7 @@ class Vertex<I> {
 
   set degree(d) {
     _degree = d;
-    radius = (math.log(degree * 10 + 1)) + 8;
+    radius = (math.log(degree * 10 + 1)) + 5;
   }
 
   /// Whether this vertex being picked.
@@ -81,6 +81,10 @@ class Vertex<I> {
   /// The radius of this vertex, that which assigment by StyleConfiguration.
   /// 节点的默认半径，用于被样式选项设置器进行修改以更新图形
   late double radius = 10;
+
+  double get radiusZoom {
+    return cpn == null ? radius : radius / cpn!.game.camera.viewfinder.zoom;
+  }
 
   Vertex();
 

@@ -35,4 +35,5 @@ export 'core/options/style/graph_style.dart';
 
 /// third party
 export 'package:flame/flame.dart';
+export 'package:flame/camera.dart';
 export 'package:flame/components.dart';

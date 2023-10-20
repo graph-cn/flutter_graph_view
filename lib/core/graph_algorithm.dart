@@ -5,7 +5,6 @@
 import 'dart:math';
 
 import 'package:flame/events.dart';
-import 'package:flame/input.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -77,12 +76,13 @@ abstract class GraphAlgorithm {
     }
   }
 
-  void onDrag(Vertex hoverVertex, DragUpdateInfo info) {
+  void onDrag(Vertex hoverVertex, DragUpdateInfo info, Viewfinder viewfinder) {
     var deltaPosition = info.delta.global;
-    hoverVertex.position += deltaPosition;
+    var zoom = viewfinder.zoom;
+    hoverVertex.position += deltaPosition / zoom;
     for (var neighbor in hoverVertex.neighbors) {
       if (neighbor.degree < hoverVertex.degree) {
-        neighbor.position += deltaPosition;
+        neighbor.position += deltaPosition / zoom;
       }
     }
   }

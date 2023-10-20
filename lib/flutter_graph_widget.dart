@@ -1,7 +1,6 @@
 // Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
 //
 // This source code is licensed under Apache 2.0 License.
-
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -38,17 +37,10 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (widget.algorithm.$size.value != context.size) {
         graphCpn.clearPosition();
-        widget.algorithm.$size.value = context.size;
       }
-
       addVertexOverlays();
-
       addEdgeOverlays();
     });
-
-    WidgetsBinding.instance.addPersistentFrameCallback(((timeStamp) {
-      graphCpn.updateViewport(context.size!.width, context.size!.height);
-    }));
   }
 
   /// set overlays callback for vertex data panel on vertex hover.
@@ -58,7 +50,7 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
     graphCpn.overlays.addEntry('vertex', (_, game) {
       if (graphCpn.graph.hoverVertex == null) return const SizedBox();
       return widget.options?.vertexPanelBuilder
-              ?.call(graphCpn.graph.hoverVertex!) ??
+              ?.call(graphCpn.graph.hoverVertex!, graphCpn.camera.viewfinder) ??
           const SizedBox();
     });
   }
@@ -67,7 +59,7 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
     graphCpn.overlays.addEntry('edge', (_, game) {
       if (graphCpn.graph.hoverEdge == null) return const SizedBox();
       return widget.options?.edgePanelBuilder
-              ?.call(graphCpn.graph.hoverEdge!) ??
+              ?.call(graphCpn.graph.hoverEdge!, graphCpn.camera.viewfinder) ??
           const SizedBox();
     });
   }

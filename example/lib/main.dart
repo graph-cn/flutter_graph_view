@@ -52,9 +52,10 @@ void main() {
     home: Scaffold(
       body: FlutterGraphWidget(
         data: data,
-        algorithm: ForceDirected(BreatheDecorator()),
+        algorithm: ForceDirected(),
         convertor: MapConvertor(),
         options: Options()
+          ..enableHit = false
           ..onVertexTapUp = ((vertex, event) {
             // new data render to graph
             return data;
@@ -84,8 +85,11 @@ void main() {
   ));
 }
 
-Widget edgePanelBuilder(Edge edge) {
-  var c = (edge.start.cpn!.position + edge.end!.cpn!.position) / 2;
+Widget edgePanelBuilder(Edge edge, Viewfinder viewfinder) {
+  var c = (viewfinder.localToGlobal(edge.start.cpn!.position) +
+          viewfinder.localToGlobal(edge.end!.cpn!.position)) /
+      2;
+
   return Stack(
     children: [
       Positioned(
@@ -105,12 +109,13 @@ Widget edgePanelBuilder(Edge edge) {
   );
 }
 
-Widget vertexPanelBuilder(hoverVertex) {
+Widget vertexPanelBuilder(hoverVertex, Viewfinder viewfinder) {
+  var c = viewfinder.localToGlobal(hoverVertex.cpn!.position);
   return Stack(
     children: [
       Positioned(
-        left: hoverVertex.cpn!.position.x + hoverVertex.radius + 5,
-        top: hoverVertex.cpn!.position.y - 20,
+        left: c.x + hoverVertex.radius + 5,
+        top: c.y - 20,
         child: SizedBox(
           width: 120,
           child: ColoredBox(

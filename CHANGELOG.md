@@ -1,3 +1,7 @@
+## 0.1.0
+- feat: Added option to 'Enable collision detection', default to `false`
+- refact: refact the interactive logic of drag and zoom by viewfinder
+
 ## 0.0.2
 - feat: enable decorator for vertex.
     - Remove the breath effect. To use the breath effect, please pass in BreatheDecorator() when creating the GraphAlgorithm object, such as:

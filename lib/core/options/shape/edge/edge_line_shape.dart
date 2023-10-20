@@ -5,6 +5,7 @@
 import 'dart:math';
 
 import 'package:flame/collisions.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -15,7 +16,8 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class EdgeLineShape extends EdgeShape {
   @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
-    paint.strokeWidth = edge.isHovered ? 4 : 1;
+    paint.strokeWidth = edge.isHovered ? 4 : 1.2;
+    paint.strokeWidth /= edge.cpn!.game.camera.viewfinder.zoom;
     paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
     var endPoint = Offset(len(edge), paint.strokeWidth);
