@@ -1,6 +1,14 @@
 ## 0.1.0
-- feat: Added option to 'Enable collision detection', default to `false`
+- feat: Added option to 'Enable collision detection'(`enableHit`), default to `false`
+- feat: Added option to 'scaleRange', default to `[0.05, 5.0]`
 - refact: refact the interactive logic of drag and zoom by viewfinder
+
+### Dev change:
+- vertexPanelBuilder and edgePanelBuilder access another param: `Viewfinder`
+    use `Viewfinder` to convert the position of the component to the global position, such as:
+    ```dart
+        viewfinder.localToGlobal( cpnPosition );
+    ```
 
 ## 0.0.2
 - feat: enable decorator for vertex.

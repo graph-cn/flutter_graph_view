@@ -5,7 +5,6 @@
 import 'dart:async';
 
 import 'package:flame/events.dart';
-import 'package:flame/src/events/messages/pointer_move_event.dart' as pme;
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -28,7 +27,6 @@ class GraphComponent extends FlameGame
   late Options options;
 
   ValueNotifier<double> scale = ValueNotifier(1);
-  Vector2? pointLocation;
   // late final CameraComponent cameraComponent;
 
   GraphComponent({
@@ -109,31 +107,37 @@ class GraphComponent extends FlameGame
     }
   }
 
-  @override
-  void onPointerMove(pme.PointerMoveEvent event) {
-    super.onPointerMove(event);
-    pointLocation = event.localPosition;
-  }
-
   void clampZoom() {
-    camera.viewfinder.zoom = camera.viewfinder.zoom.clamp(0.05, 3.0);
+    camera.viewfinder.zoom = camera.viewfinder.zoom
+        .clamp(options.scaleRange.x, options.scaleRange.y);
   }
 
   static const zoomPerScrollUnit = -0.05;
 
   @override
   void onScroll(PointerScrollInfo info) {
-    var wp = info.eventPosition.widget;
+    var vf = camera.viewfinder;
+    var opg = vf.localToGlobal(Vector2.zero());
+    var oz = vf.zoom;
     var zoomDelta = info.scrollDelta.global.y.sign * zoomPerScrollUnit;
-    camera.viewfinder.zoom += zoomDelta;
-
+    vf.zoom += zoomDelta;
     clampZoom();
 
-    var zoom = camera.viewfinder.zoom;
-    var delta = 1 - zoom;
-    var wpDelta = wp * delta;
-    camera.viewfinder.position = camera.viewfinder.globalToLocal(
-        camera.viewfinder.localToGlobal(Vector2.zero()) - wpDelta);
+    if (vf.zoom <= options.scaleRange.x || vf.zoom >= options.scaleRange.y) {
+      return;
+    }
+
+    keepMousePosition(info, opg, zoomDelta, vf, oz);
+  }
+
+  /// ![](https://gitee.com/graph-cn/flutter_graph_view/blob/main/lib/widgets/GraphComponent_scale_explain.jpg)
+  void keepMousePosition(PointerScrollInfo info, Vector2 opg, double zoomDelta,
+      Viewfinder vf, double oz) {
+    var wp = info.eventPosition.widget;
+    var wpg = wp - opg;
+    var wpgDelta = wpg * zoomDelta;
+    var npg = vf.localToGlobal(Vector2.zero());
+    vf.position += (npg - opg + wpgDelta / oz) / vf.zoom;
   }
 
   void createLegend() {

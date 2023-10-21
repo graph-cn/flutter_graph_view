@@ -64,4 +64,6 @@ class Options {
   ///
   /// @zh: 取消顶点时的回调
   dynamic Function(Vertex vertex, TapCancelEvent)? onVertexTapCancel;
+
+  Vector2 scaleRange = Vector2(0.05, 5.0);
 }

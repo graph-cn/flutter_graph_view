@@ -5,7 +5,6 @@
 import 'dart:math';
 
 import 'package:flame/collisions.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
