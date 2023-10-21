@@ -1,6 +1,7 @@
 ## 0.1.0
 - feat: Added option to 'Enable collision detection'(`enableHit`), default to `false`
 - feat: Added option to 'scaleRange', default to `[0.05, 5.0]`
+- feat: Display vertex title, default to `vertex.id`
 - refact: refact the interactive logic of drag and zoom by viewfinder
 
 ### Dev change:

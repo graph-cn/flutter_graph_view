@@ -50,7 +50,7 @@ class GraphComponent extends FlameGame
 
   void refreshData(data) {
     // ignore: invalid_use_of_internal_member
-    // world.children.clear();
+    world.children.clear();
     graph = convertor.convertGraph(data);
     graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
@@ -130,7 +130,7 @@ class GraphComponent extends FlameGame
     keepMousePosition(info, opg, zoomDelta, vf, oz);
   }
 
-  /// ![](https://gitee.com/graph-cn/flutter_graph_view/blob/main/lib/widgets/GraphComponent_scale_explain.jpg)
+  /// ![](https://gitee.com/graph-cn/flutter_graph_view/raw/main/lib/widgets/GraphComponent_scale_explain.jpg)
   void keepMousePosition(PointerScrollInfo info, Vector2 opg, double zoomDelta,
       Viewfinder vf, double oz) {
     var wp = info.eventPosition.widget;

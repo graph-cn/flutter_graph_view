@@ -57,4 +57,13 @@ abstract class VertexShape {
         (vertex != graph.hoverVertex &&
             !graph.hoverVertex!.neighbors.contains(vertex));
   }
+
+  VertexTextRenderer? textRenderer;
+}
+
+/// Used to render the vertex text.
+///
+/// 用于渲染节点的标题
+abstract class VertexTextRenderer {
+  void render(Vertex<dynamic> vertex, Canvas canvas, Paint paint);
 }

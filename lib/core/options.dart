@@ -2,7 +2,6 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -65,5 +64,18 @@ class Options {
   /// @zh: 取消顶点时的回调
   dynamic Function(Vertex vertex, TapCancelEvent)? onVertexTapCancel;
 
+  /// @en: the graph scale range. default to `Vector2(0.05, 5)`
+  ///
+  /// @zh: 图缩放范围
   Vector2 scaleRange = Vector2(0.05, 5.0);
+
+  /// @en: if show text in vertex. default `vertex.id`, if you want to show other text, you can set `textGetter`.
+  ///
+  /// @zh: 是否展示顶点文字，默认展示顶点id，如果想展示其他文字，可以设置`textGetter`
+  bool showText = true;
+
+  /// @en: the text getter of vertex.
+  ///
+  /// @zh: 顶点文字获取器
+  String textGetter(Vertex vertex) => '${vertex.id}';
 }
