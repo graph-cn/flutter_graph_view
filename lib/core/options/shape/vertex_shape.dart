@@ -53,9 +53,12 @@ abstract class VertexShape {
   bool isWeaken(Vertex vertex) {
     var cpn = vertex.cpn!;
     var graph = cpn.gameRef.graph;
-    return graph.hoverVertex != null &&
-        (vertex != graph.hoverVertex &&
-            !graph.hoverVertex!.neighbors.contains(vertex));
+    return (graph.hoverVertex != null &&
+            (vertex != graph.hoverVertex &&
+                !graph.hoverVertex!.neighbors.contains(vertex)) ||
+        graph.hoverEdge != null &&
+            !(graph.hoverEdge?.start == vertex ||
+                graph.hoverEdge?.end == vertex));
   }
 
   VertexTextRenderer? textRenderer;

@@ -52,7 +52,7 @@ void main() {
     home: Scaffold(
       body: FlutterGraphWidget(
         data: data,
-        algorithm: ForceDirected(),
+        algorithm: CircleLayout(),
         convertor: MapConvertor(),
         options: Options()
           ..enableHit = false

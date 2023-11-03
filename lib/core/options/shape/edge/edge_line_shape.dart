@@ -3,6 +3,7 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,6 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class EdgeLineShape extends EdgeShape {
   @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
-    paint.strokeWidth = edge.isHovered ? 4 : 1.2;
-    paint.strokeWidth /= edge.cpn!.game.camera.viewfinder.zoom;
-    paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
     var endPoint = Offset(len(edge), paint.strokeWidth);
 
@@ -49,10 +47,36 @@ class EdgeLineShape extends EdgeShape {
 
   @override
   void setPaint(Edge edge) {
+    var paint = edge.cpn!.paint;
+    paint.strokeWidth = edge.isHovered ? 4 : 1.2;
+    paint.strokeWidth /= edge.cpn!.game.camera.viewfinder.zoom;
+    paint.style = PaintingStyle.stroke;
+    var startPoint = Offset.zero;
+    var endPoint = Offset(len(edge), paint.strokeWidth);
     if (isWeaken(edge)) {
-      edge.cpn!.paint = Paint()..color = Colors.white.withOpacity(0.05);
+      paint.shader = ui.Gradient.linear(
+        startPoint,
+        endPoint,
+        List.generate(
+          2,
+          (index) => [
+            (edge.start.colors.last).withOpacity(.5),
+            (edge.end?.colors.last ?? Colors.white).withOpacity(.5)
+          ][index],
+        ),
+      );
     } else {
-      edge.cpn!.paint = Paint()..color = Colors.white;
+      paint.shader = ui.Gradient.linear(
+        startPoint,
+        endPoint,
+        List.generate(
+          2,
+          (index) => [
+            edge.start.colors.last,
+            (edge.end?.colors.last ?? Colors.white)
+          ][index],
+        ),
+      );
     }
   }
 

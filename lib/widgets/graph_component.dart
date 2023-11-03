@@ -45,7 +45,11 @@ class GraphComponent extends FlameGame
   @override
   Future<void> onLoad() async {
     camera.viewfinder.anchor = Anchor.topLeft;
-    refreshData(data);
+    WidgetsBinding.instance.addPostFrameCallback((t) {
+      var size = (context.findRenderObject() as RenderBox).size;
+      algorithm.$size.value = Size(size.width, size.height);
+      refreshData(data);
+    });
   }
 
   void refreshData(data) {
@@ -55,6 +59,7 @@ class GraphComponent extends FlameGame
     graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
     setDefaultVertexColor();
+    algorithm.onGraphLoad(graph);
     for (var edge in graph.edges) {
       var ec = EdgeComponent(edge, graph, context)..scaleNotifier = scale;
       edge.cpn = ec;

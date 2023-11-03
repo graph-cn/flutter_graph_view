@@ -36,7 +36,7 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (widget.algorithm.$size.value != context.size) {
-        graphCpn.clearPosition();
+        // graphCpn.clearPosition();
       }
       addVertexOverlays();
       addEdgeOverlays();

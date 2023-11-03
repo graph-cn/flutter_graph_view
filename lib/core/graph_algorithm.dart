@@ -36,7 +36,9 @@ abstract class GraphAlgorithm {
 
   /// Center of stage.
   /// 图形展示的中心点
-  Offset get center => Offset(size?.width ?? 0 / 2, size?.height ?? 0 / 2);
+  Offset get center => Offset((size?.width ?? 0) / 2, (size?.height ?? 0) / 2);
+
+  void onGraphLoad(Graph graph) {}
 
   /// Nodes zoom offset from center.
   /// 节点区域相对中心点的偏移量。

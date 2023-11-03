@@ -1,3 +1,9 @@
+## 0.2.0
+- feat: add textGetter to vertex
+- feat: add onGraphLoad callback in graph_algorithm
+- feat: add CircleLayout for graph
+- enhance: set edge color by vertex color
+
 ## 0.1.0
 - feat: Added option to 'Enable collision detection'(`enableHit`), default to `false`
 - feat: Added option to 'scaleRange', default to `[0.05, 5.0]`

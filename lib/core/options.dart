@@ -77,5 +77,5 @@ class Options {
   /// @en: the text getter of vertex.
   ///
   /// @zh: 顶点文字获取器
-  String textGetter(Vertex vertex) => '${vertex.id}';
+  String Function(Vertex) textGetter = (Vertex vertex) => '${vertex.id}';
 }
