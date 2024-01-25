@@ -1,3 +1,6 @@
+## 0.2.1
+- feat: add property of `size` to Vertex.
+
 ## 0.2.0
 - feat: add textGetter to vertex
 - feat: add onGraphLoad callback in graph_algorithm

@@ -82,6 +82,11 @@ class Vertex<I> {
   /// 节点的默认半径，用于被样式选项设置器进行修改以更新图形
   late double radius = 10;
 
+  /// The size of this vertex
+  ///
+  /// 节点的尺寸，提供给自定义形状的元素使用
+  Size? size;
+
   double get radiusZoom {
     return cpn == null ? radius : radius / cpn!.game.camera.viewfinder.zoom;
   }
