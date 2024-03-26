@@ -1,3 +1,9 @@
+## 0.2.2
+- fix: [#6](https://github.com/graph-cn/flutter_graph_view/issues/6)
+    - change the loading timing of the panel to be at the same time as vertex/edge components loading.
+    - change the panel to correspond one-to-one with the components.
+- feat: add 'panelDelay' to options to control the delay time hidden in the panel.
+
 ## 0.2.1
 - feat: add property of `size` to Vertex.
 

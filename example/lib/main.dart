@@ -47,10 +47,11 @@ void main() {
     'vertexes': vertexes,
     'edges': edges,
   };
-
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   runApp(MaterialApp(
     home: Scaffold(
       body: FlutterGraphWidget(
+        key: navigatorKey,
         data: data,
         algorithm: CircleLayout(),
         convertor: MapConvertor(),
@@ -60,6 +61,7 @@ void main() {
             // new data render to graph
             return data;
           })
+          ..panelDelay = const Duration(milliseconds: 500)
           ..graphStyle = (GraphStyle()
             // tagColor is prior to tagColorByIndex. use vertex.tags to get color
             ..tagColor = {'tag8': Colors.orangeAccent.shade200}
@@ -96,11 +98,12 @@ Widget edgePanelBuilder(Edge edge, Viewfinder viewfinder) {
         left: c.x + 5,
         top: c.y,
         child: SizedBox(
-          width: 150,
+          width: 200,
           child: ColoredBox(
-            color: Colors.white,
+            color: Colors.white.withAlpha(200),
             child: ListTile(
-              title: Text('${edge.edgeName} @${edge.ranking}'),
+              title: Text(
+                  '${edge.edgeName} @${edge.ranking}\nDelay controlled by \noptions.panelDelay\ndefault to 300ms'),
             ),
           ),
         ),
@@ -119,7 +122,7 @@ Widget vertexPanelBuilder(hoverVertex, Viewfinder viewfinder) {
         child: SizedBox(
           width: 120,
           child: ColoredBox(
-            color: Colors.white,
+            color: Colors.white.withAlpha(200),
             child: ListTile(
               title: Text(
                 'Id: ${hoverVertex.id}',

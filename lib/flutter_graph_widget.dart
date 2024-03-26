@@ -34,34 +34,6 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (widget.algorithm.$size.value != context.size) {
-        // graphCpn.clearPosition();
-      }
-      addVertexOverlays();
-      addEdgeOverlays();
-    });
-  }
-
-  /// set overlays callback for vertex data panel on vertex hover.
-  ///
-  /// 设置浮层面板回调，在鼠标悬停时触发
-  void addVertexOverlays() {
-    graphCpn.overlays.addEntry('vertex', (_, game) {
-      if (graphCpn.graph.hoverVertex == null) return const SizedBox();
-      return widget.options?.vertexPanelBuilder
-              ?.call(graphCpn.graph.hoverVertex!, graphCpn.camera.viewfinder) ??
-          const SizedBox();
-    });
-  }
-
-  void addEdgeOverlays() {
-    graphCpn.overlays.addEntry('edge', (_, game) {
-      if (graphCpn.graph.hoverEdge == null) return const SizedBox();
-      return widget.options?.edgePanelBuilder
-              ?.call(graphCpn.graph.hoverEdge!, graphCpn.camera.viewfinder) ??
-          const SizedBox();
-    });
   }
 
   late GraphComponent graphCpn;
