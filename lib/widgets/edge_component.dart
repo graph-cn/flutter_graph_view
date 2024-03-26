@@ -37,6 +37,8 @@ class EdgeComponent extends ShapeComponent
   Duration get panelDelay =>
       gameRef.options.panelDelay ?? const Duration(milliseconds: 300);
 
+  bool get hasPanel => gameRef.options.edgePanelBuilder != null;
+
   @override
   FutureOr<void> onLoad() {
     hitBox = edgeShape.hitBox(edge, this);
@@ -47,10 +49,10 @@ class EdgeComponent extends ShapeComponent
 
   void loadOverlay() {
     var panelBuilder = gameRef.options.edgePanelBuilder;
-    if (panelBuilder == null) return;
+    if (!hasPanel) return;
 
     gameRef.overlays.addEntry(overlayName, (_, game) {
-      return panelBuilder(edge, gameRef.camera.viewfinder);
+      return panelBuilder!(edge, gameRef.camera.viewfinder);
     });
   }
 
@@ -75,7 +77,9 @@ class EdgeComponent extends ShapeComponent
   void onHoverEnter() {
     paint.strokeWidth = 4;
     gameRef.graph.hoverEdge = edge;
-    gameRef.overlays.add(overlayName);
+    if (hasPanel) {
+      gameRef.overlays.add(overlayName);
+    }
   }
 
   @override
@@ -91,8 +95,10 @@ class EdgeComponent extends ShapeComponent
   void onHoverExit() {
     paint.strokeWidth = 1;
     gameRef.graph.hoverEdge = null;
-    Future.delayed(panelDelay, () {
-      gameRef.overlays.remove(overlayName);
-    });
+    if (hasPanel) {
+      Future.delayed(panelDelay, () {
+        gameRef.overlays.remove(overlayName);
+      });
+    }
   }
 }

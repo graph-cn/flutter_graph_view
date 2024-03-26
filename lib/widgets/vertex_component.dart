@@ -52,6 +52,8 @@ class VertexComponent extends ShapeComponent
   Duration get panelDelay =>
       gameRef.options.panelDelay ?? const Duration(milliseconds: 300);
 
+  bool get hasPanel => gameRef.options.vertexPanelBuilder != null;
+
   @override
   FutureOr<void> onLoad() {
     if (options?.enableHit != false) {
@@ -64,10 +66,10 @@ class VertexComponent extends ShapeComponent
 
   void loadOverlay() {
     var panelBuilder = gameRef.options.vertexPanelBuilder;
-    if (panelBuilder == null) return;
+    if (!hasPanel) return;
 
     gameRef.overlays.addEntry(overlayName, (_, game) {
-      return panelBuilder(vertex, gameRef.camera.viewfinder);
+      return panelBuilder!(vertex, gameRef.camera.viewfinder);
     });
   }
 
@@ -116,15 +118,19 @@ class VertexComponent extends ShapeComponent
   @override
   void onHoverEnter() {
     graph.hoverVertex = vertex;
-    gameRef.overlays.add(overlayName);
+    if (hasPanel) {
+      gameRef.overlays.add(overlayName);
+    }
   }
 
   @override
   void onHoverExit() {
     graph.hoverVertex = null;
-    Future.delayed(panelDelay, () {
-      gameRef.overlays.remove(overlayName);
-    });
+    if (hasPanel) {
+      Future.delayed(panelDelay, () {
+        gameRef.overlays.remove(overlayName);
+      });
+    }
   }
 
   @override

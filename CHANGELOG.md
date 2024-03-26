@@ -1,3 +1,6 @@
+## 0.2.2+1
+- fix: graph crash, when there is no panelBuilder.
+
 ## 0.2.2
 - fix: [#6](https://github.com/graph-cn/flutter_graph_view/issues/6)
     - change the loading timing of the panel to be at the same time as vertex/edge components loading.
