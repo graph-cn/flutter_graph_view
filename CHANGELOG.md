@@ -1,3 +1,7 @@
+## 0.2.2+2
+- fix: edge panel display issue. Make overlay name unique.
+- fix: increase the mouse touch area on the edge.
+
 ## 0.2.2+1
 - fix: graph crash, when there is no panelBuilder.
 

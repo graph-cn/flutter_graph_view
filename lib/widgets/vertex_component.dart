@@ -167,4 +167,9 @@ class VertexComponent extends ShapeComponent
       graphComponent?.refreshData(graphData);
     }
   }
+
+  String? displayName(String Function(Vertex<dynamic>)? textGetter) {
+    var txt = textGetter?.call(vertex);
+    return '${vertex.id}${txt != vertex.id ? " ($txt) " : ""}';
+  }
 }
