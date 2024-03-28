@@ -133,6 +133,11 @@ class VertexComponent extends ShapeComponent
     }
   }
 
+  onDrag(DragUpdateInfo e) {
+    gameRef.overlays.remove(overlayName);
+    gameRef.overlays.add(overlayName);
+  }
+
   @override
   void onTapDown(TapDownEvent event) {
     options?.onVertexTapDown?.call(vertex, event);

@@ -107,6 +107,7 @@ class GraphComponent extends FlameGame
   void onPanUpdate(DragUpdateInfo info) {
     if (graph.hoverVertex != null) {
       algorithm.onDrag(graph.hoverVertex!, info, camera.viewfinder);
+      graph.hoverVertex?.cpn?.onDrag(info);
     } else {
       camera.viewfinder.position -= info.delta.global / camera.viewfinder.zoom;
     }

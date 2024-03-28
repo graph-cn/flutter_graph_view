@@ -1,3 +1,6 @@
+## 0.2.4
+- feat: synchronously update panel positions, when dragging nodes.
+
 ## 0.2.3
 - feat: add method: displayName to VertexComponent. Used textGetter.
 
