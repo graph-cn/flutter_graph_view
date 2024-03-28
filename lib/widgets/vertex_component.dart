@@ -168,8 +168,8 @@ class VertexComponent extends ShapeComponent
     }
   }
 
-  String? displayName(String Function(Vertex<dynamic>)? textGetter) {
-    var txt = textGetter?.call(vertex);
+  String? displayName() {
+    var txt = gameRef.options.textGetter.call(vertex);
     return '${vertex.id}${txt != vertex.id ? " ($txt) " : ""}';
   }
 }
