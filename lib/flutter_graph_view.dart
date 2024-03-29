@@ -24,6 +24,7 @@ export 'core/options.dart';
 export 'core/graph_algorithm.dart';
 export 'core/options/shape/vertex_shape.dart';
 export 'core/options/shape/edge_shape.dart';
+export 'core/options/text/vertex_text_renderer.dart';
 
 /// interfaces' default impl
 export 'core/algorithm/force_directed.dart';
@@ -32,6 +33,7 @@ export 'core/algorithm/circle_layout.dart';
 export 'core/algorithm/breathe_decorator.dart';
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
+export 'core/options/text/vertex_text_renderer_impl.dart';
 
 export 'core/options/style/graph_style.dart';
 

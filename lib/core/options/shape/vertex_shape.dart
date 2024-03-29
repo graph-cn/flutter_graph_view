@@ -63,10 +63,3 @@ abstract class VertexShape {
 
   VertexTextRenderer? textRenderer;
 }
-
-/// Used to render the vertex text.
-///
-/// 用于渲染节点的标题
-abstract class VertexTextRenderer {
-  void render(Vertex<dynamic> vertex, Canvas canvas, Paint paint);
-}
