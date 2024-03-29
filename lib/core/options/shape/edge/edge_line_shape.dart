@@ -16,6 +16,14 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class EdgeLineShape extends EdgeShape {
   @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
+    if (edge.start != edge.end) {
+      vertexDifferent(edge, canvas, paint);
+    } else {
+      vertexSame(edge, canvas, paint);
+    }
+  }
+
+  void vertexDifferent(Edge edge, ui.Canvas canvas, ui.Paint paint) {
     var startPoint = Offset.zero;
     var endPoint = Offset(len(edge), paint.strokeWidth);
 
@@ -43,6 +51,19 @@ class EdgeLineShape extends EdgeShape {
     edge.path = path;
 
     canvas.drawPath(path, paint);
+  }
+
+  void vertexSame(Edge edge, ui.Canvas canvas, ui.Paint paint) {
+    Path path = Path();
+    var idx = edgeIdx(edge);
+    var radius = (idx + 1) * edge.start.radiusZoom * 1.5;
+    path.addArc(
+      Rect.fromCircle(center: Offset(radius, 0), radius: radius),
+      0,
+      -2 * pi,
+    );
+    canvas.drawPath(path, paint);
+    edge.path = path;
   }
 
   @override
@@ -123,6 +144,13 @@ class EdgeLineShape extends EdgeShape {
                     ?.shift(Offset(0, idx < 0 ? 4 : -4))
                     .contains(relativePoint) ??
                 false));
+  }
+
+  int edgeIdx(Edge edge) {
+    var edgeList =
+        edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+    var idx = edgeList.indexOf(edge);
+    return idx;
   }
 
   double computeIndex(Edge edge) {

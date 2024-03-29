@@ -3,6 +3,7 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'package:example/demos/circle_layout_demo.dart';
+import 'package:example/demos/self_loop_demo.dart';
 import 'package:flutter/material.dart';
 
 import 'demos/custom_shape_demo/execution_plan/execution_plan_demo.dart';
@@ -29,12 +30,14 @@ class _ShowroomState extends State<Showroom>
     'ExecutionPlan',
     'CircleLayout',
     'RandomLayout',
+    "SelfLoop",
   ];
   final List<Widget> tabs = <Widget>[
     ForceDirectedDemo(),
     ExecutionPlanDemo(),
     CircleLayoutDemo(),
     RandomAlgorithmDemo(),
+    const SelfLoopDemo(),
   ];
 
   @override
