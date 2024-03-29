@@ -23,12 +23,20 @@ class Showroom extends StatefulWidget {
 class _ShowroomState extends State<Showroom>
     with SingleTickerProviderStateMixin {
   late TabController mainTabController;
+
+  final List<String> tabNames = <String>[
+    'ForceDirected',
+    'ExecutionPlan',
+    'CircleLayout',
+    'RandowAlgorithm',
+  ];
   final List<Widget> tabs = <Widget>[
     ForceDirectedDemo(),
     ExecutionPlanDemo(),
     CircleLayoutDemo(),
     RandowAlgorithmDemo(),
   ];
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +54,7 @@ class _ShowroomState extends State<Showroom>
         ),
         bottomNavigationBar: TabBar(
           controller: mainTabController,
-          tabs: tabs
+          tabs: tabNames
               .map((e) => Tab(
                     child: Tooltip(
                       message: e.runtimeType.toString(),
