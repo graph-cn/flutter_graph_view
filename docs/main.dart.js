@@ -36871,7 +36871,7 @@ $2(a,b){return this.a},
 $S:58}
 A.vi.prototype={
 al(){var s=null,r=t.b7
-return new A.KZ(A.b(["ForceDirected","ExecutionPlan","CircleLayout","RandowLayout"],t.s),A.b([new A.rO(new A.bi(s,r),s),new A.Bn(new A.Yq(),s),new A.qJ(new A.bi(s,r),s),new A.uu(new A.bi(s,r),s)],t.F),s,s,B.l)}}
+return new A.KZ(A.b(["ForceDirected","ExecutionPlan","CircleLayout","RandomLayout"],t.s),A.b([new A.rO(new A.bi(s,r),s),new A.Bn(new A.Yq(),s),new A.qJ(new A.bi(s,r),s),new A.uu(new A.bi(s,r),s)],t.F),s,s,B.l)}}
 A.KZ.prototype={
 aI(){this.aZ()
 this.d=new A.Fr(A.a8m(null,0,this),B.aE,4,$.al())},

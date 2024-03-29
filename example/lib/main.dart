@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'demos/custom_shape_demo/execution_plan/execution_plan_demo.dart';
 import 'demos/force_directed_demo.dart';
-import 'demos/randow_algorithm_demo.dart';
+import 'demos/random_algorithm_demo.dart';
 
 void main() {
   runApp(const Showroom());
@@ -28,13 +28,13 @@ class _ShowroomState extends State<Showroom>
     'ForceDirected',
     'ExecutionPlan',
     'CircleLayout',
-    'RandowLayout',
+    'RandomLayout',
   ];
   final List<Widget> tabs = <Widget>[
     ForceDirectedDemo(),
     ExecutionPlanDemo(),
     CircleLayoutDemo(),
-    RandowAlgorithmDemo(),
+    RandomAlgorithmDemo(),
   ];
 
   @override

@@ -9,8 +9,8 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 import '../algorithm/random_algorithm.dart';
 
-class RandowAlgorithmDemo extends StatelessWidget {
-  RandowAlgorithmDemo({super.key});
+class RandomAlgorithmDemo extends StatelessWidget {
+  RandomAlgorithmDemo({super.key});
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   @override
