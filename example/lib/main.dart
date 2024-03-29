@@ -28,7 +28,7 @@ class _ShowroomState extends State<Showroom>
     'ForceDirected',
     'ExecutionPlan',
     'CircleLayout',
-    'RandowAlgorithm',
+    'RandowLayout',
   ];
   final List<Widget> tabs = <Widget>[
     ForceDirectedDemo(),
@@ -55,11 +55,8 @@ class _ShowroomState extends State<Showroom>
         bottomNavigationBar: TabBar(
           controller: mainTabController,
           tabs: tabNames
-              .map((e) => Tab(
-                    child: Tooltip(
-                      message: e.runtimeType.toString(),
-                      child: Text(e.runtimeType.toString()),
-                    ),
+              .map((tabName) => Tab(
+                    child: Tooltip(message: tabName, child: Text(tabName)),
                   ))
               .toList(),
         ),
