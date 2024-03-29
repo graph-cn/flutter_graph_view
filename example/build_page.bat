@@ -2,5 +2,5 @@
 @REM 
 @REM  This source code is licensed under Apache 2.0 License.
 
-flutter build web --dart-define=FLUTTER_WEB_USE_SKIA=true --no-tree-shake-icons  
+flutter build web --dart-define=FLUTTER_WEB_USE_SKIA=true --no-tree-shake-icons  --base-href="/flutter_graph_view/"
 move build/web ../docs
