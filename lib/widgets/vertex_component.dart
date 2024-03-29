@@ -134,8 +134,10 @@ class VertexComponent extends ShapeComponent
   }
 
   onDrag(DragUpdateInfo e) {
-    gameRef.overlays.remove(overlayName);
-    gameRef.overlays.add(overlayName);
+    if (hasPanel) {
+      gameRef.overlays.remove(overlayName);
+      gameRef.overlays.add(overlayName);
+    }
   }
 
   @override

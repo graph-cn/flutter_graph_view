@@ -1,3 +1,6 @@
+## 0.2.4+1
+- fix: graph crash, when there is no panelBuilder.
+
 ## 0.2.4
 - feat: synchronously update panel positions, when dragging nodes.
 
