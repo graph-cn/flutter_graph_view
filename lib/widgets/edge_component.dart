@@ -86,9 +86,9 @@ class EdgeComponent extends ShapeComponent
   }
 
   @override
-  containsPoint(Vector2 point) {
+  bool containsLocalPoint(Vector2 point) {
     var hover = edgeShape.hoverTest(point, edge, this);
-    if (hover == null) return super.containsPoint(point);
+    if (hover == null) return super.containsLocalPoint(point);
     return hover;
   }
 

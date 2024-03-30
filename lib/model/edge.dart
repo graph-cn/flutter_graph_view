@@ -4,6 +4,7 @@
 
 import 'dart:ui';
 
+import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// Data model of edge component.
@@ -51,4 +52,49 @@ class Edge {
   bool get isHovered => cpn?.isHovered ?? false;
 
   Path? path;
+
+  bool get isLoop => start == end;
+
+  Vector2 get position {
+    if (end == start) {
+      return start.position + Vector2(start.radiusZoom, 0);
+    }
+    var e = end!.position;
+    var s = start.position;
+    var distance = Util.distance(s, e);
+    var c = (s + e) / 2;
+    var dcy = s.y - c.y;
+    var dcx = c.x - s.x;
+
+    var edgesBetweenTwoVertex = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var nl = computeIndex * distance / edgesBetweenTwoVertex.length;
+    var nx = dcy / (distance / 2) * nl;
+    var ny = dcx / (distance / 2) * nl;
+    var n = c + Vector2(nx, ny);
+    return n;
+  }
+
+  double get computeIndex {
+    var edgeList = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var idx = edgeList.indexOf(this);
+    if (edgeList.length.isOdd) {
+      if (idx.isEven) {
+        return idx / 2;
+      } else {
+        return -(idx + 1) / 2;
+      }
+    } else {
+      if (idx.isEven) {
+        return idx / 2 + 0.5;
+      } else {
+        return -(idx - 1) / 2 - 0.5;
+      }
+    }
+  }
+
+  int get edgeIdx {
+    var edgeList = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var idx = edgeList.indexOf(this);
+    return idx;
+  }
 }

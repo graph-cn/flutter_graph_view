@@ -16,10 +16,10 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class EdgeLineShape extends EdgeShape {
   @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
-    if (edge.start != edge.end) {
-      vertexDifferent(edge, canvas, paint);
-    } else {
+    if (edge.isLoop) {
       vertexSame(edge, canvas, paint);
+    } else {
+      vertexDifferent(edge, canvas, paint);
     }
   }
 
@@ -35,7 +35,7 @@ class EdgeLineShape extends EdgeShape {
     /// 法线点
     var normalPoint = Vector2(
       distance / 2,
-      computeIndex(edge) * distance / edgesBetweenTwoVertex.length * 2,
+      edge.computeIndex * distance / edgesBetweenTwoVertex.length * 2,
     );
 
     Path path = Path();
@@ -54,16 +54,24 @@ class EdgeLineShape extends EdgeShape {
   }
 
   void vertexSame(Edge edge, ui.Canvas canvas, ui.Paint paint) {
-    Path path = Path();
-    var idx = edgeIdx(edge);
+    Path path = loopPath(edge);
+    canvas.drawPath(path, paint);
+    edge.path = path;
+  }
+
+  Path loopPath(Edge edge, [double minusRadius = 0]) {
+    var idx = edge.edgeIdx;
     var radius = (idx + 1) * edge.start.radius * 1.5;
+    Path path = Path();
     path.addArc(
-      Rect.fromCircle(center: Offset(radius, 0), radius: radius),
+      Rect.fromCircle(
+          center: Offset(radius, 0),
+          radius: radius - minusRadius / edge.cpn!.game.camera.viewfinder.zoom),
       0,
       -2 * pi,
     );
-    canvas.drawPath(path, paint);
-    edge.path = path;
+
+    return path;
   }
 
   @override
@@ -112,63 +120,22 @@ class EdgeLineShape extends EdgeShape {
   }
 
   @override
-  hoverTest(Vector2 point, Edge edge, EdgeComponent edgeComponent) {
-    Offset offset = Offset(
-      (edge.end == null
-              ? edge.start.cpn!.position.x
-              : edge.end!.cpn!.position.x) -
-          (edge.start.cpn!.position.x),
-      (edge.end == null
-              ? edge.start.cpn!.position.y
-              : edge.end!.cpn!.position.y) -
-          (edge.start.cpn!.position.y),
-    );
-
-    Offset offsetMouse = Offset(
-      point.x - (edge.start.cpn!.position.x),
-      point.y - (edge.start.cpn!.position.y),
-    );
-
-    double alpha = offsetMouse.direction - offset.direction;
-    var distance = Util.distance(edge.cpn!.position, point);
-
-    var relativePoint = Offset(
-      distance * cos(alpha),
-      distance * sin(alpha),
-    );
-    var idx = computeIndex(edge);
-    return idx == 0
-        ? null
-        : (edge.path?.contains(relativePoint) ?? false) &&
-            (!(edge.path
-                    ?.shift(Offset(0, idx < 0 ? 4 : -4))
-                    .contains(relativePoint) ??
-                false));
-  }
-
-  int edgeIdx(Edge edge) {
-    var edgeList =
-        edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [];
-    var idx = edgeList.indexOf(edge);
-    return idx;
-  }
-
-  double computeIndex(Edge edge) {
-    var edgeList =
-        edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [];
-    var idx = edgeList.indexOf(edge);
-    if (edgeList.length.isOdd) {
-      if (idx.isEven) {
-        return idx / 2;
-      } else {
-        return -(idx + 1) / 2;
-      }
+  bool? hoverTest(Vector2 point, Edge edge, EdgeComponent edgeComponent) {
+    var offset = Offset(point.x, point.y);
+    var hoverStrokeWidth = (edge.isHovered ? 2.0 : 1.2);
+    if (edge.isLoop) {
+      return edge.path!.contains(offset) &&
+          !loopPath(edge, hoverStrokeWidth).contains(offset);
     } else {
-      if (idx.isEven) {
-        return idx / 2 + 0.5;
-      } else {
-        return -(idx - 1) / 2 - 0.5;
+      if (edge.computeIndex == 0) {
+        return null;
       }
+      Path? minusArea = edge.path?.shift(Offset(
+        0,
+        edge.computeIndex > 0 ? -hoverStrokeWidth : hoverStrokeWidth,
+      ));
+      return ((edge.path?.contains(offset) ?? false) &&
+          (!(minusArea?.contains(offset) ?? true)));
     }
   }
 }

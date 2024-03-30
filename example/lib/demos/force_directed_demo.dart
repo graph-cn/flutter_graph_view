@@ -88,9 +88,7 @@ class ForceDirectedDemo extends StatelessWidget {
   }
 
   Widget edgePanelBuilder(Edge edge, Viewfinder viewfinder) {
-    var c = (viewfinder.localToGlobal(edge.start.cpn!.position) +
-            viewfinder.localToGlobal(edge.end!.cpn!.position)) /
-        2;
+    var c = viewfinder.localToGlobal(edge.position);
 
     return Stack(
       children: [
