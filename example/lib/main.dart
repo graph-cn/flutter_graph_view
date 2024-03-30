@@ -44,7 +44,7 @@ class _ShowroomState extends State<Showroom>
   void initState() {
     super.initState();
     mainTabController =
-        TabController(initialIndex: 4, length: tabs.length, vsync: this);
+        TabController(initialIndex: 0, length: tabs.length, vsync: this);
   }
 
   @override
