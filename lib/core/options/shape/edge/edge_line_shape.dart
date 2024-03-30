@@ -56,7 +56,7 @@ class EdgeLineShape extends EdgeShape {
   void vertexSame(Edge edge, ui.Canvas canvas, ui.Paint paint) {
     Path path = Path();
     var idx = edgeIdx(edge);
-    var radius = (idx + 1) * edge.start.radiusZoom * 1.5;
+    var radius = (idx + 1) * edge.start.radius * 1.5;
     path.addArc(
       Rect.fromCircle(center: Offset(radius, 0), radius: radius),
       0,
