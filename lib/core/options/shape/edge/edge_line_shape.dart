@@ -158,18 +158,16 @@ class EdgeLineShape extends EdgeShape {
         edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [];
     var idx = edgeList.indexOf(edge);
     if (edgeList.length.isOdd) {
-      if (idx == 0) {
-        return 0;
-      } else if (idx.isEven) {
+      if (idx.isEven) {
         return idx / 2;
       } else {
         return -(idx + 1) / 2;
       }
     } else {
       if (idx.isEven) {
-        return idx / 2;
+        return idx / 2 + 0.5;
       } else {
-        return -(idx - 1) / 2;
+        return -(idx - 1) / 2 - 0.5;
       }
     }
   }

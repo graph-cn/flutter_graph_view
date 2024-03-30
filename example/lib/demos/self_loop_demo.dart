@@ -12,19 +12,24 @@ class SelfLoopDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     var vertexes = <Map>{};
 
-    vertexes.add(
+    vertexes.addAll([
       {
         'id': 'node',
         'tag': 'tag',
         'tags': ['tag'],
       },
-    );
+      {
+        'id': 'node2',
+        'tag': 'tag3',
+        'tags': ['tag', 'tag2'],
+      }
+    ]);
     var edges = <Map>{};
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
       edges.add({
         'srcId': 'node',
-        'dstId': 'node',
+        'dstId': 'node${i.isEven ? '2' : ''}',
         'edgeName': 'edge$i',
         'ranking': i,
       });
