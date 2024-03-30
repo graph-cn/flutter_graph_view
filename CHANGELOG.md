@@ -1,3 +1,12 @@
+## 0.3.0
+- perf: use `panelDelay` in the options to control the delay time of the display panel.
+* fix: hover testing of edges, multiple edges and self loops
+* fix: edge overlap, when there are even numbers of edges between two points
+* fix: let the self loop follow the scaling law.
+* feat: self loop support
+* refac: adjusting the file structure of the VertexTextRenderer interface
+* fix: graph crash, when there is no panelBuilder.
+
 ## 0.2.4+1
 - fix: graph crash, when there is no panelBuilder.
 

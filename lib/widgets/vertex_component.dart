@@ -119,7 +119,11 @@ class VertexComponent extends ShapeComponent
   void onHoverEnter() {
     graph.hoverVertex = vertex;
     if (hasPanel) {
-      gameRef.overlays.add(overlayName);
+      Future.delayed(panelDelay, () {
+        if (isHovered) {
+          gameRef.overlays.add(overlayName);
+        }
+      });
     }
   }
 

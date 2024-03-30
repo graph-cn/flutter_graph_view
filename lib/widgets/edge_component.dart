@@ -80,9 +80,11 @@ class EdgeComponent extends ShapeComponent
     paint.strokeWidth = 4;
     hitBox?.width = 4;
     gameRef.graph.hoverEdge = edge;
-    if (hasPanel) {
-      gameRef.overlays.add(overlayName);
-    }
+    Future.delayed(panelDelay, () {
+      if (isHovered) {
+        gameRef.overlays.add(overlayName);
+      }
+    });
   }
 
   @override
