@@ -7,6 +7,7 @@ import 'package:example/demos/self_loop_demo.dart';
 import 'package:flutter/material.dart';
 
 import 'demos/custom_shape_demo/execution_plan/execution_plan_demo.dart';
+import 'demos/decorator_demo.dart';
 import 'demos/force_directed_demo.dart';
 import 'demos/random_algorithm_demo.dart';
 
@@ -26,6 +27,7 @@ class _ShowroomState extends State<Showroom>
   late TabController mainTabController;
 
   final List<String> tabNames = <String>[
+    'DecoratorDemo',
     'ForceDirected',
     'ExecutionPlan',
     'CircleLayout',
@@ -33,6 +35,7 @@ class _ShowroomState extends State<Showroom>
     "SelfLoop",
   ];
   final List<Widget> tabs = <Widget>[
+    const DecoratorDemo(),
     ForceDirectedDemo(),
     ExecutionPlanDemo(),
     CircleLayoutDemo(),

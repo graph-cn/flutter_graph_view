@@ -126,7 +126,9 @@ class GraphComponent extends FlameGame
     var opg = vf.localToGlobal(Vector2.zero());
     var oz = vf.zoom;
     var zoomDelta = info.scrollDelta.global.y.sign * zoomPerScrollUnit;
-    vf.zoom += zoomDelta;
+    if (vf.zoom + zoomDelta > 0) {
+      vf.zoom += zoomDelta;
+    }
     clampZoom();
 
     if (vf.zoom <= options.scaleRange.x || vf.zoom >= options.scaleRange.y) {

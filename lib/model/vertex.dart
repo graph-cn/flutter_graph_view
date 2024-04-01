@@ -106,6 +106,14 @@ class Vertex<I> {
   /// 当前节点是否有鼠标浮入
   bool get isHovered => cpn?.isHovered ?? false;
 
+  bool get isCenter => neighbors.fold(
+        true,
+        (previousValue, element) =>
+            previousValue &&
+            (degree > element.degree ||
+                (degree == element.degree && element.prevVertex == this)),
+      );
+
   @override
   String toString() {
     return '$position';

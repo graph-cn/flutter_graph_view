@@ -50,6 +50,10 @@ class Graph<ID> {
 
   Map<Vertex, Map<Vertex, List<Edge>>> edgesBetween = {};
 
+  List<Vertex> get centerVertexes {
+    return vertexes.where((element) => element.isCenter).toList();
+  }
+
   List<Edge> edgesFromTwoVertex(Vertex start, Vertex? end) {
     if (end == null) return [];
     return edgesBetween[start]?[end] ?? edgesBetween[end]?[start] ?? [];

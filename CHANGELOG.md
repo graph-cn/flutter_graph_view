@@ -1,3 +1,9 @@
+## 1.0.0
+- feat: add a series of decorators to the GraphAlgorithm.
+
+### Behavior change:
+- Changed the parameter of the `GraphAlgorithm` constructor from [decorator] to {decorators}
+
 ## 0.3.0
 - perf: use `panelDelay` in the options to control the delay time of the display panel.
 * fix: hover testing of edges, multiple edges and self loops

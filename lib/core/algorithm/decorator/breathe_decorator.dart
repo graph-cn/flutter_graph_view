@@ -1,14 +1,20 @@
+// Copyright (c) 2023- All flutter_graph_view authors. All rights reserved.
+//
+// This source code is licensed under Apache 2.0 License.
+
 import 'package:flutter_graph_view/core/graph_algorithm.dart';
 import 'package:flutter_graph_view/model/vertex.dart';
 import 'package:flutter_graph_view/model/graph.dart';
 import 'dart:math' as math;
 
 /// Breathe Decorator
+///
 /// 呼吸特效装饰器
 class BreatheDecorator extends GraphAlgorithm {
-  BreatheDecorator([decorate]) : super(decorate);
+  BreatheDecorator({super.decorators});
   @override
   void onLoad(Vertex v) {
+    super.onLoad(v);
     v.cpn?.properties.putIfAbsent('breatheCount', () => 0);
     v.cpn?.properties.putIfAbsent('breatheDirect', math.Random().nextBool);
     v.cpn?.properties.putIfAbsent('breatheOffsetY', () => 0);
@@ -23,6 +29,7 @@ class BreatheDecorator extends GraphAlgorithm {
 
   @override
   void compute(Vertex v, Graph graph) {
+    super.compute(v, graph);
     if (v.cpn!.properties['breatheCount'] % 150 == 0) {
       v.cpn!.properties['breatheDirect'] = !v.cpn!.properties['breatheDirect'];
       v.cpn!.properties['breatheOffsetY'] =

@@ -20,7 +20,7 @@ class FlowLayout extends GraphAlgorithm {
 
   Map<int, Vector2> nodePosition = {};
 
-  FlowLayout([decorator]) : super(decorator);
+  FlowLayout({super.decorators});
 
   /// 基本思路：
   ///
@@ -57,6 +57,7 @@ class FlowLayout extends GraphAlgorithm {
 
   /// 一次性布局完成时，不需要重复刷新图像信息，[compute]同样给上空实现
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {}
 
   /// 建立结点的缓存，更快通过 id 获取到执行计划数据

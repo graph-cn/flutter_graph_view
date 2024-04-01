@@ -7,8 +7,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
-import '../algorithm/random_algorithm.dart';
-
 class RandomAlgorithmDemo extends StatelessWidget {
   RandomAlgorithmDemo({super.key});
 

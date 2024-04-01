@@ -17,11 +17,11 @@ abstract class GraphAlgorithm {
   /// Algorithm decorate support.
   /// 定位算法的装饰器，可多个算法同时使用。
   ///
-  GraphAlgorithm? decorator;
+  List<GraphAlgorithm>? decorators;
 
   ///
   ///
-  GraphAlgorithm(this.decorator);
+  GraphAlgorithm({this.decorators});
 
   /// Notify the size change event.
   ///
@@ -44,14 +44,27 @@ abstract class GraphAlgorithm {
   /// 节点区域相对中心点的偏移量。
   double get offset => min(center.dx, center.dy) * 0.4;
 
-  ///
   /// Position setter.
-  /// 对节点进行定位设值
   ///
-  void compute(Vertex v, Graph graph);
+  /// 对节点进行定位设值
+  @mustCallSuper
+  void compute(Vertex v, Graph graph) {
+    if (decorators != null) {
+      for (var decorator in decorators!) {
+        decorator.compute(v, graph);
+      }
+    }
+  }
 
   /// Called when the graph is loaded.
-  void onLoad(Vertex v) {}
+  @mustCallSuper
+  void onLoad(Vertex v) {
+    if (decorators != null) {
+      for (var decorator in decorators!) {
+        decorator.onLoad(v);
+      }
+    }
+  }
 
   /// Vertexes will be reposition when they collided with another.
   ///

@@ -1,9 +1,18 @@
+// Copyright (c) 2024- All flutter_graph_view authors. All rights reserved.
+//
+// This source code is licensed under Apache 2.0 License.
+
 import 'dart:math';
 
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 class CircleLayout extends GraphAlgorithm {
-  CircleLayout([decorator]) : super(decorator);
+  CircleLayout({super.decorators});
+  @override
+  void onLoad(Vertex v) {
+    super.onLoad(v);
+    v.cpn?.properties.putIfAbsent('timeCounter', () => 0);
+  }
 
   @override
   void onGraphLoad(Graph graph) {
@@ -17,10 +26,5 @@ class CircleLayout extends GraphAlgorithm {
 
       vertex.position = Vector2(x + center.dx, y + center.dy);
     }
-  }
-
-  @override
-  void compute(Vertex v, Graph graph) {
-    // TODO: implement compute
   }
 }

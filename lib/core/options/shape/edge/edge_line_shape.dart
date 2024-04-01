@@ -89,8 +89,8 @@ class EdgeLineShape extends EdgeShape {
         List.generate(
           2,
           (index) => [
-            (edge.start.colors.last).withOpacity(.5),
-            (edge.end?.colors.last ?? Colors.white).withOpacity(.5)
+            (edge.start.colors.last).withOpacity(.1),
+            (edge.end?.colors.last ?? Colors.white).withOpacity(.1)
           ][index],
         ),
       );

@@ -8,18 +8,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
-///
 /// Force oriented map layout algorithm.
-/// 力导向图布局算法
 ///
+/// 力导向图布局算法
 class ForceDirected extends GraphAlgorithm {
-  ForceDirected([decorator]) : super(decorator);
+  ForceDirected({super.decorators});
 
   @override
-  void compute(
-    Vertex v,
-    Graph graph,
-  ) {
+  void compute(Vertex v, Graph graph) {
+    super.compute(v, graph);
     if (v.position == Vector2(0, 0)) {
       var ct = Util.toOffsetByVector2(v.prevVertex?.position) ?? center / 2;
       var distanceFromCenter = 1 / v.deep * offset;

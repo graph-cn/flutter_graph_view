@@ -11,7 +11,6 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 默认的标题渲染器实现
 class VertexTextRendererImpl extends VertexTextRenderer {
-  
   @override
   void render(Vertex<dynamic> vertex, ui.Canvas canvas, ui.Paint paint) {
     /// 1.生成 ParagraphStyle，可设置文本的基本信息

@@ -27,10 +27,22 @@ export 'core/options/shape/edge_shape.dart';
 export 'core/options/text/vertex_text_renderer.dart';
 
 /// interfaces' default impl
+export 'core/algorithm/random_algorithm.dart';
 export 'core/algorithm/force_directed.dart';
-export 'core/algorithm/force_directed2.dart';
 export 'core/algorithm/circle_layout.dart';
-export 'core/algorithm/breathe_decorator.dart';
+
+/// decorators
+export 'core/algorithm/decorator/breathe_decorator.dart';
+export 'core/algorithm/decorator/force_decorator.dart';
+export 'core/algorithm/decorator/pin_center_decorator.dart';
+export 'core/algorithm/decorator/force_motion_decorator.dart';
+export 'core/algorithm/decorator/hooke_decorator.dart';
+export 'core/algorithm/decorator/hooke_border_decorator.dart';
+export 'core/algorithm/decorator/hooke_center_decorator.dart';
+export 'core/algorithm/decorator/coulomb_decorator.dart';
+export 'core/algorithm/decorator/coulomb_center_decorator.dart';
+export 'core/algorithm/decorator/time_counter_decorator.dart';
+
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
 export 'core/options/text/vertex_text_renderer_impl.dart';

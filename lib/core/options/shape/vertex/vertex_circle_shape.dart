@@ -66,7 +66,7 @@ class VertexCircleShape extends VertexShape {
           vertex.radiusZoom,
           List.generate(
             colors.length,
-            (index) => colors[index].withOpacity(.5),
+            (index) => colors[index].withOpacity(.3),
           ),
           List.generate(colors.length, (index) => (index + 1) / colors.length),
         );

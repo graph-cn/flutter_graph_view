@@ -79,7 +79,6 @@ class VertexComponent extends ShapeComponent
   void algorithmOnLoad(GraphAlgorithm? algorithm) {
     if (algorithm == null) return;
     algorithm.onLoad(vertex);
-    algorithmOnLoad(algorithm.decorator);
   }
 
   /// Recursively call the compute method of the algorithm,
@@ -88,7 +87,6 @@ class VertexComponent extends ShapeComponent
   void algorithmCompute(GraphAlgorithm? algorithm) {
     if (algorithm == null) return;
     algorithm.compute(vertex, graph);
-    algorithmCompute(algorithm.decorator);
   }
 
   @override
