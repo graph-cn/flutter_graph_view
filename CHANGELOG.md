@@ -1,3 +1,7 @@
+## 1.0.1
+- feat: make opacity configurable for vertex and edge. `options.hoverOpacity`
+- perf: adjusting the parameters of the decorators.
+
 ## 1.0.0
 - feat: add a series of decorators to the GraphAlgorithm.
 

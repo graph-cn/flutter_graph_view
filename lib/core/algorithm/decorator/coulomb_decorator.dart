@@ -12,7 +12,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class CoulombDecorator extends ForceDecorator {
   double k;
   CoulombDecorator({
-    this.k = 100,
+    this.k = 10,
     super.decorators,
   });
 

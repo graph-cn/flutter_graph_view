@@ -83,4 +83,9 @@ class Options {
   ///
   /// @zh: overlay消失的延迟
   Duration? panelDelay;
+
+  /// @en: the hover opacity of vertex and edge when hover.
+  ///
+  /// @zh: 顶点悬停时，非激活点边的透明度
+  double hoverOpacity = 0.3;
 }

@@ -58,15 +58,15 @@ class VertexCircleShape extends VertexShape {
   void setPaint(Vertex vertex) {
     var cpn = vertex.cpn!;
     var colors = vertex.colors;
-
     if (isWeaken(vertex)) {
+      var hoverOpacity = vertex.cpn?.game.options.hoverOpacity ?? 1.0;
       cpn.paint = ui.Paint()
         ..shader = ui.Gradient.radial(
           ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
           vertex.radiusZoom,
           List.generate(
             colors.length,
-            (index) => colors[index].withOpacity(.3),
+            (index) => colors[index].withOpacity(hoverOpacity),
           ),
           List.generate(colors.length, (index) => (index + 1) / colors.length),
         );

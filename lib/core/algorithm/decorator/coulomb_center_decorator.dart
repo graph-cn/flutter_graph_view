@@ -10,7 +10,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 class CoulombCenterDecorator extends ForceDecorator {
   double k;
   CoulombCenterDecorator({
-    this.k = 0.001,
+    this.k = 300,
     super.decorators,
   });
 

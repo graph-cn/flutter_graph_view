@@ -25,8 +25,8 @@ class HookeBorderDecorator extends ForceDecorator {
   double borderFactor;
   double k;
   HookeBorderDecorator({
-    this.borderFactor = 0.6,
-    this.k = 10,
+    this.borderFactor = 0.3,
+    this.k = 0.3,
     super.decorators,
   });
 

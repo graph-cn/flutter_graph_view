@@ -14,7 +14,7 @@ class DecoratorDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     var vertexes = <Map>{};
     var r = Random();
-    for (var i = 0; i < 150; i++) {
+    for (var i = 0; i < 80; i++) {
       vertexes.add(
         {
           'id': 'node$i',
@@ -29,40 +29,43 @@ class DecoratorDemo extends StatelessWidget {
     }
     var edges = <Map>{};
 
-    for (var i = 0; i < 150; i++) {
+    for (var i = 0; i < 80; i++) {
       edges.add({
-        'srcId': 'node${i % 8 + 8}',
-        'dstId': 'node$i',
+        'srcId': 'node${i % 8}',
+        'dstId': 'node${r.nextInt(80)}',
         'edgeName': 'edge${r.nextInt(3)}',
         'ranking': DateTime.now().millisecond,
       });
     }
-    // for (var i = 0; i < 20; i++) {
-    //   edges.add({
-    //     'srcId': 'node${i % 8}',
-    //     'dstId': 'node${r.nextInt(150)}',
-    //     'edgeName': 'edge${r.nextInt(3)}',
-    //     'ranking': DateTime.now().millisecond,
-    //   });
-    // }
 
     var data = {
       'vertexes': vertexes,
       'edges': edges,
     };
+
+    /// Your can use different decorators to get different effects.
+    // ignore: unused_local_variable
+    var decorators2 = [
+      CoulombDecorator(),
+      HookeDecorator(),
+      HookeCenterDecorator(),
+      ForceDecorator(),
+      ForceMotionDecorator(),
+      TimeCounterDecorator(),
+    ];
+
+    var decorators1 = [
+      CoulombDecorator(),
+      HookeDecorator(),
+      HookeBorderDecorator(),
+      ForceDecorator(),
+      ForceMotionDecorator(),
+      TimeCounterDecorator(),
+    ];
     return FlutterGraphWidget(
       data: data,
       algorithm: RandomAlgorithm(
-        decorators: [
-          CoulombDecorator(),
-          // HookeBorderDecorator(),
-          HookeDecorator(),
-          CoulombCenterDecorator(),
-          HookeCenterDecorator(),
-          ForceDecorator(),
-          ForceMotionDecorator(),
-          TimeCounterDecorator(),
-        ],
+        decorators: decorators1,
       ),
       convertor: MapConvertor(),
       options: Options()

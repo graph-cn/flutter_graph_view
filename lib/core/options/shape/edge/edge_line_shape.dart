@@ -82,6 +82,7 @@ class EdgeLineShape extends EdgeShape {
     paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
     var endPoint = Offset(len(edge), paint.strokeWidth);
+    var hoverOpacity = edge.cpn?.gameRef.options.hoverOpacity ?? .5;
     if (isWeaken(edge)) {
       paint.shader = ui.Gradient.linear(
         startPoint,
@@ -89,8 +90,8 @@ class EdgeLineShape extends EdgeShape {
         List.generate(
           2,
           (index) => [
-            (edge.start.colors.last).withOpacity(.1),
-            (edge.end?.colors.last ?? Colors.white).withOpacity(.1)
+            (edge.start.colors.last).withOpacity(hoverOpacity),
+            (edge.end?.colors.last ?? Colors.white).withOpacity(hoverOpacity)
           ][index],
         ),
       );

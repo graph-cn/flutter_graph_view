@@ -41,6 +41,7 @@ export 'core/algorithm/decorator/hooke_border_decorator.dart';
 export 'core/algorithm/decorator/hooke_center_decorator.dart';
 export 'core/algorithm/decorator/coulomb_decorator.dart';
 export 'core/algorithm/decorator/coulomb_center_decorator.dart';
+export 'core/algorithm/decorator/coulomb_border_decorator.dart';
 export 'core/algorithm/decorator/time_counter_decorator.dart';
 
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
