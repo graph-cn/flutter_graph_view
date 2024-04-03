@@ -19,6 +19,10 @@ class TimeCounterDecorator extends GraphAlgorithm {
   @override
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
-    v.cpn!.properties['timeCounter'] += 1;
+    if (v.cpn!.properties['timeCounter'] >= 1 << 30) {
+      v.cpn!.properties['timeCounter'] = 0;
+    } else {
+      v.cpn!.properties['timeCounter'] += 1;
+    }
   }
 }

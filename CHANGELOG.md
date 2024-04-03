@@ -1,3 +1,6 @@
+## 1.0.2
+- feat: add a decorator for the anti Coulomb force rule.
+
 ## 1.0.1
 - feat: make opacity configurable for vertex and edge. `options.hoverOpacity`
 - perf: adjusting the parameters of the decorators.
