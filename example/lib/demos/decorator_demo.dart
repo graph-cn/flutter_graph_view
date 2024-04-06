@@ -58,7 +58,7 @@ class DecoratorDemo extends StatelessWidget {
       CoulombDecorator(),
       HookeDecorator(),
       CoulombReverseDecorator(),
-      HookeBorderDecorator(),
+      HookeBorderDecorator(alwaysInScreen: false),
       ForceDecorator(),
       ForceMotionDecorator(),
       TimeCounterDecorator(),

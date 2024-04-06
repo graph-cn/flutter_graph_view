@@ -6,6 +6,35 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
+/// @en: The builder of the vertex panel, triggered when the mouse hovers.
+///
+/// @zh: 顶点数据面板的构建器，鼠标悬停到对应节点时触发。
+typedef VertexPanelBuilder = Widget Function(
+  Vertex hoverVertex,
+  Viewfinder zoom,
+);
+
+/// @en: The builder of the edge data panel, triggered when the mouse hovers.
+///
+/// @zh: 边数据面板的构建器，鼠标悬停到对应节点时触发。
+typedef EdgePanelBuilder = Widget Function(
+  Edge hoverEdge,
+  Viewfinder zoom,
+);
+
+/// @en: use for create background widget.
+///
+/// @zh: 用于创建背景
+typedef BackgroundBuilder = Widget Function(BuildContext context);
+
+/// @en: The getter of the vertex text style.
+///
+/// @zh: 顶点文字样式获取器
+typedef VertexTextStyleGetter = TextStyle? Function(
+  Vertex vertex,
+  VertexShape? shape,
+);
+
 /// The core api for Graph Options.
 ///
 /// 图配置项
@@ -13,12 +42,12 @@ class Options {
   /// The builder of the vertex panel, triggered when the mouse hovers.
   ///
   /// 顶点数据面板的构建器，鼠标悬停到对应节点时触发。
-  Widget Function(Vertex hoverVertex, Viewfinder zoom)? vertexPanelBuilder;
+  VertexPanelBuilder? vertexPanelBuilder;
 
   /// The builder of the edge data panel, triggered when the mouse hovers.
   ///
   /// 边数据面板的构建器，鼠标悬停到对应节点时触发。
-  Widget Function(Edge hoverVertex, Viewfinder zoom)? edgePanelBuilder;
+  EdgePanelBuilder? edgePanelBuilder;
 
   /// set shape strategy for components of vertex.
   ///
@@ -33,7 +62,7 @@ class Options {
   /// use for create background widget.
   ///
   /// 用于创建背景
-  Widget Function(BuildContext) backgroundBuilder = (context) => Container(
+  BackgroundBuilder backgroundBuilder = (context) => Container(
         color: Colors.black54,
       );
 
@@ -83,9 +112,4 @@ class Options {
   ///
   /// @zh: overlay消失的延迟
   Duration? panelDelay;
-
-  /// @en: the hover opacity of vertex and edge when hover.
-  ///
-  /// @zh: 顶点悬停时，非激活点边的透明度
-  double hoverOpacity = 0.3;
 }

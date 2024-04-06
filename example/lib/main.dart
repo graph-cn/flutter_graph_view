@@ -2,14 +2,16 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'package:example/demos/circle_layout_demo.dart';
-import 'package:example/demos/self_loop_demo.dart';
 import 'package:flutter/material.dart';
 
 import 'demos/custom_shape_demo/execution_plan/execution_plan_demo.dart';
+import 'demos/vertex_font_style_demo.dart';
 import 'demos/decorator_demo.dart';
 import 'demos/force_directed_demo.dart';
 import 'demos/random_algorithm_demo.dart';
+import 'demos/circle_layout_demo.dart';
+import 'demos/self_loop_demo.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const Showroom());
@@ -33,6 +35,7 @@ class _ShowroomState extends State<Showroom>
     'CircleLayout',
     'RandomLayout',
     "SelfLoop",
+    "VertexFontStyleDemo",
   ];
   final List<Widget> tabs = <Widget>[
     const DecoratorDemo(),
@@ -41,6 +44,7 @@ class _ShowroomState extends State<Showroom>
     CircleLayoutDemo(),
     RandomAlgorithmDemo(),
     const SelfLoopDemo(),
+    const VertexFontStyleDemo(),
   ];
 
   @override
@@ -50,14 +54,48 @@ class _ShowroomState extends State<Showroom>
         TabController(initialIndex: 0, length: tabs.length, vsync: this);
   }
 
+  Uri repo = Uri.parse('https://github.com/graph-cn/flutter_graph_view');
+
+  List buttons = [
+    {
+      'label': 'Repo',
+      'url': 'https://github.com/graph-cn/flutter_graph_view',
+      'icon': Icons.link,
+    },
+    {
+      'label': 'Demos',
+      'url':
+          'https://github.com/graph-cn/flutter_graph_view/tree/main/example/lib/demos',
+      'icon': Icons.list,
+    }
+  ];
+
+  _launchUrl(String url) {
+    launchUrl(Uri.parse(url));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(useMaterial3: true),
       home: Scaffold(
-        body: TabBarView(
-          controller: mainTabController,
-          children: tabs,
+        body: Column(
+          children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: buttons.map((button) {
+                  return ElevatedButton.icon(
+                    icon: Icon(button['icon']),
+                    label: Text(button['label']),
+                    onPressed: () => _launchUrl(button['url']),
+                  );
+                }).toList()),
+            Expanded(
+                child: TabBarView(
+              controller: mainTabController,
+              children: tabs,
+            ))
+          ],
         ),
         bottomNavigationBar: TabBar(
           controller: mainTabController,

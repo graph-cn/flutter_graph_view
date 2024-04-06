@@ -90,4 +90,22 @@ class GraphStyle {
       ),
     ];
   };
+
+  /// @en: the hover opacity of vertex and edge when hover.
+  ///
+  /// @zh: 顶点悬停时，非激活点边的透明度
+  double hoverOpacity = 0.3;
+
+  /// @en: the text style of vertex.
+  /// now is only supports:
+  /// - `fontSize`
+  /// - `fontWeight`
+  /// - `fontColor`
+  ///
+  /// @zh: 顶点文字样式
+  /// 目前仅支持：
+  /// - `fontSize`
+  /// - `fontWeight`
+  /// - `fontColor`
+  VertexTextStyleGetter? vertexTextStyleGetter;
 }

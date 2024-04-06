@@ -10,5 +10,8 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 用于渲染节点的标题
 abstract class VertexTextRenderer {
+  VertexShape? shape;
+
+  VertexTextRenderer({this.shape});
   void render(Vertex<dynamic> vertex, Canvas canvas, Paint paint);
 }

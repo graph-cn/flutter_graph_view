@@ -82,7 +82,7 @@ class EdgeLineShape extends EdgeShape {
     paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
     var endPoint = Offset(len(edge), paint.strokeWidth);
-    var hoverOpacity = edge.cpn?.gameRef.options.hoverOpacity ?? .5;
+    var hoverOpacity = edge.cpn?.gameRef.options.graphStyle.hoverOpacity ?? .5;
     if (isWeaken(edge)) {
       paint.shader = ui.Gradient.linear(
         startPoint,

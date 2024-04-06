@@ -1,3 +1,6 @@
+## 1.0.4
+- feat: support specifying vertex text style.
+
 ## 1.0.3
 - feat add a choice to HookeBorderDecorator, to control the border of the graph.
 - fix: make CoulombCenterDecorator a usable decorator.

@@ -12,7 +12,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 默认使用 圆型做节点。
 class VertexCircleShape extends VertexShape {
   VertexCircleShape({VertexTextRenderer? textRenderer}) {
-    super.textRenderer = textRenderer ?? VertexTextRendererImpl();
+    super.textRenderer = textRenderer ?? VertexTextRendererImpl(shape: this);
   }
 
   @override
@@ -59,7 +59,8 @@ class VertexCircleShape extends VertexShape {
     var cpn = vertex.cpn!;
     var colors = vertex.colors;
     if (isWeaken(vertex)) {
-      var hoverOpacity = vertex.cpn?.game.options.hoverOpacity ?? 1.0;
+      var hoverOpacity =
+          vertex.cpn?.game.options.graphStyle.hoverOpacity ?? 1.0;
       cpn.paint = ui.Paint()
         ..shader = ui.Gradient.radial(
           ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
