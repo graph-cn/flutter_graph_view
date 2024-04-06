@@ -1,3 +1,7 @@
+## 1.0.3
+- feat add a choice to HookeBorderDecorator, to control the border of the graph.
+- fix: make CoulombCenterDecorator a usable decorator.
+
 ## 1.0.2
 - feat: add a decorator for the anti Coulomb force rule.
 

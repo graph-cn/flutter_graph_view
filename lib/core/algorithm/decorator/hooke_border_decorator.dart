@@ -24,14 +24,27 @@ extension RectExt on Rect {
 class HookeBorderDecorator extends ForceDecorator {
   double borderFactor;
   double k;
+
+  /// Whether the node is always in the screen as much as possible.
+  /// If true, the node will be repelled by the screen boundary.
+  /// If false, the node will stop position adjustment when it meets the force balance.
+  ///
+  /// 节点是否尽可能一直在屏幕内
+  /// 如果为true，则节点会受到屏幕边界的排斥力
+  /// 如果为false，则节点在遇到力平衡时会停止位置调整
+  bool alwaysInScreen;
   HookeBorderDecorator({
     this.borderFactor = 0.3,
     this.k = 0.3,
+    this.alwaysInScreen = true,
     super.decorators,
   });
 
   Vector2 hooke(Vertex s, Graph graph) {
-    var viewport = s.cpn!.gameRef.camera.visibleWorldRect * borderFactor;
+    var viewport = (alwaysInScreen
+            ? s.cpn!.gameRef.camera.visibleWorldRect
+            : Rect.fromPoints(Offset.zero, s.cpn!.gameRef.size.toOffset())) *
+        borderFactor;
     var widthScale = 0;
     var p = s.position;
     double fx = 0;

@@ -14,7 +14,7 @@ class DecoratorDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     var vertexes = <Map>{};
     var r = Random();
-    for (var i = 0; i < 80; i++) {
+    for (var i = 0; i < 50; i++) {
       vertexes.add(
         {
           'id': 'node$i',
@@ -29,10 +29,10 @@ class DecoratorDemo extends StatelessWidget {
     }
     var edges = <Map>{};
 
-    for (var i = 0; i < 80; i++) {
+    for (var i = 0; i < 50; i++) {
       edges.add({
         'srcId': 'node${i % 8}',
-        'dstId': 'node${r.nextInt(80)}',
+        'dstId': 'node$i',
         'edgeName': 'edge${r.nextInt(3)}',
         'ranking': DateTime.now().millisecond,
       });
@@ -57,6 +57,7 @@ class DecoratorDemo extends StatelessWidget {
     var decorators1 = [
       CoulombDecorator(),
       HookeDecorator(),
+      CoulombReverseDecorator(),
       HookeBorderDecorator(),
       ForceDecorator(),
       ForceMotionDecorator(),
