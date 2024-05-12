@@ -1,3 +1,6 @@
+## 1.0.4+1
+- fix: vertex text style `background` not working.
+
 ## 1.0.4
 - feat: support specifying vertex text style.
 

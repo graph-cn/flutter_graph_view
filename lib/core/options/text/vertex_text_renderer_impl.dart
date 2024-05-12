@@ -21,6 +21,7 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     var paragraphFontSize = vertexTextStyle?.fontSize ?? 14;
     var fontWeight = vertexTextStyle?.fontWeight ?? FontWeight.normal;
     var fontColor = vertexTextStyle?.color;
+    var backgroundColor = vertexTextStyle?.backgroundColor;
 
     /// 1.生成 ParagraphStyle，可设置文本的基本信息
     final paragraphStyle = ui.ParagraphStyle(
@@ -39,6 +40,8 @@ class VertexTextRendererImpl extends VertexTextRenderer {
       fontSize: fontSize,
       foreground: fontColor != null ? (Paint()..color = fontColor) : paint,
       fontWeight: fontWeight,
+      background:
+          backgroundColor == null ? null : (Paint()..color = backgroundColor),
     );
 
     /// 3.添加样式和文字
@@ -52,7 +55,8 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     TextPainter hpainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
-        style: const TextStyle(fontSize: 16),
+        style:
+            TextStyle(fontSize: paragraphFontSize + 2, fontWeight: fontWeight),
         text: text,
       ),
     )..layout();
