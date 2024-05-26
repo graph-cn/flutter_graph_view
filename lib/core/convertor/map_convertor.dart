@@ -23,7 +23,6 @@ class MapConvertor extends DataConvertor<Map, Map> {
     vertex.id = v['id'];
     vertex.tag = v['tag'];
     vertex.tags = v['tags'];
-    vertexAsGraphComponse(v, g, vertex);
     return vertex;
   }
 
@@ -45,8 +44,6 @@ class MapConvertor extends DataConvertor<Map, Map> {
     result.start = g.keyCache[e['srcId']]!;
     result.end = g.keyCache[e['dstId']];
 
-    edgeAsGraphComponse(e, g, result);
-
     return result;
   }
 
@@ -66,12 +63,10 @@ class MapConvertor extends DataConvertor<Map, Map> {
       var edgeDataList = data['edges'] as Iterable;
       var vertexDataList = data['vertexes'] as Iterable;
       for (var v in vertexDataList) {
-        Vertex vertex = convertVertex(v, result);
-        result.vertexes.add(vertex);
+        addVertex(v, result);
       }
       for (var e in edgeDataList) {
-        Edge edge = convertEdge(e, result);
-        result.edges.add(edge);
+        addEdge(e, result);
       }
     }
     return result;

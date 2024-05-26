@@ -27,6 +27,19 @@ class DecoratorDemo extends StatelessWidget {
         },
       );
     }
+    for (var i = 0; i < 50; i++) {
+      vertexes.add(
+        {
+          'id': 'node$i',
+          'tag': 'tag${r.nextInt(9)}',
+          'tags': [
+            'tag${r.nextInt(9)}',
+            if (r.nextBool()) 'tag${r.nextInt(4)}',
+            if (r.nextBool()) 'tag${r.nextInt(8)}'
+          ],
+        },
+      );
+    }
     var edges = <Map>{};
 
     for (var i = 0; i < 50; i++) {

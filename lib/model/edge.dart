@@ -97,4 +97,18 @@ class Edge {
     var idx = edgeList.indexOf(this);
     return idx;
   }
+
+  /// Uniqueness based on primary key of triple.
+  ///
+  /// 只取三元组主键作为唯一性的依据
+  @override
+  int get hashCode => Object.hash(start, ranking, end);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Edge &&
+          other.ranking == ranking &&
+          other.start == start &&
+          other.end == end);
 }

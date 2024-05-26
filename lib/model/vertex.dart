@@ -118,4 +118,14 @@ class Vertex<I> {
   String toString() {
     return '$position';
   }
+
+  /// Uniqueness based on primary key
+  ///
+  /// 只取主键作为唯一性的依据
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is Vertex && other.id == id);
 }

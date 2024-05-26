@@ -77,18 +77,52 @@ abstract class DataConvertor<V, E> {
       };
     } else {
       if (g.edgesBetween[start] != null) {
-        if (g.edgesBetween[start]![end] != null) {
+        if (g.edgesBetween[start]![end] != null &&
+            !g.edgesBetween[start]![end]!.contains(result)) {
           g.edgesBetween[start]![end]!.add(result);
         } else {
           g.edgesBetween[start]![end] = [result];
         }
       } else if (g.edgesBetween[end] != null) {
-        if (g.edgesBetween[end]![start] != null) {
+        if (g.edgesBetween[end]![start] != null &&
+            !g.edgesBetween[end]![start]!.contains(result)) {
           g.edgesBetween[end]![start]!.add(result);
         } else {
           g.edgesBetween[end]![start] = [result];
         }
       }
     }
+  }
+
+  /// Add data and component when absent.
+  ///
+  /// 提供边的去重方法，当不存在时添加
+  Edge addEdge(E e, Graph graph) {
+    var sameEdge = graph.edges.where((edgeIn) => edgeIn == e).toList();
+    Edge edge;
+    if (sameEdge.isEmpty) {
+      edge = convertEdge(e, graph);
+      edgeAsGraphComponse(e, graph, edge);
+      graph.edges.add(edge);
+    } else {
+      edge = sameEdge.first;
+    }
+    return edge;
+  }
+
+  /// Add data and component when absent.
+  ///
+  /// 提供边的去重方法，当不存在时添加
+  Vertex addVertex(V v, Graph graph) {
+    Vertex vertex = convertVertex(v, graph);
+    var sameVertex =
+        graph.vertexes.where((edgeIn) => edgeIn == vertex).toList();
+    if (sameVertex.isEmpty) {
+      vertexAsGraphComponse(v, graph, vertex);
+      graph.vertexes.add(vertex);
+    } else {
+      vertex = sameVertex.first;
+    }
+    return vertex;
   }
 }
