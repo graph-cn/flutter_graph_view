@@ -44,6 +44,7 @@ export 'core/algorithm/decorator/coulomb_reverse_decorator.dart';
 export 'core/algorithm/decorator/coulomb_center_decorator.dart';
 export 'core/algorithm/decorator/coulomb_border_decorator.dart';
 export 'core/algorithm/decorator/time_counter_decorator.dart';
+export 'core/algorithm/decorator/persistence_decorator.dart';
 
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
