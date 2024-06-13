@@ -35,8 +35,10 @@ class PersistenceDecorator extends ForceDecorator {
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
     Vertex? cachedVertex = _positionMap[v];
-    if (cachedVertex == null || cachedVertex.position != v.position) {
+    if (cachedVertex == null || cachedVertex.position.x != v.position.x || cachedVertex.position.y != v.position.y ) {
       saveVertex(v);
     }
+    _positionMap[v.id] = v;
   }
+}
 }
