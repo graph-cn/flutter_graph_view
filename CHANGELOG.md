@@ -1,3 +1,11 @@
+## 1.1.0
+- feat: add interface to `GraphComponent`: addVertex, addEdge, mergeGraph
+
+### Behavior change:
+- interface change: add a graph parameter to `DataConvertor.convertGraph`
+    > 接口变更：为 convertGraph 添加一个graph参数
+
+
 ## 1.0.4+2
 - fix: prevent the addition of duplicate data.
 

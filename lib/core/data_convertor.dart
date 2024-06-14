@@ -26,7 +26,7 @@ abstract class DataConvertor<V, E> {
   /// Convert data struc from business to Graph.
   ///
   /// 将业务数据转换成 图数据，同时提取点跟线便于使用的数据格式。
-  Graph convertGraph(dynamic data);
+  Graph convertGraph(dynamic data, {Graph? graph});
 
   /// Create vertex and graph relationship in memory.
   ///
