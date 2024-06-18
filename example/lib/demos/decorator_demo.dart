@@ -83,6 +83,9 @@ class DecoratorDemo extends StatelessWidget {
       ),
       convertor: MapConvertor(),
       options: Options()
+        ..onVertexTapUp = ((vertex, event) {
+          vertex.cpn?.graphComponent?.mergeGraph(genData(vertex.id));
+        })
         ..enableHit = false
         ..panelDelay = const Duration(milliseconds: 500)
         ..graphStyle = (GraphStyle()
@@ -154,5 +157,36 @@ class DecoratorDemo extends StatelessWidget {
         )
       ],
     );
+  }
+
+  genData(srcId) {
+    var vertexes = <Map>{};
+    var edges = <Map>{};
+    var r = Random();
+    for (var i = 0; i < 5; i++) {
+      var dstId = r.nextInt(30) + 40;
+      var newTag = 'tag${r.nextInt(12) + 9}';
+      vertexes.add(
+        {
+          'id': 'node$dstId',
+          'tag': newTag,
+          'tags': [
+            newTag,
+            if (r.nextBool()) 'tag${r.nextInt(4)}',
+            if (r.nextBool()) 'tag${r.nextInt(8)}'
+          ],
+        },
+      );
+      edges.add({
+        'srcId': srcId,
+        'dstId': 'node$dstId',
+        'edgeName': 'edge${r.nextInt(3)}',
+        'ranking': DateTime.now().millisecond,
+      });
+    }
+    return {
+      'vertexes': vertexes,
+      'edges': edges,
+    };
   }
 }

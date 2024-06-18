@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 
 import 'demos/custom_shape_demo/execution_plan/execution_plan_demo.dart';
+import 'demos/persistence_demo.dart';
 import 'demos/vertex_font_style_demo.dart';
 import 'demos/decorator_demo.dart';
 import 'demos/force_directed_demo.dart';
@@ -30,6 +31,7 @@ class _ShowroomState extends State<Showroom>
 
   final List<String> tabNames = <String>[
     'DecoratorDemo',
+    'PersistenceDemo',
     'ForceDirected',
     'ExecutionPlan',
     'CircleLayout',
@@ -39,6 +41,7 @@ class _ShowroomState extends State<Showroom>
   ];
   final List<Widget> tabs = <Widget>[
     const DecoratorDemo(),
+    PersistenceDemo(),
     ForceDirectedDemo(),
     ExecutionPlanDemo(),
     CircleLayoutDemo(),

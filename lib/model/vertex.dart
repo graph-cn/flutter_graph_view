@@ -116,7 +116,7 @@ class Vertex<I> {
 
   @override
   String toString() {
-    return '$position';
+    return '$position, $radius';
   }
 
   /// Uniqueness based on primary key

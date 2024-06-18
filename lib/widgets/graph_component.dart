@@ -22,6 +22,7 @@ class GraphComponent extends FlameGame
 
   ValueNotifier<double> scale = ValueNotifier(1);
   // late final CameraComponent cameraComponent;
+  int legendCount = 0;
 
   GraphComponent({
     required this.data,
@@ -54,12 +55,49 @@ class GraphComponent extends FlameGame
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
     setDefaultVertexColor();
     algorithm.onGraphLoad(graph);
-    for (var edge in graph.edges) {
-      var ec = EdgeComponent(edge, graph, context)..scaleNotifier = scale;
+
+    graph.edges.forEach(_addEdge);
+    graph.vertexes.forEach(_addVertex);
+
+    options.graphStyle.graphColor(graph);
+  }
+
+  /// Add a vertex to the graph.
+  ///
+  /// 添加一个点到图中
+  addVertex(vdata) {
+    Vertex v = convertor.addVertex(vdata, graph);
+    _addVertex(v);
+  }
+
+  /// Add an edge to the graph.
+  ///
+  /// 添加一条边到图中
+  addEdge(edata) {
+    Edge e = convertor.addEdge(edata, graph);
+    _addEdge(e);
+  }
+
+  /// Merge the graph data.
+  ///
+  /// 合并图数据
+  void mergeGraph(graphData) {
+    var newGraph = convertor.convertGraph(graphData, graph: graph);
+    newGraph.vertexes.forEach(_addVertex);
+    newGraph.edges.forEach(_addEdge);
+  }
+
+  _addEdge(Edge edge) {
+    var ec = EdgeComponent(edge, graph, context)..scaleNotifier = scale;
+    if (edge.cpn == null) {
       edge.cpn = ec;
       world.add(ec);
     }
-    for (var vertex in graph.vertexes) {
+  }
+
+  _addVertex(Vertex vertex) {
+    if (vertex.cpn == null) {
+      setDefaultVertexColor();
       var vc = VertexComponent(
         vertex,
         graph,
@@ -70,16 +108,16 @@ class GraphComponent extends FlameGame
       )..scaleNotifier = scale;
       vertex.cpn = vc;
       world.add(vc);
+      algorithm.compute(vertex, graph);
+      vertex.colors = options.graphStyle.vertexColors(vertex);
+      createLegend();
     }
-
-    createLegend();
-    options.graphStyle.graphColor(graph);
   }
 
   setDefaultVertexColor() {
     var tagColorByIndex = options.graphStyle.tagColorByIndex;
     var needCount = graph.allTags.length - tagColorByIndex.length;
-    for (var i = 0; i < needCount; i++) {
+    for (var i = tagColorByIndex.length; i < needCount; i++) {
       tagColorByIndex.add(options.graphStyle.defaultColor()[0]);
     }
   }
@@ -155,17 +193,24 @@ class GraphComponent extends FlameGame
   void createLegend() {
     if (!options.useLegend) return;
     var graphStyle = options.graphStyle;
-    for (var i = 0; i < graph.allTags.length; i++) {
+    for (var i = legendCount; i < graph.allTags.length; i++) {
       var tag = graph.allTags[i];
 
       add(
         RectangleComponent.fromRect(
           Rect.fromLTWH(40, 50.0 + 30 * i, 30, 18),
-          paint: Paint()..color = graphStyle.colorByTag(tag, graph.allTags)!,
+          paint: Paint()
+            ..color = graphStyle.colorByTag(tag, graph.allTags) ??
+                (i < graphStyle.tagColorByIndex.length
+                    ? graphStyle.tagColorByIndex[i]
+                    : graphStyle.defaultColor()[0]),
         ),
       );
 
       add(TextComponent(text: tag, position: Vector2(40 + 40, 44.0 + 30 * i)));
+
+      legendCount = i;
     }
+    print(legendCount);
   }
 }

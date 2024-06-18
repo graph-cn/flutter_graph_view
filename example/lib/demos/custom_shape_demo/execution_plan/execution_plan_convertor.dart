@@ -57,13 +57,13 @@ class ExecutionPlanConvertor extends DataConvertor<ExecutionPlanNode, Map> {
   }
 
   @override
-  Graph convertGraph(data) {
+  Graph convertGraph(data, {Graph? graph}) {
     var result = Graph();
     result.data = data;
 
     if (data is ExecutionPlan) {
-      var vertexDataList = data.nodes ?? [];
-      var edgeDataList = <Map>[];
+      var vertexDataList = originVertexes(data);
+      var edgeDataList = originEdges(data);
       for (var v in vertexDataList) {
         Vertex vertex = convertVertex(v, result);
         result.vertexes.add(vertex);
@@ -81,4 +81,8 @@ class ExecutionPlanConvertor extends DataConvertor<ExecutionPlanNode, Map> {
     }
     return result;
   }
+
+  Iterable originVertexes(dynamic data) => data.nodes ?? [];
+
+  List originEdges(dynamic data) => <Map>[];
 }

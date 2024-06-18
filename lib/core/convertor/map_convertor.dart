@@ -55,13 +55,13 @@ class MapConvertor extends DataConvertor<Map, Map> {
   ///   "vertexes": [],
   /// }
   @override
-  Graph convertGraph(data) {
-    var result = Graph();
+  Graph convertGraph(data, {Graph? graph}) {
+    var result = graph ?? Graph();
     result.data = data;
 
     if (data is Map) {
-      var edgeDataList = data['edges'] as Iterable;
-      var vertexDataList = data['vertexes'] as Iterable;
+      var edgeDataList = originEdges(data);
+      var vertexDataList = originVertexes(data);
       for (var v in vertexDataList) {
         addVertex(v, result);
       }
@@ -71,4 +71,8 @@ class MapConvertor extends DataConvertor<Map, Map> {
     }
     return result;
   }
+
+  Iterable originVertexes(dynamic data) => data['vertexes'];
+
+  Iterable originEdges(dynamic data) => data['edges'];
 }
