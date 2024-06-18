@@ -13,13 +13,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 图构建器
 class GraphComponent extends FlameGame
-    with
-        PanDetector,
-        HoverCallbacks,
-        PanDetector,
-        ScrollDetector,
-        HasCollisionDetection,
-        ScaleDetector {
+    with HoverCallbacks, ScrollDetector, HasCollisionDetection, ScaleDetector {
   dynamic data;
   late GraphAlgorithm algorithm;
   late DataConvertor convertor;
@@ -103,13 +97,23 @@ class GraphComponent extends FlameGame
     }
   }
 
-  @override
-  void onPanUpdate(DragUpdateInfo info) {
+  /// Global delta can be got from `ScaleDetector`.
+  ///
+  /// ```
+  /// @override
+  /// void onScaleUpdate(ScaleUpdateInfo info) {
+  ///   onPanUpdate(info.delta.global);
+  /// }
+  /// ```
+  ///
+  /// Do NOT use `PanDetector` along with `ScaleDetector`.
+  /// Otherwise, Scale will not work on mobile. Because Scale events are based on Pan events in Flutter.
+  void onPanUpdate(Vector2 globalDelta) {
     if (graph.hoverVertex != null) {
-      algorithm.onDrag(graph.hoverVertex!, info, camera.viewfinder);
-      graph.hoverVertex?.cpn?.onDrag(info);
+      algorithm.onDrag(graph.hoverVertex!, globalDelta, camera.viewfinder);
+      graph.hoverVertex?.cpn?.onDrag(globalDelta);
     } else {
-      camera.viewfinder.position -= info.delta.global / camera.viewfinder.zoom;
+      camera.viewfinder.position -= globalDelta / camera.viewfinder.zoom;
     }
   }
 
