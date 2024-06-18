@@ -24,10 +24,9 @@ class RandomAlgorithm extends GraphAlgorithm {
   }
 
   @override
-  void onDrag(Vertex hoverVertex, info, Viewfinder viewfinder) {
-    var deltaPosition = info.delta.global;
+  void onDrag(Vertex hoverVertex, Vector2 globalDelta, Viewfinder viewfinder) {
     var zoom = viewfinder.zoom;
-    hoverVertex.position += deltaPosition / zoom;
+    hoverVertex.position += globalDelta / zoom;
     hoverVertex.cpn?.algorithmCompute(this);
   }
 
