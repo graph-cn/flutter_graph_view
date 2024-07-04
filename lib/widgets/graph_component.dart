@@ -135,6 +135,11 @@ class GraphComponent extends FlameGame
     }
   }
 
+  @override
+  void onScaleUpdate(ScaleUpdateInfo info) {
+    onPanUpdate(info.delta.global);
+  }
+
   /// Global delta can be got from `ScaleDetector`.
   ///
   /// ```
