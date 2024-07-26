@@ -91,13 +91,12 @@ abstract class GraphAlgorithm {
     }
   }
 
-  void onDrag(Vertex hoverVertex, DragUpdateInfo info, Viewfinder viewfinder) {
-    var deltaPosition = info.delta.global;
+  void onDrag(Vertex hoverVertex, Vector2 globalDelta, Viewfinder viewfinder) {
     var zoom = viewfinder.zoom;
-    hoverVertex.position += deltaPosition / zoom;
+    hoverVertex.position += globalDelta / zoom;
     for (var neighbor in hoverVertex.neighbors) {
       if (neighbor.degree < hoverVertex.degree) {
-        neighbor.position += deltaPosition / zoom;
+        neighbor.position += globalDelta / zoom;
       }
     }
   }
