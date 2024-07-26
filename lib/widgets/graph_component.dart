@@ -169,10 +169,16 @@ class GraphComponent extends FlameGame
 
   @override
   void onScroll(PointerScrollInfo info) {
+    var zoomCenter = info.eventPosition.widget;
+    var zoomDelta = info.scrollDelta.global.y.sign * zoomPerScrollUnit;
+    onZoom(zoomCenter: zoomCenter, zoomDelta: zoomDelta);
+  }
+
+  void onZoom({required Vector2 zoomCenter, double zoomDelta = 0}) {
     var vf = camera.viewfinder;
     var opg = vf.localToGlobal(Vector2.zero());
     var oz = vf.zoom;
-    var zoomDelta = info.scrollDelta.global.y.sign * zoomPerScrollUnit;
+
     if (vf.zoom + zoomDelta > 0) {
       vf.zoom += zoomDelta;
     }
@@ -181,14 +187,23 @@ class GraphComponent extends FlameGame
     if (vf.zoom <= options.scaleRange.x || vf.zoom >= options.scaleRange.y) {
       return;
     }
-
-    keepMousePosition(info, opg, zoomDelta, vf, oz);
+    keepMousePosition(null, opg, zoomDelta, vf, oz, zoomCenter);
   }
 
   /// ![](https://gitee.com/graph-cn/flutter_graph_view/raw/main/lib/widgets/GraphComponent_scale_explain.jpg)
-  void keepMousePosition(PointerScrollInfo info, Vector2 opg, double zoomDelta,
-      Viewfinder vf, double oz) {
-    var wp = info.eventPosition.widget;
+  void keepMousePosition(
+    PointerScrollInfo? info,
+    Vector2 opg,
+    double zoomDelta,
+    Viewfinder vf,
+    double oz, [
+    Vector2? wp,
+  ]) {
+    assert(
+      info != null || wp != null,
+      'scroll info and widgetPosition cannot be null at the same time',
+    );
+    wp = wp ?? info!.eventPosition.widget;
     var wpg = wp - opg;
     var wpgDelta = wpg * zoomDelta;
     var npg = vf.localToGlobal(Vector2.zero());
@@ -216,6 +231,5 @@ class GraphComponent extends FlameGame
 
       legendCount = i;
     }
-    print(legendCount);
   }
 }

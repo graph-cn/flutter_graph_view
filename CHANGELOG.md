@@ -1,5 +1,10 @@
+## 1.1.1
+- fix usage of both Scale and Pan on mobile platforms. ( [#12](https://github.com/graph-cn/flutter_graph_view/pull/12), via: [Mykyta Sadchenko](https://github.com/muknta))
+- feat: support zooming through gestures.
+
 ## 1.1.0
 - feat: add interface to `GraphComponent`: addVertex, addEdge, mergeGraph
+- feat: add implementation of PersistenceDecorator to store position of vertex. ([#10](https://github.com/graph-cn/flutter_graph_view/pull/10) [#11](https://github.com/graph-cn/flutter_graph_view/pull/11), via: [jersonal-com](https://github.com/jersonal-com))
 
 ### Behavior change:
 - interface change: add a graph parameter to `DataConvertor.convertGraph`

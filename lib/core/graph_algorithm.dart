@@ -4,7 +4,6 @@
 
 import 'dart:math';
 
-import 'package:flame/events.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
