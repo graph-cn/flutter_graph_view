@@ -112,4 +112,23 @@ class Options {
   ///
   /// @zh: overlay消失的延迟
   Duration? panelDelay;
+
+  /// @en: legend component builder
+  ///
+  /// @zh: 图例组件
+  PositionComponent Function(Color color, int i) legendBuilder = (color, i) {
+    return RectangleComponent.fromRect(Rect.fromLTWH(40, 50.0 + 30 * i, 30, 18),
+        paint: Paint()..color = color);
+  };
+
+  /// @en: default legend text builder
+  ///
+  /// @zh: 默认图例文字构建器
+  TextComponent Function(String tag, int i, Color color, Vector2 position)
+      legendTextBuilder = (tag, i, color, position) {
+    return TextComponent(
+      text: tag,
+      position: Vector2(position.x + 40, position.y - 6),
+    );
+  };
 }

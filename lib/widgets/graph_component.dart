@@ -216,18 +216,21 @@ class GraphComponent extends FlameGame
     for (var i = legendCount; i < graph.allTags.length; i++) {
       var tag = graph.allTags[i];
 
-      add(
-        RectangleComponent.fromRect(
-          Rect.fromLTWH(40, 50.0 + 30 * i, 30, 18),
-          paint: Paint()
-            ..color = graphStyle.colorByTag(tag, graph.allTags) ??
-                (i < graphStyle.tagColorByIndex.length
-                    ? graphStyle.tagColorByIndex[i]
-                    : graphStyle.defaultColor()[0]),
-        ),
-      );
+      var legendColor = graphStyle.colorByTag(tag, graph.allTags) ??
+          (i < graphStyle.tagColorByIndex.length
+              ? graphStyle.tagColorByIndex[i]
+              : graphStyle.defaultColor()[0]);
 
-      add(TextComponent(text: tag, position: Vector2(40 + 40, 44.0 + 30 * i)));
+      // add legend
+      // 添加图例
+      var legendItem = options.legendBuilder(legendColor, i);
+      add(legendItem);
+
+      // add legend text
+      // 添加图例文字
+      var legendText =
+          options.legendTextBuilder(tag, i, legendColor, legendItem.position);
+      add(legendText);
 
       legendCount = i;
     }

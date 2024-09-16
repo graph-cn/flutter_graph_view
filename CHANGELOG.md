@@ -1,3 +1,30 @@
+## 1.1.2
+- feat: support specifying legends and legend text build.
+    
+    example:
+    ```dart
+    Options()
+        ..legendBuilder = (color, i) { // default
+            return RectangleComponent.fromRect(
+                Rect.fromLTWH(40, 50.0 + 30 * i, 30, 18),
+                paint: Paint()..color = color,
+            );
+        }
+        ..legendTextBuilder = (tag, i, color, position) { // default
+            return TextComponent(
+                text: tag,
+                position: Vector2(position.x + 40, position.y - 6),
+                // position: Vector2(position.x + 40, position.y - 2),
+                // textRenderer: TextPaint(
+                //   style: TextStyle(
+                //     fontSize: 17.0,
+                //     color: Colors.white,
+                //   ),
+                // ),
+            );
+        }
+    ```
+
 ## 1.1.1
 - fix usage of both Scale and Pan on mobile platforms. ( [#12](https://github.com/graph-cn/flutter_graph_view/pull/12), via: [Mykyta Sadchenko](https://github.com/muknta))
 - feat: support zooming through gestures.
