@@ -1,5 +1,6 @@
 ## 1.1.3
 - fix: the edge overlap problem of multiple edge graphs with two identical nodes.
+- fix: Edge with the same parameters except for different edge type is misdiagnosed as the same edge.
 
 ## 1.1.2
 - feat: support specifying legends and legend text build.

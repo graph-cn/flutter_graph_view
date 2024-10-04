@@ -113,5 +113,6 @@ class Edge {
       (other is Edge &&
           other.ranking == ranking &&
           other.start == start &&
-          other.end == end);
+          other.end == end &&
+          other.edgeName == edgeName);
 }
