@@ -77,19 +77,22 @@ class Edge {
   double get computeIndex {
     var edgeList = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
     var idx = edgeList.indexOf(this);
+    var result = 0.0;
     if (edgeList.length.isOdd) {
       if (idx.isEven) {
-        return idx / 2;
+        result = idx / 2;
       } else {
-        return -(idx + 1) / 2;
+        result = -(idx + 1) / 2;
       }
     } else {
       if (idx.isEven) {
-        return idx / 2 + 0.5;
+        result = idx / 2 + 0.5;
       } else {
-        return -(idx - 1) / 2 - 0.5;
+        result = -(idx - 1) / 2 - 0.5;
       }
     }
+
+    return start.id.hashCode > end!.id.hashCode ? -result : result = result;
   }
 
   int get edgeIdx {

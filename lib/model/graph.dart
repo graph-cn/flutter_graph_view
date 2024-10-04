@@ -48,7 +48,20 @@ class Graph<ID> {
   /// 缓存所有的边类型
   List<String> allEdgeNames = [];
 
+  @Deprecated('Use edgesBetweenHash instead')
   Map<Vertex, Map<Vertex, List<Edge>>> edgesBetween = {};
+
+  static final String _split = '{__${DateTime.now().microsecondsSinceEpoch}__}';
+
+  /// When displaying the edge, the direction of the edge is not considered,
+  /// only the two nodes of the edge are considered,
+  /// so a hash table is used here to store the two nodes of the edge for calculating the index of the edge,
+  /// in a multi-graph with the same two nodes, the position of the edge can be determined according to the subscript.
+  ///
+  /// 在显示边时，不考虑边的方向，只考虑边的两个节点，
+  /// 所以这里使用了一个哈希表来存储边的两个节点，以便计算边的索引，
+  /// 在相同两个节点的多边图中，可以根据下标决定边的位置。
+  Map<String, List<Edge>> edgesBetweenHash = {};
 
   List<Vertex> get centerVertexes {
     return vertexes.where((element) => element.isCenter).toList();
@@ -56,6 +69,13 @@ class Graph<ID> {
 
   List<Edge> edgesFromTwoVertex(Vertex start, Vertex? end) {
     if (end == null) return [];
-    return edgesBetween[start]?[end] ?? edgesBetween[end]?[start] ?? [];
+    return edgesBetweenHash[edgesBetweenKey(start, end)] ?? [];
+  }
+
+  static String edgesBetweenKey(Vertex start, Vertex end) {
+    var key = start.id.hashCode > end.id.hashCode
+        ? '${end.id}$_split${start.id}'
+        : '${start.id}$_split${end.id}';
+    return key;
   }
 }

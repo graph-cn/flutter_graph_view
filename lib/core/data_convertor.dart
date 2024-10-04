@@ -71,27 +71,9 @@ abstract class DataConvertor<V, E> {
     if (end == null) return;
     var start = result.start;
 
-    if (g.edgesBetween[start] == null && g.edgesBetween[end] == null) {
-      g.edgesBetween[start] = {
-        end: [result]
-      };
-    } else {
-      if (g.edgesBetween[start] != null) {
-        if (g.edgesBetween[start]![end] != null &&
-            !g.edgesBetween[start]![end]!.contains(result)) {
-          g.edgesBetween[start]![end]!.add(result);
-        } else {
-          g.edgesBetween[start]![end] = [result];
-        }
-      } else if (g.edgesBetween[end] != null) {
-        if (g.edgesBetween[end]![start] != null &&
-            !g.edgesBetween[end]![start]!.contains(result)) {
-          g.edgesBetween[end]![start]!.add(result);
-        } else {
-          g.edgesBetween[end]![start] = [result];
-        }
-      }
-    }
+    var key = Graph.edgesBetweenKey(start, end);
+    var list = g.edgesBetweenHash.putIfAbsent(key, () => []);
+    if (!list.contains(result)) list.add(result);
   }
 
   /// Add data and component when absent.
