@@ -77,6 +77,7 @@ class EdgeComponent extends ShapeComponent
   /// 对被鼠标浮入的线增加显视宽度
   @override
   void onHoverEnter() {
+    if (graph.hoverVertex != null) return;
     paint.strokeWidth = 4;
     hitBox?.width = 4;
     gameRef.graph.hoverEdge = edge;
