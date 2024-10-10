@@ -1,6 +1,20 @@
 ## 1.1.3
+- feat: `EdgeLineShape` can append decorators.
+    - feat: 使 `EdgeLineShape` 可以追加装饰器。
+    ```dart
+        Options()
+            ..edgeShape = EdgeLineShape(
+                decorators: [
+                    DefaultEdgeDecorator(),
+                ],
+            )
+    ```
+
 - fix: the edge overlap problem of multiple edge graphs with two identical nodes.
 - fix: Edge with the same parameters except for different edge type is misdiagnosed as the same edge.
+- fix: correct the position of the two points of the edge.
+    - fix: 修正边的两个点的位置。
+- fix: the overlap issue of the data panel.
 
 ## 1.1.2
 - feat: support specifying legends and legend text build.

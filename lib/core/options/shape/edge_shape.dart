@@ -55,7 +55,7 @@ abstract class EdgeShape {
   /// Compute the line length by two vertex.
   ///
   /// 通过两个节点的坐标，计算线的长度。
-  double len(Edge edge) =>
+  static double len(Edge edge) =>
       edge.end == null || edge.start.cpn == null || edge.end!.cpn == null
           ? 10
           : Util.distance(edge.start.cpn!.position, edge.end!.cpn!.position);

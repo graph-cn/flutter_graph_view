@@ -10,10 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
+import 'edge_decorator.dart';
+
 /// The default edge shape impl.
 ///
 /// 默认使用 直线做边。
 class EdgeLineShape extends EdgeShape {
+  List<EdgeDecorator>? decorators;
+  EdgeLineShape({this.decorators});
+
   @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
     if (edge.isLoop) {
@@ -24,33 +29,42 @@ class EdgeLineShape extends EdgeShape {
   }
 
   void vertexDifferent(Edge edge, ui.Canvas canvas, ui.Paint paint) {
-    var startPoint = Offset.zero;
-    var endPoint = Offset(len(edge), paint.strokeWidth);
+    var endPoint = Offset(EdgeShape.len(edge), paint.strokeWidth);
 
-    var distance = Util.distance(edge.cpn!.position, edge.end!.position);
+    var distance = Util.distance(
+      Vector2(0, 0),
+      Vector2(endPoint.dx, 0),
+    );
 
     var edgesBetweenTwoVertex =
         edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [];
 
+    var edgeCount = edgesBetweenTwoVertex.length;
+
     /// 法线点
     var normalPoint = Vector2(
       distance / 2,
-      edge.computeIndex * distance / edgesBetweenTwoVertex.length * 2,
+      edge.computeIndex * distance / edgeCount * 2 + edge.cpn!.size.y / 2,
     );
 
     Path path = Path();
+    path.moveTo(0, edge.cpn!.size.y / 2);
     path.cubicTo(
-      startPoint.dx,
-      startPoint.dy,
+      0,
+      edge.cpn!.size.y / 2,
       normalPoint.x,
       normalPoint.y,
       endPoint.dx,
-      endPoint.dy,
+      edge.cpn!.size.y / 2,
     );
     // path.extendWithPath(path, Offset(0, paint.strokeWidth));
     edge.path = path;
 
     canvas.drawPath(path, paint);
+
+    decorators?.forEach((decorator) {
+      decorator.decorate(edge, canvas, paint, distance, edgeCount);
+    });
   }
 
   void vertexSame(Edge edge, ui.Canvas canvas, ui.Paint paint) {
@@ -81,7 +95,7 @@ class EdgeLineShape extends EdgeShape {
     paint.strokeWidth /= edge.cpn!.game.camera.viewfinder.zoom;
     paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
-    var endPoint = Offset(len(edge), paint.strokeWidth);
+    var endPoint = Offset(EdgeShape.len(edge), paint.strokeWidth);
     var hoverOpacity = edge.cpn?.gameRef.options.graphStyle.hoverOpacity ?? .5;
     if (isWeaken(edge)) {
       paint.shader = ui.Gradient.linear(
