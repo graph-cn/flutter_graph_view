@@ -1,3 +1,6 @@
+## 1.1.3+1
+- fix: the crash issue when force is not a number [ForceMotionDecorator].
+
 ## 1.1.3
 - feat: `EdgeLineShape` can append decorators.
     - feat: 使 `EdgeLineShape` 可以追加装饰器。

@@ -31,9 +31,13 @@ class ForceMotionDecorator extends GraphAlgorithm {
         // F = m * a
         var f = getForce(v);
         var a = f / v.radius;
-        // s = 1/2 * a * t^2
-        var s = a * 0.5 * unitTime;
-        v.position += s;
+        if (a.x.isNaN || a.y.isNaN) {
+          return;
+        } else {
+          // s = 1/2 * a * t^2
+          var s = a * 0.5 * unitTime;
+          v.position += s;
+        }
       }
     }
   }
