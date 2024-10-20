@@ -1,3 +1,15 @@
+## 1.1.4
+- feat: using tag similarity as a layout element.
+    example:
+    ```dart
+    /// @en: Make the repulsion between similar tags smaller
+    /// 
+    /// @zh: 使相似标签之间的排斥力变小
+    CoulombReverseDecorator(sameTagsFactor: 0.8), 
+    ```
+
+- feat: add `dragged` property to `VertexComponent` to indicate whether the vertex is being dragged.
+
 ## 1.1.3+1
 - fix: the crash issue when force is not a number [ForceMotionDecorator].
 

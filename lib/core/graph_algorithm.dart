@@ -50,9 +50,14 @@ abstract class GraphAlgorithm {
   void compute(Vertex v, Graph graph) {
     if (decorators != null) {
       for (var decorator in decorators!) {
+        if (!decorator.needContinue(v)) return;
         decorator.compute(v, graph);
       }
     }
+  }
+
+  bool needContinue(Vertex v) {
+    return true;
   }
 
   /// Called when the graph is loaded.

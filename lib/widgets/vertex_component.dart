@@ -30,6 +30,7 @@ class VertexComponent extends ShapeComponent
   Options? options;
   GraphComponent? graphComponent;
   ShapeHitbox? hitBox;
+  bool dragged;
 
   VertexComponent(
     this.vertex,
@@ -38,6 +39,7 @@ class VertexComponent extends ShapeComponent
     this.algorithm, {
     this.options,
     this.graphComponent,
+    this.dragged = false,
   }) : super(
           position: vertex.position,
           anchor: Anchor.center,
@@ -135,11 +137,13 @@ class VertexComponent extends ShapeComponent
     }
   }
 
+  @mustCallSuper
   void onDrag(Vector2 globalDelta) {
     if (hasPanel) {
       gameRef.overlays.remove(overlayName);
       gameRef.overlays.add(overlayName);
     }
+    dragged = true;
   }
 
   @override
