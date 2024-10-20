@@ -16,10 +16,13 @@ class HookeDecorator extends ForceDecorator {
     this.length = 100,
     this.k = 0.003,
     super.decorators,
+    super.sameTagsFactor = 1,
   });
 
   Vector2 hooke(Vertex s, Vertex d, Graph graph) {
-    if (d.degree >= s.degree || graph.hoverVertex == d) {
+    if (d.degree >= s.degree ||
+        graph.hoverVertex == d ||
+        d.cpn?.properties['pinPosition'] != null) {
       var delta = s.position - d.position;
       var distance = delta.length;
       var force = -(distance - length - log(s.degree + d.degree)) * k;

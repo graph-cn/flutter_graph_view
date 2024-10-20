@@ -13,6 +13,7 @@ class CoulombDecorator extends ForceDecorator {
   double k;
   CoulombDecorator({
     this.k = 10,
+    super.sameTagsFactor = 1,
     super.decorators,
   });
 

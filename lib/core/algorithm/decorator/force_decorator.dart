@@ -10,7 +10,11 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 计算顶点的总力的装饰器。
 class ForceDecorator extends GraphAlgorithm {
-  ForceDecorator({super.decorators});
+  double sameTagsFactor;
+  ForceDecorator({
+    super.decorators,
+    this.sameTagsFactor = 1,
+  });
 
   @override
   void onLoad(Vertex v) {
@@ -29,7 +33,7 @@ class ForceDecorator extends GraphAlgorithm {
     if (v.position == Vector2.zero() || d.position == Vector2.zero()) return;
     var forceMap = v.cpn!.properties['forceMap']
         as Map<GraphAlgorithm, Map<Vertex, Vector2>>;
-    forceMap[this]![d] = force;
+    forceMap[this]![d] = computeSameTagsFactor(force, v, d);
   }
 
   _setForce(Vertex v) {
@@ -54,5 +58,15 @@ class ForceDecorator extends GraphAlgorithm {
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
     _setForce(v);
+  }
+
+  Vector2 computeSameTagsFactor(Vector2 f, Vertex v, Vertex b) {
+    if (v.tags != null && b.tags != null) {
+      var sameTags = v.tags!.where((element) => b.tags!.contains(element));
+      if (sameTags.isNotEmpty) {
+        f = f * sameTagsFactor;
+      }
+    }
+    return f;
   }
 }

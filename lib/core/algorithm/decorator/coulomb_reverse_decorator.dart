@@ -14,6 +14,7 @@ class CoulombReverseDecorator extends ForceDecorator {
   double k;
   CoulombReverseDecorator({
     this.k = 100000,
+    super.sameTagsFactor = 1,
     super.decorators,
   });
 
