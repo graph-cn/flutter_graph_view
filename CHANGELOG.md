@@ -1,4 +1,5 @@
 ## 1.1.4
+- feat: support image vertex.
 - feat: using tag similarity as a layout element.
     example:
     ```dart

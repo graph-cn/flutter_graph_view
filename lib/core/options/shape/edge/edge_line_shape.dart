@@ -10,14 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
-import 'edge_decorator.dart';
-
 /// The default edge shape impl.
 ///
 /// 默认使用 直线做边。
 class EdgeLineShape extends EdgeShape {
-  List<EdgeDecorator>? decorators;
-  EdgeLineShape({this.decorators});
+  EdgeLineShape({super.decorators});
 
   @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {

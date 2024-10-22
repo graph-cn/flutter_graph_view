@@ -65,11 +65,14 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     paragraph
         .layout(ui.ParagraphConstraints(width: hpainter.width / zoom * 1.1));
 
+    var tw = paragraph.width;
+    var vw = vertex.cpn!.size.x;
+
     /// 6.绘制
     canvas.drawParagraph(
         paragraph,
         ui.Offset(
-          -hpainter.width / zoom / 2.5,
+          (vw - tw) / 2,
           -vertex.radiusZoom - 20 / zoom,
         ));
   }

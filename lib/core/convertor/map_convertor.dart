@@ -23,6 +23,7 @@ class MapConvertor extends DataConvertor<Map, Map> {
     vertex.id = v['id'];
     vertex.tag = v['tag'];
     vertex.tags = v['tags'];
+    vertex.data = v['data'];
     return vertex;
   }
 

@@ -11,7 +11,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 默认使用 圆型做节点。
 class VertexCircleShape extends VertexShape {
-  VertexCircleShape({VertexTextRenderer? textRenderer}) {
+  VertexCircleShape({VertexTextRenderer? textRenderer, super.decorators}) {
     super.textRenderer = textRenderer ?? VertexTextRendererImpl(shape: this);
   }
 
@@ -27,6 +27,9 @@ class VertexCircleShape extends VertexShape {
         true && vertex.cpn!.game.camera.viewfinder.zoom > 0.3) {
       textRenderer?.render(vertex, canvas, paint);
     }
+    decorators?.forEach((decorator) {
+      decorator.decorate(vertex, canvas, paint, paintLayers);
+    });
   }
 
   @override

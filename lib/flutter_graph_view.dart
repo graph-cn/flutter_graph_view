@@ -23,7 +23,9 @@ export 'package:flutter_graph_view/core/convertor/map_convertor.dart';
 export 'core/options.dart';
 export 'core/graph_algorithm.dart';
 export 'core/options/shape/vertex_shape.dart';
+export 'core/options/shape/vertex/vertex_decorator.dart';
 export 'core/options/shape/edge_shape.dart';
+export 'core/options/shape/edge/edge_decorator.dart';
 export 'core/options/text/vertex_text_renderer.dart';
 
 /// interfaces' default impl
@@ -45,6 +47,7 @@ export 'core/algorithm/decorator/coulomb_center_decorator.dart';
 export 'core/algorithm/decorator/coulomb_border_decorator.dart';
 export 'core/algorithm/decorator/time_counter_decorator.dart';
 export 'core/algorithm/decorator/persistence_decorator.dart';
+export 'core/algorithm/decorator/pin_decorator.dart';
 
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';

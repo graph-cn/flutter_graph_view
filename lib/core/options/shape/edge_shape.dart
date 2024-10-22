@@ -12,6 +12,9 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 用于自定义边的UI
 abstract class EdgeShape {
+  List<EdgeDecorator>? decorators;
+  EdgeShape({this.decorators});
+
   /// render the edge shape to canvas by data.
   ///
   /// 通过边数据将自定义的图形绘制到画布中。

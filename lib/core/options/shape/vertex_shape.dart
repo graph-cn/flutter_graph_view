@@ -10,6 +10,9 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 用于自定义节点的UI。
 abstract class VertexShape {
+  VertexShape({this.decorators});
+  List<VertexDecorator>? decorators;
+
   /// render the vertex shape to canvas by data.
   ///
   /// 通过节点数据将自定义的图形绘制到画布中。

@@ -91,6 +91,8 @@ class Vertex<I> {
     return cpn == null ? radius : radius / cpn!.game.camera.viewfinder.zoom;
   }
 
+  double get zoom => cpn!.game.camera.viewfinder.zoom;
+
   Vertex();
 
   VertexComponent? cpn;

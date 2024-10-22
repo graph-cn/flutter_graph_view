@@ -108,6 +108,11 @@ class Options {
   /// @zh: 顶点文字获取器
   String Function(Vertex) textGetter = (Vertex vertex) => '${vertex.id}';
 
+  /// @en: the url getter of vertex image.
+  ///
+  /// @zh: 顶点图片获取器
+  String? Function(Vertex) imgUrlGetter = (Vertex vertex) => null;
+
   /// @en: the delay of overlay disappear.
   ///
   /// @zh: overlay消失的延迟
