@@ -43,6 +43,7 @@ class VertexComponent extends ShapeComponent
   }) : super(
           position: vertex.position,
           anchor: Anchor.center,
+          priority: 1,
         );
 
   final Map<String, dynamic> properties = {};
