@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// The reverse usage of Coulomb's law,
@@ -12,8 +13,17 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 库仑定律的反向用法，度越多，带电越少，互斥力越弱
 class CoulombReverseDecorator extends ForceDecorator {
   double k;
+
+  Widget Function(CoulombReverseDecorator)? handleOverlay;
+
+  @override
+  Widget Function()? get verticalOverlay =>
+      handleOverlay != null ? () => handleOverlay!(this) : null;
+
   CoulombReverseDecorator({
     this.k = 100000,
+    this.handleOverlay,
+    super.sameSrcAndDstFactor = 1,
     super.sameTagsFactor = 1,
     super.decorators,
   });
@@ -30,6 +40,7 @@ class CoulombReverseDecorator extends ForceDecorator {
         var force =
             k * (1 / v.radius) * (1 / b.radius) / max((distance * distance), 1);
         var f = delta * force;
+        f = f * computeSameSrcAndDstFactor(v, b);
         setForceMap(v, b, f);
       }
     }

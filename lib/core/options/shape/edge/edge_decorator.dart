@@ -49,7 +49,9 @@ class DefaultEdgeDecorator extends EdgeDecorator {
     var j = nToEnd * ((edge.end!.radiusZoom + 10) / arrowBaseLineLength);
     var srcToEndI = end - i;
     var srcToEndJ = end - j;
-
+    if (srcToEndJ.isNaN || srcToEndI.isNaN) {
+      return;
+    }
     canvas.drawLine(srcToEndI.toOffset(), srcToEndJ.toOffset(), paint);
   }
 

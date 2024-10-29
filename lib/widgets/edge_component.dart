@@ -25,7 +25,7 @@ class EdgeComponent extends ShapeComponent
 
   EdgeComponent(this.edge, this.graph, this.context)
       : super(
-          position: edge.start.position,
+          position: edge.start.cpn?.position ?? Vector2.zero(),
           anchor: Anchor.centerLeft,
         );
 

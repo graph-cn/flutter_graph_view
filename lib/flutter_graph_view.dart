@@ -30,6 +30,7 @@ export 'core/options/text/vertex_text_renderer.dart';
 
 /// interfaces' default impl
 export 'core/algorithm/random_algorithm.dart';
+export 'core/algorithm/random_or_persistence_algorithm.dart';
 export 'core/algorithm/force_directed.dart';
 export 'core/algorithm/circle_layout.dart';
 
@@ -48,10 +49,15 @@ export 'core/algorithm/decorator/coulomb_border_decorator.dart';
 export 'core/algorithm/decorator/time_counter_decorator.dart';
 export 'core/algorithm/decorator/persistence_decorator.dart';
 export 'core/algorithm/decorator/pin_decorator.dart';
+export 'core/algorithm/decorator/pause_decorator.dart';
+export 'core/algorithm/decorator/graph_route_decorator.dart';
 
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
 export 'core/options/text/vertex_text_renderer_impl.dart';
+
+/// default overlay builders
+export 'core/dashboard/k_default_overlay_builder.dart';
 
 export 'core/options/style/graph_style.dart';
 

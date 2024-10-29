@@ -41,7 +41,7 @@ class _ShowroomState extends State<Showroom>
   ];
   final List<Widget> tabs = <Widget>[
     const DecoratorDemo(),
-    PersistenceDemo(),
+    const PersistenceDemo(),
     ForceDirectedDemo(),
     ExecutionPlanDemo(),
     CircleLayoutDemo(),
@@ -80,6 +80,7 @@ class _ShowroomState extends State<Showroom>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
       home: Scaffold(
         body: Column(

@@ -48,6 +48,13 @@ class Vertex<I> {
   /// 获取当前节点的邻居节点。
   List<Vertex<I>> get neighbors => [...nextVertexes, ...prevVertexes];
 
+  /// get the neighbor vertexes of this vertex.
+  ///
+  /// 获取当前节点与另一个节点的共同邻居节点。
+  Set<Vertex<I>> sameNeighbors(Vertex<I> vertex) {
+    return neighbors.toSet().intersection(vertex.neighbors.toSet());
+  }
+
   /// The degree of this vertex.
   /// 当前节点总的【度】数量
   int _degree = 0;
@@ -130,4 +137,10 @@ class Vertex<I> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) || (other is Vertex && other.id == id);
+
+  double angle(Vertex v, Vertex b) {
+    var vc = v.position - position;
+    var bc = b.position - position;
+    return vc.angleTo(bc);
+  }
 }

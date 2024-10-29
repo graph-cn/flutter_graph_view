@@ -7,48 +7,50 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
+Map<String, Vertex> vertexStorage = {};
+
 class DecoratorDemo extends StatelessWidget {
   const DecoratorDemo({super.key});
+  saveVertex(Vertex v) {
+    vertexStorage[v.id as String] = v;
+  }
+
+  Map<String, Vertex?> loadVertex() {
+    return vertexStorage;
+  }
 
   @override
   Widget build(BuildContext context) {
     var vertexes = <Map>{};
     var r = Random();
+
     for (var i = 0; i < 50; i++) {
+      var t = r.nextInt(9);
       vertexes.add(
         {
           'id': 'node$i',
-          'tag': 'tag${r.nextInt(9)}',
+          'tag': 'tag$t',
           'tags': [
-            'tag${r.nextInt(9)}',
-            if (r.nextBool()) 'tag${r.nextInt(4)}',
-            if (r.nextBool()) 'tag${r.nextInt(8)}'
+            'tag$t',
           ],
-        },
-      );
-    }
-    for (var i = 0; i < 50; i++) {
-      vertexes.add(
-        {
-          'id': 'node$i',
-          'tag': 'tag${r.nextInt(9)}',
-          'tags': [
-            'tag${r.nextInt(9)}',
-            if (r.nextBool()) 'tag${r.nextInt(4)}',
-            if (r.nextBool()) 'tag${r.nextInt(8)}'
-          ],
+          'data': {
+            // 'img':
+            //     'https://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEKcbaToty539YVticyVn8SibszFFmibwjr0X9xgPwRUHCh4tOT4MKaVEMItc8bn7VsZmqKDiaSHCKfF391x0GwVOFjuBNibK37Dg6xribBtYEXP4Jzg/132'
+          },
         },
       );
     }
     var edges = <Map>{};
 
     for (var i = 0; i < 50; i++) {
-      edges.add({
-        'srcId': 'node${i % 8}',
-        'dstId': 'node$i',
-        'edgeName': 'edge${r.nextInt(3)}',
-        'ranking': DateTime.now().millisecond,
-      });
+      if (i % 4 != i) {
+        edges.add({
+          'srcId': 'node${i % 4}',
+          'dstId': 'node$i',
+          'edgeName': 'edge${r.nextInt(3)}',
+          'ranking': r.nextInt(DateTime.now().millisecond),
+        });
+      }
     }
 
     var data = {
@@ -59,14 +61,31 @@ class DecoratorDemo extends StatelessWidget {
     /// Your can use different decorators to get different effects.
     // ignore: unused_local_variable
     var decorators2 = [
-      CoulombDecorator(),
-      HookeDecorator(),
-      HookeCenterDecorator(),
+      PersistenceDecorator(saveVertex, loadVertex),
+      GraphRouteDecorator(),
+      PauseDecorator(),
+      PinDecorator(),
+      CoulombReverseDecorator(
+        sameTagsFactor: 0.8,
+        sameSrcAndDstFactor: 10,
+        handleOverlay: kCoulombReserseOverlayBuilder(),
+      ),
+      // HookeCenterDecorator(),
+      HookeDecorator(
+        length: 20,
+        handleOverlay: kHookeOverlayBuilder(),
+        degreeFactor: (l, d) => l + d * 10,
+      ),
+      HookeBorderDecorator(
+        handleOverlay: kHookeBorderOverlayBuilder(),
+        alwaysInScreen: false,
+      ),
       ForceDecorator(),
       ForceMotionDecorator(),
       TimeCounterDecorator(),
     ];
 
+    // ignore: unused_local_variable
     var decorators1 = [
       CoulombDecorator(),
       HookeDecorator(),
@@ -78,8 +97,8 @@ class DecoratorDemo extends StatelessWidget {
     ];
     return FlutterGraphWidget(
       data: data,
-      algorithm: RandomAlgorithm(
-        decorators: decorators1,
+      algorithm: RandomOrPersistenceAlgorithm(
+        decorators: decorators2,
       ),
       convertor: MapConvertor(),
       options: Options()
@@ -104,10 +123,19 @@ class DecoratorDemo extends StatelessWidget {
             Colors.deepOrange.shade200,
           ])
         ..useLegend = true // default true
+        ..imgUrlGetter = imgUrlGetter
         ..edgePanelBuilder = edgePanelBuilder
         ..vertexPanelBuilder = vertexPanelBuilder
-        ..edgeShape = EdgeLineShape() // default is EdgeLineShape.
-        ..vertexShape = VertexCircleShape(), // default is VertexCircleShape.
+        ..edgeShape = EdgeLineShape(
+          decorators: [
+            DefaultEdgeDecorator(),
+          ],
+        ) // default is EdgeLineShape.
+        ..vertexShape = VertexCircleShape(
+          decorators: [
+            VertexImgDecorator(),
+          ],
+        ), // default is VertexCircleShape.
     );
   }
 
@@ -181,12 +209,16 @@ class DecoratorDemo extends StatelessWidget {
         'srcId': srcId,
         'dstId': 'node$dstId',
         'edgeName': 'edge${r.nextInt(3)}',
-        'ranking': DateTime.now().millisecond,
+        'ranking': 0,
       });
     }
     return {
       'vertexes': vertexes,
       'edges': edges,
     };
+  }
+
+  String? imgUrlGetter(Vertex p1) {
+    return p1.data['data']?['img'];
   }
 }

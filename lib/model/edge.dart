@@ -101,6 +101,12 @@ class Edge {
     return idx;
   }
 
+  double get edgeIdxRatio {
+    var edgeList = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var ratio = edgeList.indexOf(this) / edgeList.length;
+    return ratio;
+  }
+
   /// Uniqueness based on primary key of triple.
   ///
   /// 只取三元组主键作为唯一性的依据

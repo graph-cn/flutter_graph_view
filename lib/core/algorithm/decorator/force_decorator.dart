@@ -10,9 +10,11 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 计算顶点的总力的装饰器。
 class ForceDecorator extends GraphAlgorithm {
+  double? sameSrcAndDstFactor;
   double sameTagsFactor;
   ForceDecorator({
     super.decorators,
+    this.sameSrcAndDstFactor,
     this.sameTagsFactor = 1,
   });
 
@@ -68,5 +70,14 @@ class ForceDecorator extends GraphAlgorithm {
       }
     }
     return f;
+  }
+
+  double computeSameSrcAndDstFactor(Vertex v, Vertex b) {
+    // 从 neighbors 中找到相同起止点
+    var vn = [...v.prevVertexes]..removeWhere((rv) => rv == v);
+    var bn = [...b.prevVertexes]..removeWhere((rv) => rv == b);
+    vn.removeWhere((rv) => !bn.contains(rv));
+    if (vn.isEmpty) return 1;
+    return pow(sameSrcAndDstFactor ?? 1, vn.length - 1).toDouble();
   }
 }

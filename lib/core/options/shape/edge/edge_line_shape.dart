@@ -44,6 +44,9 @@ class EdgeLineShape extends EdgeShape {
       edge.computeIndex * distance / edgeCount * 2 + edge.cpn!.size.y / 2,
     );
 
+    if (normalPoint.isNaN) {
+      return;
+    }
     Path path = Path();
     path.moveTo(0, edge.cpn!.size.y / 2);
     path.cubicTo(
@@ -71,8 +74,8 @@ class EdgeLineShape extends EdgeShape {
   }
 
   Path loopPath(Edge edge, [double minusRadius = 0]) {
-    var idx = edge.edgeIdx;
-    var radius = (idx + 1) * edge.start.radius * 1.5;
+    var ratio = edge.edgeIdxRatio;
+    var radius = ratio * edge.start.radius * 5 + edge.start.radiusZoom;
     Path path = Path();
     path.addArc(
       Rect.fromCircle(

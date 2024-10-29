@@ -9,7 +9,7 @@ import 'data.dart';
 /// 执行计划的布局逻辑与流程图类似
 class FlowLayout extends GraphAlgorithm {
   double rowGap = 40;
-  double colGap = 30;
+  double colGap = 10;
   double sameParentGap = 10;
 
   List<int> nodeOrder = [];
@@ -58,7 +58,15 @@ class FlowLayout extends GraphAlgorithm {
   /// 一次性布局完成时，不需要重复刷新图像信息，[compute]同样给上空实现
   @override
   // ignore: must_call_super
-  void compute(Vertex v, Graph graph) {}
+  bool? compute(Vertex v, Graph graph) {
+    // v.cpn?.game.pauseEngine();
+    // if (decorators != null) {
+    //   for (var decorator in decorators!) {
+    //     decorator.compute(v, graph);
+    //   }
+    // }
+    return true;
+  }
 
   /// 建立结点的缓存，更快通过 id 获取到执行计划数据
   void fillCache(ExecutionPlan plan) {
@@ -99,7 +107,9 @@ class FlowLayout extends GraphAlgorithm {
       var sameLevelParent = children[i];
       var nextLevel = <List<int>>[];
       for (int j = 0; j < sameLevelParent.length; j++) {
-        for (int k = 0; k < sameLevelParent[j].length; k++) {
+        for (int k = 0;
+            j < sameLevelParent.length && k < sameLevelParent[j].length;
+            k++) {
           var sameParent = <int>[];
           var parentId = sameLevelParent[j][k];
           plan.nodes?.forEach((n) {
@@ -111,6 +121,10 @@ class FlowLayout extends GraphAlgorithm {
           if (sameParent.isNotEmpty && !nextLevel.deepContains(sameParent)) {
             nextLevel.add(sameParent);
           }
+          // if (sameLevelParent.deepContains(sameParent)) {
+          //   sameLevelParent
+          //       .removeWhere((e) => e.toString() == sameParent.toString());
+          // }
         }
       }
       if (nextLevel.isNotEmpty && !children.deepContains(nextLevel)) {
@@ -139,21 +153,25 @@ class FlowLayout extends GraphAlgorithm {
 
     double topOffset = 80;
     for (int i = 0; i < children.length; i++) {
+      var child = children[i];
+      var last = null;
       double leftOffset = maxWidth / 2;
       double maxHeight = 0;
-      leftOffset -= (rowMaxWidth[i] -
-              graph.keyCache[children[i].first.first]!.size!.width) /
-          2;
-      for (int j = 0; j < children[i].length; j++) {
-        for (int k = 0; k < children[i][j].length; k++) {
-          var vtx = graph.keyCache[nodeCache[children[i][j][k]]!.id!]!;
+      leftOffset -=
+          (rowMaxWidth[i] - graph.keyCache[child.first.first]!.size!.width) / 2;
+      for (int j = 0; j < child.length; j++) {
+        for (int k = 0; k < child[j].length; k++) {
+          var vtx = graph.keyCache[nodeCache[child[j][k]]!.id!]!;
           // 先赋值，再累加
-          vtx.position = Vector2(leftOffset, topOffset);
-          leftOffset += vtx.size!.width;
+          if (last != null) {
+            leftOffset += (last.size!.width + vtx.size!.width) * 0.5;
+          }
           leftOffset += sameParentGap;
           if (vtx.size!.height > maxHeight) {
             maxHeight = vtx.size!.height;
           }
+          vtx.position = Vector2(leftOffset + 30, topOffset);
+          last = vtx;
         }
         leftOffset += colGap;
       }

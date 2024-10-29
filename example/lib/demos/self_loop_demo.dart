@@ -26,7 +26,7 @@ class SelfLoopDemo extends StatelessWidget {
     ]);
     var edges = <Map>{};
 
-    for (var i = 0; i < 18; i++) {
+    for (var i = 0; i < 300; i++) {
       edges.add({
         'srcId': 'node',
         'dstId': 'node${i.isEven ? '2' : ''}',

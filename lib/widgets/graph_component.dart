@@ -39,10 +39,12 @@ class GraphComponent extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    algorithm.beforeLoad(data);
     camera.viewfinder.anchor = Anchor.topLeft;
     WidgetsBinding.instance.addPostFrameCallback((t) {
       var size = (context.findRenderObject() as RenderBox).size;
       algorithm.$size.value = Size(size.width, size.height);
+      addControllerOverlays(size);
       refreshData(data);
     });
   }
@@ -81,7 +83,8 @@ class GraphComponent extends FlameGame
   /// Merge the graph data.
   ///
   /// 合并图数据
-  void mergeGraph(graphData) {
+  void mergeGraph(graphData, {bool manual = true}) {
+    if (manual) algorithm.beforeMerge(graphData);
     var newGraph = convertor.convertGraph(graphData, graph: graph);
     newGraph.vertexes.forEach(_addVertex);
     newGraph.edges.forEach(_addEdge);
@@ -234,5 +237,179 @@ class GraphComponent extends FlameGame
 
       legendCount = i;
     }
+  }
+
+  void addControllerOverlays(Size size) {
+    addHorizontalOverlays(size);
+    addVerticalOverlays(size);
+    addVertexTapUpPanel(size);
+  }
+
+  void showVertexTapUpPanel() {
+    if (overlays.activeOverlays.contains('verticalController')) {
+      return;
+    }
+    overlays.add('vertexTapUpPanel');
+  }
+
+  void hideVertexTapUpPanel() {
+    if (overlays.activeOverlays.contains('vertexTapUpPanel')) {
+      overlays.remove('vertexTapUpPanel');
+    }
+  }
+
+  void addHorizontalOverlays(Size size) {
+    overlays.addEntry('horizontalController', (_, game) {
+      return Stack(
+        children: [
+          Positioned(
+            top: 0,
+            right: 0,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: size.width,
+                maxHeight: options.horizontalControllerHeight,
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ...(algorithm.horizontalOverlays(
+                          world: world,
+                          rootAlg: algorithm,
+                          graphComponent: this,
+                        ) ??
+                        []),
+                    if (algorithm
+                            .verticalOverlays(
+                                world: world,
+                                rootAlg: algorithm,
+                                graphComponent: this)
+                            ?.isNotEmpty ==
+                        true)
+                      IconButton(
+                        onPressed: () {
+                          if (overlays.activeOverlays
+                              .contains('verticalController')) {
+                            overlays.remove('verticalController');
+                          } else {
+                            if (overlays.activeOverlays
+                                .contains('vertexTapUpPanel')) {
+                              overlays.remove('vertexTapUpPanel');
+                            }
+                            overlays.add('verticalController');
+                          }
+                        },
+                        icon: const Icon(Icons.tune),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+    });
+    overlays.add('horizontalController');
+  }
+
+  void addVertexTapUpPanel(Size size) {
+    if (options.vertexTapUpPanel != null) {
+      overlays.addEntry('vertexTapUpPanel', (_, game) {
+        return Stack(
+          children: [
+            Positioned(
+              right: 0,
+              top: options.horizontalControllerHeight,
+              bottom: 10,
+              child: ListenableBuilder(
+                listenable: algorithm.$size,
+                builder: (context, child) {
+                  return ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: size.height,
+                      maxWidth: options.vertexTapUpPanelWidth,
+                    ),
+                    child: Listener(
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: ColoredBox(
+                            color: Colors.grey.withOpacity(0.1),
+                            child: options.vertexTapUpPanel,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Positioned(
+              right: 8,
+              top: options.horizontalControllerHeight,
+              child: IconButton(
+                onPressed: hideVertexTapUpPanel,
+                icon: const Icon(Icons.close),
+              ),
+            )
+          ],
+        );
+      });
+    }
+  }
+
+  void addVerticalOverlays(Size size) {
+    overlays.addEntry('verticalController', (_, game) {
+      return Stack(
+        children: [
+          Positioned(
+            right: 0,
+            top: options.horizontalControllerHeight,
+            bottom: 10,
+            child: ListenableBuilder(
+              listenable: algorithm.$size,
+              builder: (context, child) {
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: size.height,
+                    maxWidth: options.verticalControllerWidth,
+                  ),
+                  child: Listener(
+                    behavior: HitTestBehavior.opaque,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: ColoredBox(
+                            color: Colors.grey.withOpacity(0.1),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 12, 0, 12),
+                              child: Column(
+                                children: algorithm.verticalOverlays(
+                                      world: world,
+                                      rootAlg: algorithm,
+                                      graphComponent: this,
+                                    ) ??
+                                    [],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      );
+    });
+    // overlays.add('verticalController');
   }
 }

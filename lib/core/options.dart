@@ -44,6 +44,8 @@ class Options {
   /// 顶点数据面板的构建器，鼠标悬停到对应节点时触发。
   VertexPanelBuilder? vertexPanelBuilder;
 
+  Widget? vertexTapUpPanel;
+
   /// The builder of the edge data panel, triggered when the mouse hovers.
   ///
   /// 边数据面板的构建器，鼠标悬停到对应节点时触发。
@@ -136,4 +138,19 @@ class Options {
       position: Vector2(position.x + 40, position.y - 6),
     );
   };
+
+  /// @en: the horizontal controller panel height. Default to `50`
+  ///
+  /// @zh: 水平控制面板的高度。默认为`50`
+  double horizontalControllerHeight = 50;
+
+  /// @en: the vertical controller panel width. Default to `340`
+  ///
+  /// @zh: 垂直控制面板的宽度。默认为`340`
+  double verticalControllerWidth = 340;
+
+  /// @en: the vertex tap up panel width. Default to `430`
+  ///
+  /// @zh: 节点控制面板默认最大宽度，默认值`430`
+  double vertexTapUpPanelWidth = 430;
 }

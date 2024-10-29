@@ -18,6 +18,78 @@ abstract class GraphAlgorithm {
   ///
   List<GraphAlgorithm>? decorators;
 
+  World? world;
+  GraphComponent? graphComponent;
+  GraphAlgorithm? rootAlg;
+
+  Widget Function()? horizontalOverlay;
+  Widget Function()? verticalOverlay;
+
+  List<Widget>? horizontalOverlays({
+    required World world,
+    required GraphAlgorithm rootAlg,
+    required GraphComponent graphComponent,
+  }) {
+    setGlobalData(
+        world: world, rootAlg: rootAlg, graphComponent: graphComponent);
+    return [
+      if (horizontalOverlay != null) horizontalOverlay!(),
+      if (decorators != null)
+        ...decorators!
+            .where((alg) => alg.horizontalOverlay != null)
+            .map((ob) => ob.horizontalOverlay!())
+            .toList(),
+    ];
+  }
+
+  void hideVerticalOverlay() {
+    hideOverlay('verticalController');
+  }
+
+  void hideHorizontalOverlay() {
+    hideOverlay('horizontalController');
+  }
+
+  void hideVertexTapUpOverlay() {
+    hideOverlay('vertexTapUpPanel');
+  }
+
+  void hideOverlay(String name) {
+    if (graphComponent?.overlays.activeOverlays.contains(name) == true) {
+      graphComponent?.overlays.remove(name);
+    }
+  }
+
+  List<Widget>? verticalOverlays({
+    required World world,
+    required GraphAlgorithm rootAlg,
+    required GraphComponent graphComponent,
+  }) {
+    setGlobalData(
+        world: world, rootAlg: rootAlg, graphComponent: graphComponent);
+    return [
+      if (verticalOverlay != null) verticalOverlay!(),
+      if (decorators != null)
+        ...decorators!
+            .where((alg) => alg.verticalOverlay != null)
+            .map((ob) => ob.verticalOverlay!())
+            .toList(),
+    ];
+  }
+
+  setGlobalData(
+      {required World world,
+      required GraphAlgorithm rootAlg,
+      required GraphComponent graphComponent}) {
+    this.world = world;
+    this.rootAlg = rootAlg;
+    this.graphComponent = graphComponent;
+    decorators?.forEach((element) {
+      element.setGlobalData(
+          world: world, rootAlg: rootAlg, graphComponent: graphComponent);
+    });
+  }
+
   ///
   ///
   GraphAlgorithm({this.decorators});
@@ -36,6 +108,20 @@ abstract class GraphAlgorithm {
   /// Center of stage.
   /// 图形展示的中心点
   Offset get center => Offset((size?.width ?? 0) / 2, (size?.height ?? 0) / 2);
+
+  @mustCallSuper
+  beforeMerge(dynamic data) {
+    for (var decorator in decorators ?? []) {
+      decorator.beforeMerge(data);
+    }
+  }
+
+  @mustCallSuper
+  void beforeLoad(data) {
+    for (var decorator in decorators ?? []) {
+      decorator.beforeLoad(data);
+    }
+  }
 
   void onGraphLoad(Graph graph) {}
 
