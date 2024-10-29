@@ -63,7 +63,6 @@ class Vertex<I> {
 
   set degree(d) {
     _degree = d;
-    radius = (math.log(degree * 10 + 1)) + 5;
   }
 
   /// Whether this vertex being picked.
@@ -85,9 +84,12 @@ class Vertex<I> {
   /// The origin data of this vertex.
   late dynamic data;
 
+  double _radius = 5;
+  set radius(double radius) => _radius = radius;
+
   /// The radius of this vertex, that which assigment by StyleConfiguration.
   /// 节点的默认半径，用于被样式选项设置器进行修改以更新图形
-  late double radius = 10;
+  double get radius => (math.log(degree * 10 + 1)) + _radius;
 
   /// The size of this vertex
   ///

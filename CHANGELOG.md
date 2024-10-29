@@ -1,4 +1,5 @@
 ## 1.1.4
+- behavior changed: set the radius of vertex to a private variable
 - feat: adding `GraphRouteDecorator`, make the data like a brower history.
     - feat: 新增 `GraphRouteDecorator`，使数据像浏览器历史一样，支持前进后退，当有合并行为发生时。
 

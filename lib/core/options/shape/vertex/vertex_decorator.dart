@@ -4,7 +4,6 @@
 
 import 'dart:async';
 import 'dart:ui' as ui;
-import 'dart:math' as math;
 
 import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class VertexImgDecorator extends VertexDecorator {
     var imgUrl = cpn.options?.imgUrlGetter.call(vertex);
     var img = getImg(imgUrl);
     if (img != null) {
-      vertex.radius = math.log(vertex.degree * 10 + 1) + 15;
+      vertex.radius = 15;
       var imgRect = Rect.fromCircle(
         center: Offset(vertex.radiusZoom, vertex.radiusZoom),
         radius: vertex.radiusZoom - 1 / vertex.zoom,

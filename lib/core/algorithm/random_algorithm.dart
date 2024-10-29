@@ -17,7 +17,7 @@ class RandomAlgorithm extends GraphAlgorithm {
     super.compute(v, graph);
     if (v.position == Vector2(0, 0)) {
       var size = v.cpn!.gameRef.camera.visibleWorldRect;
-      v.radius = math.log(v.degree * 10 + 1) + 5;
+      v.radius = 5;
       v.position = Vector2(math.Random().nextDouble() * (size.width - 50) + 25,
           math.Random().nextDouble() * (size.height - 50) + 25);
     }
