@@ -1,4 +1,26 @@
 ## 1.1.4
+- feat: adding `GraphRouteDecorator`, make the data like a brower history.
+    - feat: 新增 `GraphRouteDecorator`，使数据像浏览器历史一样，支持前进后退，当有合并行为发生时。
+
+- feat: adding `PauseDecorator`, make the graph stop updating.
+    - feat: 新增 `PauseDecorator`，使图的节点停止位置更新。
+
+- feat: adding control panels of decorators.
+    example:
+    ```dart
+      /// 指定装饰器参数的控制面板创建方法
+      CoulombReverseDecorator(
+        handleOverlay: kCoulombReserseOverlayBuilder(),
+      ),
+    ```
+- feat: enable configuring the force factor between brother vertexs.
+    example:
+    ```dart
+    /// @en: Make the repulsion between similar points smaller
+    /// 
+    /// @zh: 使相似点之间的排斥力变小
+    CoulombReverseDecorator(sameSrcAndDstFactor: 1.1), 
+    ```
 - fix: the line added later covers the previous point.
 - feat: support image vertex.
 - feat: using tag similarity as a layout element.
