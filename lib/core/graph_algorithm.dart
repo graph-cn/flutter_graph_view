@@ -24,6 +24,7 @@ abstract class GraphAlgorithm {
 
   Widget Function()? horizontalOverlay;
   Widget Function()? verticalOverlay;
+  Widget Function()? leftOverlay;
 
   List<Widget>? horizontalOverlays({
     required World world,
@@ -77,6 +78,23 @@ abstract class GraphAlgorithm {
     ];
   }
 
+  List<Widget>? leftOverlays({
+    required World world,
+    required GraphAlgorithm rootAlg,
+    required GraphComponent graphComponent,
+  }) {
+    setGlobalData(
+        world: world, rootAlg: rootAlg, graphComponent: graphComponent);
+    return [
+      if (leftOverlay != null) leftOverlay!(),
+      if (decorators != null)
+        ...decorators!
+            .where((alg) => alg.leftOverlay != null)
+            .map((ob) => ob.leftOverlay!())
+            .toList(),
+    ];
+  }
+
   setGlobalData(
       {required World world,
       required GraphAlgorithm rootAlg,
@@ -110,15 +128,22 @@ abstract class GraphAlgorithm {
   Offset get center => Offset((size?.width ?? 0) / 2, (size?.height ?? 0) / 2);
 
   @mustCallSuper
+  void afterDrag(Vertex vertex, Vector2 globalDelta) {
+    for (GraphAlgorithm decorator in decorators ?? []) {
+      decorator.afterDrag(vertex, globalDelta);
+    }
+  }
+
+  @mustCallSuper
   beforeMerge(dynamic data) {
-    for (var decorator in decorators ?? []) {
+    for (GraphAlgorithm decorator in decorators ?? []) {
       decorator.beforeMerge(data);
     }
   }
 
   @mustCallSuper
   void beforeLoad(data) {
-    for (var decorator in decorators ?? []) {
+    for (GraphAlgorithm decorator in decorators ?? []) {
       decorator.beforeLoad(data);
     }
   }
@@ -189,6 +214,7 @@ abstract class GraphAlgorithm {
         neighbor.position += globalDelta / zoom;
       }
     }
+    afterDrag(hoverVertex, globalDelta);
   }
 
   void onZoomVertex(Vertex vertex, Vector2 pointLocation, double delta) {

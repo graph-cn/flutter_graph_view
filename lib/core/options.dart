@@ -73,6 +73,7 @@ class Options {
   /// if render legend in canvas.
   ///
   /// 是否展示图例
+  @Deprecated("use LegendDecorator instead. will remove in 1.2.0")
   bool useLegend = true;
 
   /// if enable hit.

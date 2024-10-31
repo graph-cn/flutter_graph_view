@@ -30,7 +30,6 @@ class VertexComponent extends ShapeComponent
   Options? options;
   GraphComponent? graphComponent;
   ShapeHitbox? hitBox;
-  bool dragged;
 
   VertexComponent(
     this.vertex,
@@ -39,7 +38,6 @@ class VertexComponent extends ShapeComponent
     this.algorithm, {
     this.options,
     this.graphComponent,
-    this.dragged = false,
   }) : super(
           position: vertex.position,
           anchor: Anchor.center,
@@ -109,8 +107,8 @@ class VertexComponent extends ShapeComponent
     if (hitBox != null) vertexShape.updateHitBox(vertex, hitBox!);
     vertexShape.setPaint(vertex);
 
-    position.x += (vertex.position.x - position.x) * dt * speed;
-    position.y += (vertex.position.y - position.y) * dt * speed;
+    position.x = vertex.position.x;
+    position.y = vertex.position.y;
     if (Util.distance(position, vertex.position) < 1 && !collisionEnable) {
       collisionEnable = true;
     }
@@ -144,7 +142,7 @@ class VertexComponent extends ShapeComponent
       gameRef.overlays.remove(overlayName);
       gameRef.overlays.add(overlayName);
     }
-    dragged = true;
+    algorithm.afterDrag(vertex, globalDelta);
   }
 
   @override

@@ -51,6 +51,7 @@ export 'core/algorithm/decorator/persistence_decorator.dart';
 export 'core/algorithm/decorator/pin_decorator.dart';
 export 'core/algorithm/decorator/pause_decorator.dart';
 export 'core/algorithm/decorator/graph_route_decorator.dart';
+export 'core/algorithm/decorator/legend_decorator.dart';
 
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';

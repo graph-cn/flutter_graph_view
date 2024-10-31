@@ -6,7 +6,6 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 class RandomOrPersistenceAlgorithm extends RandomAlgorithm {
   Map<dynamic, Vector2?> positionStorage = {};
-  Map<dynamic, bool> pinStorage = {};
 
   RandomOrPersistenceAlgorithm({super.decorators});
 
@@ -17,10 +16,6 @@ class RandomOrPersistenceAlgorithm extends RandomAlgorithm {
       v.cpn?.position = cachedPosition;
     }
     positionStorage[v.id] = v.cpn?.position;
-
-    bool pin = v.cpn?.dragged == true || (pinStorage[v.id] ?? false);
-    v.cpn?.dragged = pin;
-    pinStorage[v.id] = v.cpn?.dragged ?? false;
     super.compute(v, graph);
   }
 }

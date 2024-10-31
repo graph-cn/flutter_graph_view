@@ -243,11 +243,12 @@ class GraphComponent extends FlameGame
     addHorizontalOverlays(size);
     addVerticalOverlays(size);
     addVertexTapUpPanel(size);
+    addLegendOverlays(size);
   }
 
   void showVertexTapUpPanel() {
     if (overlays.activeOverlays.contains('verticalController')) {
-      return;
+      overlays.remove('verticalController');
     }
     overlays.add('vertexTapUpPanel');
   }
@@ -411,5 +412,61 @@ class GraphComponent extends FlameGame
       );
     });
     // overlays.add('verticalController');
+  }
+
+  /// TODO 需要重构，以提高代码复用率
+  ///
+  /// needs to be refactored to improve code reuse
+  void addLegendOverlays(Size size) {
+    overlays.addEntry('legendOverlay', (_, game) {
+      return Stack(
+        children: [
+          Positioned(
+            left: 24,
+            top: 32,
+            bottom: 10,
+            child: ListenableBuilder(
+              listenable: algorithm.$size,
+              builder: (context, child) {
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: size.height,
+                  ),
+                  child: Listener(
+                    behavior: HitTestBehavior.opaque,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 12, 0, 12),
+                              child: Column(
+                                children: algorithm.leftOverlays(
+                                      world: world,
+                                      rootAlg: algorithm,
+                                      graphComponent: this,
+                                    ) ??
+                                    [],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      );
+    });
+    if (!overlays.activeOverlays.contains('legendOverlay')) {
+      overlays.add('legendOverlay');
+    }
   }
 }

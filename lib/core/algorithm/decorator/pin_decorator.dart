@@ -8,13 +8,21 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 固定图中被拖拽过的点，防止其移动的装饰器
 class PinDecorator extends ForceDecorator {
+  final Set<dynamic> pinned = {};
   PinDecorator({super.decorators});
 
   @override
+  void afterDrag(Vertex vertex, Vector2 globalDelta) {
+    super.afterDrag(vertex, globalDelta);
+    pinned.add(vertex.id);
+  }
+
+  @override
   bool needContinue(Vertex v) {
-    if (v.cpn?.dragged == true) {
+    if (pinned.contains(v.id)) {
       return false;
+    } else {
+      return true;
     }
-    return true;
   }
 }

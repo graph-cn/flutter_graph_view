@@ -1,4 +1,17 @@
 ## 1.1.4
+- feat: add interface to `GraphAlgorithm`: `afterDrag`, `beforeMerge` and etc.
+- feat: add `LegendDecorator` to support the legend of the graph, to control the vertex and edge display. And fix the scroll issue of the legend panel.
+    - feat: 新增 `LegendDecorator`，支持图的图例，控制节点和边的显示。并修复图例面板的滚动问题。
+    example:
+    ```dart
+    // First add LegendDecorator to your decorators, 
+    // then set the legend options.
+    options
+        ..useLegend = false
+    ```
+- behavior changed: remove `speed` property from `VertexComponent`.
+    > What will be effective is that all the vertex.position will be set to the vertex.cpn.position directly, when decorating the vertex in `GraphAlgorithm` and sub-classes.
+
 - behavior changed: set the radius of vertex to a private variable
 - feat: adding `GraphRouteDecorator`, make the data like a brower history.
     - feat: 新增 `GraphRouteDecorator`，使数据像浏览器历史一样，支持前进后退，当有合并行为发生时。

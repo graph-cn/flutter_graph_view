@@ -289,3 +289,92 @@ kGraphRouteOverlayBuilder() {
     );
   };
 }
+
+typedef LegendBuilder = Widget Function(LegendDecorator)?;
+LegendBuilder? kLegendOverlayBuilder() {
+  return (LegendDecorator ld) {
+    legendBuilder(String tag, Function(String) onTap, Widget icon,
+        List<String> allLegend) {
+      return StatefulBuilder(builder: (context, setState) {
+        return InkWell(
+          onTap: () {
+            onTap(tag);
+            setState(() {});
+          },
+          child: Opacity(
+            opacity: allLegend.contains(tag) ? 0.3 : 1,
+            child: SizedBox(
+              height: 30,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  icon,
+                  const SizedBox(width: 9),
+                  Text(
+                    tag,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontFamily: 'ALIBABAPUHUITI',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+    }
+
+    var graph = ld.graphComponent?.graph;
+    if (graph == null) return const SizedBox();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...graph.allTags.map((tag) {
+          return legendBuilder(
+            tag,
+            ld.changeTag,
+            ColoredBox(
+              color: () {
+                var i = graph.allTags.indexOf(tag);
+                var graphStyle = ld.graphComponent!.options.graphStyle;
+                return graphStyle.colorByTag(tag, graph.allTags) ??
+                    (i < graphStyle.tagColorByIndex.length
+                        ? graphStyle.tagColorByIndex[i]
+                        : graphStyle.defaultColor()[0]);
+              }(),
+              child: const SizedBox(
+                width: 30,
+                height: 18,
+              ),
+            ),
+            ld.hiddenTags,
+          );
+        }),
+        ...graph.allEdgeNames.map((edge) {
+          return legendBuilder(
+            edge,
+            ld.changeEdge,
+            const Icon(Icons.commit),
+            ld.hiddenEdges,
+            // ColoredBox(
+            //   color: () {
+            //     var i = graph.allEdgeNames.indexOf(edge);
+            //     var graphStyle = ld.graphComponent!.options.graphStyle;
+            //     return graphStyle.colorByEdge(edge, graph.allEdges) ??
+            //         (i < graphStyle.edgeColorByIndex.length
+            //             ? graphStyle.edgeColorByIndex[i]
+            //             : graphStyle.defaultColor()[0]);
+            //   }(),
+            //   child: const SizedBox(
+            //     width: 30,
+            //     height: 18,
+            //   ),
+            // ),
+          );
+        }),
+      ],
+    );
+  };
+}

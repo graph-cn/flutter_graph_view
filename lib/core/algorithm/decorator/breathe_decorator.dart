@@ -10,6 +10,7 @@ import 'dart:math' as math;
 /// Breathe Decorator
 ///
 /// 呼吸特效装饰器
+@Deprecated("Already broken in version 1.1.4, will be removed in version 1.2.0")
 class BreatheDecorator extends GraphAlgorithm {
   BreatheDecorator({super.decorators});
   @override

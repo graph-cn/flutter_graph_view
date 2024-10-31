@@ -7,17 +7,50 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
-Map<String, Vertex> vertexStorage = {};
-
 class DecoratorDemo extends StatelessWidget {
   const DecoratorDemo({super.key});
-  saveVertex(Vertex v) {
-    vertexStorage[v.id as String] = v;
-  }
 
-  Map<String, Vertex?> loadVertex() {
-    return vertexStorage;
-  }
+  /// Your can use different decorators to get different effects.
+  // ignore: unused_local_variable
+  static final decorators2 = [
+    GraphRouteDecorator(),
+    LegendDecorator(), // if use this decorator, you should set options.useLegend = false
+    PauseDecorator(),
+    PinDecorator(),
+    CoulombReverseDecorator(
+      sameTagsFactor: 0.8,
+      sameSrcAndDstFactor: 10,
+      handleOverlay: kCoulombReserseOverlayBuilder(),
+    ),
+    // HookeCenterDecorator(),
+    HookeDecorator(
+      length: 20,
+      handleOverlay: kHookeOverlayBuilder(),
+      degreeFactor: (l, d) => l + d * 10,
+    ),
+    HookeBorderDecorator(
+      handleOverlay: kHookeBorderOverlayBuilder(),
+      alwaysInScreen: false,
+    ),
+    ForceDecorator(),
+    ForceMotionDecorator(),
+    TimeCounterDecorator(),
+  ];
+
+  // ignore: unused_local_variable
+  static final decorators1 = [
+    CoulombDecorator(),
+    HookeDecorator(),
+    CoulombReverseDecorator(),
+    HookeBorderDecorator(alwaysInScreen: false),
+    ForceDecorator(),
+    ForceMotionDecorator(),
+    TimeCounterDecorator(),
+  ];
+
+  static final rootAlg = RandomOrPersistenceAlgorithm(
+    decorators: decorators2,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -58,48 +91,9 @@ class DecoratorDemo extends StatelessWidget {
       'edges': edges,
     };
 
-    /// Your can use different decorators to get different effects.
-    // ignore: unused_local_variable
-    var decorators2 = [
-      PersistenceDecorator(saveVertex, loadVertex),
-      GraphRouteDecorator(),
-      PauseDecorator(),
-      PinDecorator(),
-      CoulombReverseDecorator(
-        sameTagsFactor: 0.8,
-        sameSrcAndDstFactor: 10,
-        handleOverlay: kCoulombReserseOverlayBuilder(),
-      ),
-      // HookeCenterDecorator(),
-      HookeDecorator(
-        length: 20,
-        handleOverlay: kHookeOverlayBuilder(),
-        degreeFactor: (l, d) => l + d * 10,
-      ),
-      HookeBorderDecorator(
-        handleOverlay: kHookeBorderOverlayBuilder(),
-        alwaysInScreen: false,
-      ),
-      ForceDecorator(),
-      ForceMotionDecorator(),
-      TimeCounterDecorator(),
-    ];
-
-    // ignore: unused_local_variable
-    var decorators1 = [
-      CoulombDecorator(),
-      HookeDecorator(),
-      CoulombReverseDecorator(),
-      HookeBorderDecorator(alwaysInScreen: false),
-      ForceDecorator(),
-      ForceMotionDecorator(),
-      TimeCounterDecorator(),
-    ];
     return FlutterGraphWidget(
       data: data,
-      algorithm: RandomOrPersistenceAlgorithm(
-        decorators: decorators2,
-      ),
+      algorithm: rootAlg,
       convertor: MapConvertor(),
       options: Options()
         ..onVertexTapUp = ((vertex, event) {
@@ -122,7 +116,7 @@ class DecoratorDemo extends StatelessWidget {
             Colors.blueGrey.shade200,
             Colors.deepOrange.shade200,
           ])
-        ..useLegend = true // default true
+        ..useLegend = false // default true
         ..imgUrlGetter = imgUrlGetter
         ..edgePanelBuilder = edgePanelBuilder
         ..vertexPanelBuilder = vertexPanelBuilder
