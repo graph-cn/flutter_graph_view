@@ -428,31 +428,29 @@ class GraphComponent extends FlameGame
             child: ListenableBuilder(
               listenable: algorithm.$size,
               builder: (context, child) {
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: size.height,
-                  ),
-                  child: Listener(
-                    behavior: HitTestBehavior.opaque,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 12, 0, 12),
-                              child: Column(
-                                children: algorithm.leftOverlays(
-                                      world: world,
-                                      rootAlg: algorithm,
-                                      graphComponent: this,
-                                    ) ??
-                                    [],
-                              ),
-                            ),
+                var leftOverlays = algorithm.leftOverlays(
+                      world: world,
+                      rootAlg: algorithm,
+                      graphComponent: this,
+                    ) ??
+                    [];
+                if (leftOverlays.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return ColoredBox(
+                  color: Colors.grey.withOpacity(0.1),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 12, 0, 12),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: leftOverlays,
                           ),
                         ),
                       ),
