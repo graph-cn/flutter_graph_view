@@ -34,7 +34,7 @@ class EdgeComponent extends ShapeComponent
   late final ShapeHitbox? hitBox;
 
   String get overlayName =>
-      'edge${edge.start.id}-${edge.ranking}${edge.end != null ? "-${edge.end!.id}" : ''}';
+      'edge${edge.start.id}-${edge.edgeName}@${edge.ranking}${edge.end != null ? "-${edge.end!.id}" : ''}';
 
   Duration get panelDelay =>
       gameRef.options.panelDelay ?? const Duration(milliseconds: 300);

@@ -1,3 +1,6 @@
+## 1.1.4+1
+- fix: the issue of edge overlap when the edgeName is different but same src, dst and edgeId.
+
 ## 1.1.4
 - feat: add interface to `GraphAlgorithm`: `afterDrag`, `beforeMerge` and etc.
 - feat: add `LegendDecorator` to support the legend of the graph, to control the vertex and edge display. And fix the scroll issue of the legend panel.
