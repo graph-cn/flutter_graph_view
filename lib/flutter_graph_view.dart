@@ -62,6 +62,8 @@ export 'core/dashboard/k_default_overlay_builder.dart';
 
 export 'core/options/style/graph_style.dart';
 
+export 'typedef/components_new.dart';
+
 /// third party
 export 'package:flame/flame.dart';
 export 'package:flame/camera.dart';

@@ -78,4 +78,16 @@ class Graph<ID> {
         : '${start.id}$_split${end.id}';
     return key;
   }
+
+  void clear() {
+    vertexes.clear();
+    edges.clear();
+    keyCache.clear();
+    hoverVertex = null;
+    hoverEdge = null;
+    pickedVertex.clear();
+    allTags.clear();
+    allEdgeNames.clear();
+    edgesBetweenHash.clear();
+  }
 }

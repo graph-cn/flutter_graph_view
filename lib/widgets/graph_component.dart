@@ -33,6 +33,8 @@ class GraphComponent extends FlameGame
   }) {
     super.camera = CameraComponent(world: world)..ancestors(includeSelf: true);
     this.options = options ?? Options();
+    this.options.pause.addListener(pause);
+    pause();
   }
 
   late Graph graph;
@@ -101,7 +103,7 @@ class GraphComponent extends FlameGame
   _addVertex(Vertex vertex) {
     if (vertex.cpn == null) {
       setDefaultVertexColor();
-      var vc = VertexComponent(
+      var vc = options.vertexComponentNew.call(
         vertex,
         graph,
         context,
@@ -466,5 +468,13 @@ class GraphComponent extends FlameGame
     if (!overlays.activeOverlays.contains('legendOverlay')) {
       overlays.add('legendOverlay');
     }
+  }
+
+  void removePauseListener() {
+    options.pause.removeListener(pause);
+  }
+
+  void pause() {
+    paused = options.pause.value;
   }
 }

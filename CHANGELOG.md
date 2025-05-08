@@ -1,3 +1,10 @@
+## 1.1.5
+
+- feat: Support controlling the game pause or play through the `options.pause`.
+    > 支持通过 `options.pause` 控制游戏暂停或播放。
+- feat: Support specifying node components through `options.vertexComponentNew`
+    > 支持通过 `options.vertexComponentNew` 指定节点组件。
+
 ## 1.1.4+1
 - fix: the issue of edge overlap when the edgeName is different but same src, dst and edgeId.
 

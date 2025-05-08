@@ -37,6 +37,12 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    graphCpn.removePauseListener();
+  }
+
   late GraphComponent graphCpn;
   Map<String, Widget Function(BuildContext, GraphComponent)>
       overlayBuilderMap2 = {};

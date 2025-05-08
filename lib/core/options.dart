@@ -154,4 +154,18 @@ class Options {
   ///
   /// @zh: 节点控制面板默认最大宽度，默认值`430`
   double vertexTapUpPanelWidth = 430;
+
+  /// @en: an custom vertex component constructor.
+  ///
+  /// @zh: 自定义顶点组件构造器
+  VertexComponentNew vertexComponentNew = VertexComponent.new;
+
+  /// @en: control the game pause through external means.
+  /// <br>Suitable for creating multiple flutter_graph_widget
+  /// <br>and keeping alive without causing the game engine to consume too much computation
+  ///
+  /// @zh: 从外部决定游戏是否暂停
+  /// <br>适用于创建了多个 flutter_graph_widget，
+  /// <br>并且 keepAlive 的情况下，又不想让游戏引擎占用过高计算量
+  ValueNotifier<bool> pause = ValueNotifier(false);
 }
