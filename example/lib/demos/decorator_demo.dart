@@ -122,7 +122,7 @@ class DecoratorDemo extends StatelessWidget {
         ..vertexPanelBuilder = vertexPanelBuilder
         ..edgeShape = EdgeLineShape(
           decorators: [
-            DefaultEdgeDecorator(),
+            SolidArrowEdgeDecorator(),
           ],
         ) // default is EdgeLineShape.
         ..vertexShape = VertexCircleShape(

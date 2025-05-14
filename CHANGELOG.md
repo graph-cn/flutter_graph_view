@@ -1,3 +1,7 @@
+## 1.1.6
+- feat: 为 edge 新增 `SolidArrowEdgeDecorator` 实心箭头装饰器
+    > support `SolidArrowEdgeDecorator` for edge
+
 ## 1.1.5
 
 - feat: Support controlling the game pause or play through the `options.pause`.
