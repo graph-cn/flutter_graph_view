@@ -82,15 +82,25 @@ class SolidArrowEdgeDecorator extends DefaultEdgeDecorator {
     // 计算箭头尖端位置（考虑目标节点半径）
     var tipPoint = end - directionVector * edge.end!.radiusZoom;
 
-    // 计算箭头基部位置
-    var basePoint = tipPoint - directionVector * arrowBaseDistance;
+    // 计算线宽调整系数
+    double strokeWidthFactor =
+        (edge.isHovered ? 2.0 : 1.0) / edge.start.zoom; // 悬停时线宽增加的比例
+
+    // 基于当前线宽计算箭头尺寸
+    double currentArrowBaseDistance = arrowBaseDistance * strokeWidthFactor;
+    double currentArrowWidth = arrowWidth * strokeWidthFactor;
+
+    // 计算箭头基部位置，考虑悬停状态的影响
+    var basePoint = tipPoint - directionVector * currentArrowBaseDistance;
 
     if (tipPoint.isNaN || basePoint.isNaN) {
       return;
     }
 
     // 计算垂直于方向向量的向量，用于箭头两侧
-    var perp = Vector2(-directionVector.y, directionVector.x) * arrowWidth;
+    // 不再需要额外的悬停修正系数，因为已经在currentArrowWidth中处理
+    var perp =
+        Vector2(-directionVector.y, directionVector.x) * currentArrowWidth;
 
     // 创建并填充箭头路径
     var path = Path()
