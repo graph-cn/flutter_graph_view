@@ -2,8 +2,6 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -51,8 +49,8 @@ class HookeBorderDecorator extends ForceDecorator {
 
   Vector2 hooke(Vertex s, Graph graph) {
     var viewport = (alwaysInScreen
-            ? s.cpn!.gameRef.camera.visibleWorldRect
-            : Rect.fromPoints(Offset.zero, s.cpn!.gameRef.size.toOffset())) *
+            ? s.cpn!.game.camera.visibleWorldRect
+            : Rect.fromPoints(Offset.zero, s.cpn!.game.size.toOffset())) *
         borderFactor;
     var widthScale = 0;
     var p = s.cpn!.position;

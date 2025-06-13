@@ -18,7 +18,7 @@ class CoulombCenterDecorator extends ForceDecorator {
   @override
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
-    var center = v.cpn!.gameRef.size / 2;
+    var center = v.cpn!.game.size / 2;
 
     var delta = v.position - center;
     if (delta != Vector2.zero()) {

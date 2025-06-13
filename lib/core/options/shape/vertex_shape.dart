@@ -55,7 +55,7 @@ abstract class VertexShape {
   /// 当一些元素被激活且不包含当前元素
   bool isWeaken(Vertex vertex) {
     var cpn = vertex.cpn!;
-    var graph = cpn.gameRef.graph;
+    var graph = cpn.game.graph;
     return (graph.hoverVertex != null &&
             (vertex != graph.hoverVertex &&
                 !graph.hoverVertex!.neighbors.contains(vertex)) ||

@@ -1,3 +1,13 @@
+## 1.2.0
+- feat: add `stopDrag` to `FlutterGraphWidget` to control the drag behavior of the graph view.
+    > 支持通过 `FlutterGraphWidget.stopDrag = false;` 停止视窗拖拽。
+- fix[#27]: the issue does not work properly in version 1.29.0.
+    > 在 1.29.0 版本中无法正常工作的问题 
+    
+### Behavior change:
+- Upgrade flame to 1.29.0, so the `gameRef` in `VertexComponent` should be replaced with `game`, when using `vertex.cpn?.gameRef`.
+    > 升级 flame 到 1.29.0 版本，所以 `VertexComponent` 中的 `gameRef` 应该替换为 `game`，用到 `vertex.cpn?.gameRef`时。
+
 ## 1.1.6
 - feat: 为 edge 新增 `SolidArrowEdgeDecorator` 实心箭头装饰器
     > support `SolidArrowEdgeDecorator` for edge

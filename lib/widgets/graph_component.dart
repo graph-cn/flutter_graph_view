@@ -51,9 +51,14 @@ class GraphComponent extends FlameGame
     });
   }
 
+  void clear() {
+    for (var c in world.children) {
+      c.removeFromParent();
+    }
+  }
+
   void refreshData(data) {
-    // ignore: invalid_use_of_internal_member
-    world.children.clear();
+    clear();
     graph = convertor.convertGraph(data);
     graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
