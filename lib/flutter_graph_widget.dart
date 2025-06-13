@@ -15,6 +15,8 @@ class FlutterGraphWidget extends StatefulWidget {
   final DataConvertor convertor;
   final Options? options;
 
+  static bool stopDrag = false;
+
   const FlutterGraphWidget({
     Key? key,
     required this.data,
@@ -74,6 +76,7 @@ class _FlutterGraphWidgetState extends State<FlutterGraphWidget> {
         Positioned.fill(
             child: GestureDetector(
           onScaleUpdate: (ScaleUpdateDetails details) {
+            if (FlutterGraphWidget.stopDrag) return;
             // single finger pan
             if (details.pointerCount == 1) {
               var v = details.focalPointDelta.toVector2();
