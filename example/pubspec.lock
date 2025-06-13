@@ -61,10 +61,10 @@ packages:
     dependency: transitive
     description:
       name: flame
-      sha256: c02390443e40a2a9034ac867d0789ab32f215eba4779bff4655a7143eb3d75d0
+      sha256: "58566686ad9b7e6a3984c50a740fd733e0a5022d48263916f50b3c78e7f14ec0"
       url: "https://pub.dev"
     source: hosted
-    version: "1.22.0"
+    version: "1.29.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -76,7 +76,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.1.4+1"
+    version: "1.1.6"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -155,10 +155,10 @@ packages:
     dependency: transitive
     description:
       name: ordered_set
-      sha256: fc861bb51fc863cd3e0718e21768af9586e0d5022b91a0fd4437636456cdb7d0
+      sha256: d6c1d053a533e84931a388cbf03f1ad21a0543bf06c7a281859d3ffacd8e15f2
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.1"
+    version: "8.0.0"
   path:
     dependency: transitive
     description:
@@ -318,4 +318,4 @@ packages:
     version: "1.1.0"
 sdks:
   dart: ">=3.7.0-0 <4.0.0"
-  flutter: ">=3.24.0"
+  flutter: ">=3.27.1"

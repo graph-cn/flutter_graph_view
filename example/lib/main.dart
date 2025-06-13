@@ -2,6 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'package:example/demos/custom_shape_demo/er_graph/er_graph_demo.dart';
 import 'package:flutter/material.dart';
 
 import 'demos/custom_shape_demo/execution_plan/execution_plan_demo.dart';
@@ -30,6 +31,7 @@ class _ShowroomState extends State<Showroom>
   late TabController mainTabController;
 
   final List<String> tabNames = <String>[
+    'ErGraphDemo',
     'DecoratorDemo',
     'PersistenceDemo',
     'ForceDirected',
@@ -40,6 +42,7 @@ class _ShowroomState extends State<Showroom>
     "VertexFontStyleDemo",
   ];
   final List<Widget> tabs = <Widget>[
+    const ErGraphDemo(),
     const DecoratorDemo(),
     const PersistenceDemo(),
     ForceDirectedDemo(),
