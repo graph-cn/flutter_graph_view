@@ -27,6 +27,8 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     final paragraphStyle = ui.ParagraphStyle(
       fontSize: paragraphFontSize,
       fontWeight: fontWeight,
+      fontFamily: vertexTextStyle?.fontFamily,
+      fontStyle: vertexTextStyle?.fontStyle,
     );
 
     /// 2.根据 ParagraphStyle 生成 ParagraphBuilder
@@ -42,6 +44,8 @@ class VertexTextRendererImpl extends VertexTextRenderer {
       fontWeight: fontWeight,
       background:
           backgroundColor == null ? null : (Paint()..color = backgroundColor),
+      fontFamily: vertexTextStyle?.fontFamily,
+      fontStyle: vertexTextStyle?.fontStyle,
     );
 
     /// 3.添加样式和文字
