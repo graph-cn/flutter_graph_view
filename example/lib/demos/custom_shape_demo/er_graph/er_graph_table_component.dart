@@ -18,6 +18,7 @@ class ErGraphTableComponent extends VertexComponent {
     super.algorithm, {
     super.options,
     super.graphComponent,
+    super.priority = 1,
   }) {
     assert(vertex.data is TableVo);
     var table = vertex.data as TableVo;
@@ -85,11 +86,15 @@ class ErGraphTableComponent extends VertexComponent {
       // 为属性添加背景
       add(propCpn);
 
-      propCpn.add(ConnectComponent(
+      propCpn.add(
+        ConnectComponent(
           data: vertex,
           onConnect: (start, end) {
             print("连接 $start -> $end");
-          }));
+          },
+          priority: 0,
+        ),
+      );
     });
     algorithmOnLoad(algorithm);
     loadOverlay();

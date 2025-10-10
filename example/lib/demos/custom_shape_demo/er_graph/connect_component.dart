@@ -220,7 +220,7 @@ class ConnectLine extends PositionComponent {
   ConnectLine({
     super.anchor = Anchor.center,
     super.position,
-    super.priority = 3,
+    super.priority = 7,
     required this.start,
     required this.end,
   });

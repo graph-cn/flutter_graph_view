@@ -60,7 +60,7 @@ class ErGraphDemo extends StatelessWidget {
         ..vertexComponentNew = ErGraphTableComponent.new
         ..useLegend = false
         ..vertexShape = NothingShape()
-        ..edgeShape = EdgeLineShape(decorators: [SolidArrowEdgeDecorator()])
+        ..edgeShape = NothingEdgeShape()
         ..textGetter = (data) {
           if (data.data is TableVo) {
             return (data.data as TableVo).name;
