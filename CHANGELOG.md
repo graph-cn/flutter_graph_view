@@ -1,3 +1,9 @@
+## 1.2.1
+- feat: add a decorator for counting
+    > 新增一个计数用的装饰器
+- fix: the issue of font and size not displaying properly.
+    > 修复字体跟字号无法正常显示的问题
+
 ## 1.2.0
 - feat: add `stopDrag` to `FlutterGraphWidget` to control the drag behavior of the graph view.
     > 支持通过 `FlutterGraphWidget.stopDrag = false;` 停止视窗拖拽。

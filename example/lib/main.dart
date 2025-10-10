@@ -57,7 +57,7 @@ class _ShowroomState extends State<Showroom>
   void initState() {
     super.initState();
     mainTabController =
-        TabController(initialIndex: 0, length: tabs.length, vsync: this);
+        TabController(initialIndex: 1, length: tabs.length, vsync: this);
   }
 
   Uri repo = Uri.parse('https://github.com/graph-cn/flutter_graph_view');

@@ -13,6 +13,7 @@ class DecoratorDemo extends StatelessWidget {
   /// Your can use different decorators to get different effects.
   // ignore: unused_local_variable
   static final decorators2 = [
+    CounterDecorator(),
     GraphRouteDecorator(),
     LegendDecorator(), // if use this decorator, you should set options.useLegend = false
     PauseDecorator(),

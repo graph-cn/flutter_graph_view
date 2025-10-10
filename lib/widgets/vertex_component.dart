@@ -38,10 +38,10 @@ class VertexComponent extends ShapeComponent
     this.algorithm, {
     this.options,
     this.graphComponent,
+    super.priority = 1,
   }) : super(
           position: vertex.position,
           anchor: Anchor.center,
-          priority: 1,
         );
 
   final Map<String, dynamic> properties = {};
