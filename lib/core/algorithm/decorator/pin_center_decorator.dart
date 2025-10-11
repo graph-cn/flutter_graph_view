@@ -8,10 +8,10 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 固定子图的度最多的节点，防止其移动的装饰器
 class PinCenterDecorator extends ForceDecorator {
-  PinCenterDecorator({super.decorators});
+  PinCenterDecorator();
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     if (v.isCenter) {
       getForceMap(v).forEach((key, forces) {
         forces.forEach((key, value) {

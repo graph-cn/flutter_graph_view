@@ -10,14 +10,11 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 @Deprecated('An experimental method')
 class CoulombBorderDecorator extends ForceDecorator {
   double k;
-  CoulombBorderDecorator({
-    this.k = 1,
-    super.decorators,
-  });
+  CoulombBorderDecorator({this.k = 1});
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     var size = v.cpn!.game.size;
 
     var corner = [

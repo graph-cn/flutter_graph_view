@@ -11,15 +11,11 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 图中所有节点相互间形成排斥的装饰器（库仑力）
 class CoulombDecorator extends ForceDecorator {
   double k;
-  CoulombDecorator({
-    this.k = 10,
-    super.sameTagsFactor = 1,
-    super.decorators,
-  });
+  CoulombDecorator({this.k = 10, super.sameTagsFactor = 1});
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     for (var b in graph.vertexes) {
       if (v != b &&
           v.position != Vector2.zero() &&

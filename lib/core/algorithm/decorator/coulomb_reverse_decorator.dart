@@ -25,12 +25,11 @@ class CoulombReverseDecorator extends ForceDecorator {
     this.handleOverlay,
     super.sameSrcAndDstFactor = 1,
     super.sameTagsFactor = 1,
-    super.decorators,
   });
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     for (var b in graph.vertexes) {
       if (v != b &&
           v.position != Vector2.zero() &&

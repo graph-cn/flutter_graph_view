@@ -10,14 +10,11 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 节点受到中心排斥力大小与自身度呈反比的装饰器
 class CoulombCenterDecorator extends ForceDecorator {
   double k;
-  CoulombCenterDecorator({
-    this.k = 100,
-    super.decorators,
-  });
+  CoulombCenterDecorator({this.k = 100});
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     var center = v.cpn!.game.size / 2;
 
     var delta = v.position - center;

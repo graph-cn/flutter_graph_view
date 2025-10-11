@@ -24,7 +24,6 @@ class HookeDecorator extends ForceDecorator {
   HookeDecorator({
     this.length = 100,
     this.k = 0.003,
-    super.decorators,
     super.sameTagsFactor = 1,
     this.handleOverlay,
     this.degreeFactor,
@@ -39,8 +38,8 @@ class HookeDecorator extends ForceDecorator {
   }
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     for (var n in v.neighbors) {
       if (v.position != Vector2.zero() && n.position != Vector2.zero()) {
         var force = hooke(v, n, graph);

@@ -14,7 +14,6 @@ class HookeCenterDecorator extends ForceDecorator {
   HookeCenterDecorator({
     this.length = 1,
     this.k = 0.003,
-    super.decorators,
   });
 
   Vector2 hooke(Vertex s, Graph graph) {
@@ -28,8 +27,8 @@ class HookeCenterDecorator extends ForceDecorator {
   }
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     if (v.position != Vector2.zero()) {
       var force = hooke(v, graph);
       setForceMap(v, v, force);

@@ -12,7 +12,7 @@ class PersistenceDecorator extends ForceDecorator {
   final Map<dynamic, Vertex?> Function() loadVertex;
   late Map<dynamic, Vertex?> _positionMap;
 
-  PersistenceDecorator(this.saveVertex, this.loadVertex, {super.decorators}) {
+  PersistenceDecorator(this.saveVertex, this.loadVertex) {
     _positionMap = loadVertex();
     _positionMap.forEach((key, vertex) {});
   }
@@ -32,8 +32,8 @@ class PersistenceDecorator extends ForceDecorator {
   }
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     Vertex? cachedVertex = _positionMap[v];
     if (cachedVertex == null ||
         cachedVertex.position.x != v.position.x ||

@@ -44,7 +44,6 @@ class HookeBorderDecorator extends ForceDecorator {
     this.k = 0.3,
     this.alwaysInScreen = true,
     this.handleOverlay,
-    super.decorators,
   });
 
   Vector2 hooke(Vertex s, Graph graph) {
@@ -71,8 +70,8 @@ class HookeBorderDecorator extends ForceDecorator {
   }
 
   @override
+  // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    super.compute(v, graph);
     if (v.position != Vector2.zero()) {
       var force = hooke(v, graph);
       setForceMap(v, v, force);
