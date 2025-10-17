@@ -6,7 +6,6 @@
 
 import 'dart:ui' as ui;
 
-import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -19,16 +18,6 @@ class ErGraphTableShape extends VertexShape {
   @override
   double width(Vertex vertex) {
     return vertex.size!.width;
-  }
-
-  @override
-  ShapeHitbox hitBox(Vertex vertex, ShapeComponent cpn) {
-    return RectangleHitbox(
-      size: Vector2.zero(),
-      isSolid: true,
-      position: cpn.position,
-      anchor: cpn.anchor,
-    );
   }
 
   @override
@@ -70,11 +59,10 @@ class ErGraphTableShape extends VertexShape {
   }
 
   @override
-  void setPaint(Vertex vertex) {
-    var cpn = vertex.cpn!;
+  Paint getPaint(Vertex vertex) {
     var colors = vertex.colors;
 
-    cpn.paint = ui.Paint()
+    return ui.Paint()
       ..shader = ui.Gradient.radial(
         ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
         vertex.radiusZoom,
@@ -82,7 +70,4 @@ class ErGraphTableShape extends VertexShape {
         List.generate(colors.length, (index) => (index + 1) / colors.length),
       );
   }
-
-  @override
-  void updateHitBox(Vertex vertex, ShapeHitbox hitBox) {}
 }

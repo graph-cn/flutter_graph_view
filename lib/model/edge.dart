@@ -41,16 +41,16 @@ class Edge {
   /// 颜色放置器，用于缓存当前关系所需使用到的颜色
   late List<Color> colors;
 
-  /// cache the component for edge model.
-  ///
-  /// 边模型缓存其对应的组件元素
-  EdgeComponent? cpn;
-
   /// Is this edge under focus now
   ///
   /// 当前边是否有鼠标浮入
-  bool get isHovered => cpn?.isHovered ?? false;
+  bool isHovered = false;
 
+  bool visible = true;
+
+  Graph? g;
+  Vector2 get size => g!.options!.edgeShape.size(this);
+  double get zoom => start.zoom;
   Path? path;
 
   bool get isLoop => start == end;
@@ -66,7 +66,7 @@ class Edge {
     var dcy = s.y - c.y;
     var dcx = c.x - s.x;
 
-    var edgesBetweenTwoVertex = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var edgesBetweenTwoVertex = g?.edgesFromTwoVertex(start, end) ?? [];
     var nl = computeIndex * distance / edgesBetweenTwoVertex.length;
     var nx = dcy / (distance / 2) * nl;
     var ny = dcx / (distance / 2) * nl;
@@ -75,7 +75,7 @@ class Edge {
   }
 
   double get computeIndex {
-    var edgeList = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var edgeList = g?.edgesFromTwoVertex(start, end) ?? [];
     var idx = edgeList.indexOf(this);
     var result = 0.0;
     if (edgeList.length.isOdd) {
@@ -96,13 +96,13 @@ class Edge {
   }
 
   int get edgeIdx {
-    var edgeList = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var edgeList = g?.edgesFromTwoVertex(start, end) ?? [];
     var idx = edgeList.indexOf(this);
     return idx;
   }
 
   double get edgeIdxRatio {
-    var edgeList = cpn?.graph.edgesFromTwoVertex(start, end) ?? [];
+    var edgeList = g?.edgesFromTwoVertex(start, end) ?? [];
     var ratio = edgeList.indexOf(this) / edgeList.length;
     return ratio;
   }

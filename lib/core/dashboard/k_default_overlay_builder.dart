@@ -325,7 +325,7 @@ LegendBuilder? kLegendOverlayBuilder() {
       });
     }
 
-    var graph = ld.graphComponent?.graph;
+    var graph = ld.graph;
     if (graph == null) return const SizedBox();
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -338,7 +338,7 @@ LegendBuilder? kLegendOverlayBuilder() {
             ColoredBox(
               color: () {
                 var i = graph.allTags.indexOf(tag);
-                var graphStyle = ld.graphComponent!.options.graphStyle;
+                var graphStyle = ld.graph!.options!.graphStyle;
                 return graphStyle.colorByTag(tag, graph.allTags) ??
                     (i < graphStyle.tagColorByIndex.length
                         ? graphStyle.tagColorByIndex[i]

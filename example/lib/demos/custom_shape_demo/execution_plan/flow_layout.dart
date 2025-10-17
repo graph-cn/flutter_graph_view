@@ -53,18 +53,17 @@ class FlowLayout extends GraphAlgorithm {
   /// 对初始布局考虑充分的情况下，
   /// 可以通过覆盖[onDrag]方法，并使用空实现，以禁用节点的拖拽效果
   @override
-  void onDrag(Vertex hoverVertex, info, Viewfinder viewfinder) {}
+  void onDrag(Vertex? hoverVertex, info) {}
 
   /// 一次性布局完成时，不需要重复刷新图像信息，[compute]同样给上空实现
   @override
   // ignore: must_call_super
   bool? compute(Vertex v, Graph graph) {
-    // v.cpn?.game.pauseEngine();
-    // if (decorators != null) {
-    //   for (var decorator in decorators!) {
-    //     decorator.compute(v, graph);
-    //   }
-    // }
+    if (decorators != null) {
+      for (var decorator in decorators!) {
+        decorator.compute(v, graph);
+      }
+    }
     return true;
   }
 
@@ -141,7 +140,7 @@ class FlowLayout extends GraphAlgorithm {
       for (int j = 0; j < children[i].length; j++) {
         for (int k = 0; k < children[i][j].length; k++) {
           rowMaxWidth[i] +=
-              graph.keyCache[nodeCache[children[i][j][k]]!.id!]!.size!.width;
+              graph.keyCache[nodeCache[children[i][j][k]]?.id!]!.size!.width;
         }
         rowMaxWidth[i] += (children[i][j].length - 1) * sameParentGap;
       }

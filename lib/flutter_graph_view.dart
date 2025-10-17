@@ -11,9 +11,8 @@ export './model//edge.dart';
 
 /// widgets
 export 'flutter_graph_widget.dart';
-export './widgets/graph_component.dart';
-export './widgets/vertex_component.dart';
-export './widgets/edge_component.dart';
+export './widgets/graph_component_canvas.dart';
+export './widgets/graph_painter.dart';
 
 /// data convertors
 export 'package:flutter_graph_view/core/data_convertor.dart';
@@ -63,9 +62,8 @@ export 'core/dashboard/k_default_overlay_builder.dart';
 
 export 'core/options/style/graph_style.dart';
 
-export 'typedef/components_new.dart';
+/// extensions
+export 'extension/base_ext.dart';
 
 /// third party
-export 'package:flame/flame.dart';
-export 'package:flame/camera.dart';
-export 'package:flame/components.dart';
+export 'package:vector_math/vector_math.dart' hide Colors;

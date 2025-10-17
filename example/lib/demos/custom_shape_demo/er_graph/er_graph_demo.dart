@@ -3,7 +3,8 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'package:example/demos/custom_shape_demo/er_graph/connect_widget.dart';
-import 'package:example/demos/custom_shape_demo/er_graph/er_graph_table_component.dart';
+import 'package:example/demos/custom_shape_demo/er_graph/er_graph_table_shape.dart'
+    show ErGraphTableShape;
 import 'package:example/demos/custom_shape_demo/er_graph/nothing_shape.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -17,13 +18,13 @@ final List<Connection> connections = [];
 class ErGraphDemo extends StatelessWidget {
   const ErGraphDemo({super.key});
   static final decorators1 = [
-    // CoulombDecorator(),
-    // HookeDecorator(),
-    // CoulombReverseDecorator(),
-    // HookeBorderDecorator(alwaysInScreen: false),
-    // ForceDecorator(),
-    // ForceMotionDecorator(),
-    // TimeCounterDecorator(),
+    CoulombDecorator(),
+    HookeDecorator(),
+    CoulombReverseDecorator(),
+    HookeBorderDecorator(alwaysInScreen: false),
+    ForceDecorator(),
+    ForceMotionDecorator(),
+    TimeCounterDecorator(),
     GraphRouteDecorator(),
     PauseDecorator(),
     PinDecorator(),
@@ -57,8 +58,6 @@ class ErGraphDemo extends StatelessWidget {
       // algorithm: ErFlowLayout(),
       convertor: ErGraphConvertor(),
       options: Options()
-        ..vertexComponentNew = ErGraphTableComponent.new
-        ..useLegend = false
         ..vertexShape = NothingShape()
         ..edgeShape = NothingEdgeShape()
         ..textGetter = (data) {
@@ -67,7 +66,7 @@ class ErGraphDemo extends StatelessWidget {
           }
           return '';
         }
-        // ..vertexShape = PlanNodeShape()
+        ..vertexShape = ErGraphTableShape()
         ..graphStyle = (GraphStyle()
           ..tagColorByIndex = [
             Colors.red.shade200,

@@ -96,26 +96,38 @@ class Vertex<I> {
   /// 节点的尺寸，提供给自定义形状的元素使用
   Size? size;
 
+  bool visible = true;
+
   double get radiusZoom {
-    return cpn == null ? radius : radius / cpn!.game.camera.viewfinder.zoom;
+    return g == null ? radius : radius / zoom;
   }
 
-  double get zoom => cpn!.game.camera.viewfinder.zoom;
+  double get radiusActual => radius * (g?.zoom ?? 1) / zoom;
+
+  double get zoom {
+    if (g == null) return 1;
+    return g!.zoom > 1
+        ? math.log(g!.scale.value * math.e)
+        : (1 + g!.scale.value) / 2;
+  }
 
   Vertex();
 
-  VertexComponent? cpn;
-
   /// Is this vertex under focus now
   ///
   /// 当前节点是否有鼠标浮入
-  @Deprecated("will remove in v0.0.2. use isHovered insteads of")
-  bool hover = false;
+  bool get isHovered {
+    if (this.g == null) return false;
+    var g = this.g as Graph;
+    // 排他
+    if (g.hoverVertex != null && g.hoverVertex != this) return false;
 
-  /// Is this vertex under focus now
-  ///
-  /// 当前节点是否有鼠标浮入
-  bool get isHovered => cpn?.isHovered ?? false;
+    var p = g.options!.pointer;
+    var distance = g.options!.localToGlobal(position).distanceTo(p);
+    return distance <= radiusActual; // 因为节点与全图缩放比例不同，所以距离需要经过一次换算
+  }
+
+  Graph? g;
 
   bool get isCenter => neighbors.fold(
         true,
@@ -124,6 +136,8 @@ class Vertex<I> {
             (degree > element.degree ||
                 (degree == element.degree && element.prevVertex == this)),
       );
+
+  final Map<String, dynamic> properties = {};
 
   @override
   String toString() {

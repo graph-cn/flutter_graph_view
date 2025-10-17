@@ -13,16 +13,22 @@ class TimeCounterDecorator extends GraphAlgorithm {
   @override
   void onLoad(Vertex v) {
     super.onLoad(v);
-    v.cpn?.properties.putIfAbsent('timeCounter', () => 0);
+    v.properties.putIfAbsent('timeCounter', () => 0);
+  }
+
+  int count(Vertex v) {
+    var c = v.properties['timeCounter'];
+    if (c == null) onLoad(v);
+    return v.properties['timeCounter'];
   }
 
   @override
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
-    if (v.cpn!.properties['timeCounter'] >= 1 << 30) {
-      v.cpn!.properties['timeCounter'] = 0;
+    if (count(v) >= 1 << 30) {
+      v.properties['timeCounter'] = 0;
     } else {
-      v.cpn!.properties['timeCounter'] += 1;
+      v.properties['timeCounter'] += 1;
     }
   }
 }

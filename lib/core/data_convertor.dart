@@ -86,6 +86,7 @@ abstract class DataConvertor<V, E> {
       edge = convertEdge(e, graph);
       edgeAsGraphComponse(e, graph, edge);
       graph.edges.add(edge);
+      edge.g = graph;
     } else {
       edge = sameEdge.first;
     }
@@ -102,6 +103,11 @@ abstract class DataConvertor<V, E> {
     if (sameVertex.isEmpty) {
       vertexAsGraphComponse(v, graph, vertex);
       graph.vertexes.add(vertex);
+      vertex.g = graph;
+      graph.algorithm?.onLoad(vertex);
+      if (graph.options != null) {
+        vertex.colors = graph.options!.graphStyle.vertexColors(vertex);
+      }
     } else {
       vertex = sameVertex.first;
     }

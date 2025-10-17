@@ -26,7 +26,6 @@ class ExecutionPlanPanel extends StatelessWidget {
       algorithm: FlowLayout(),
       convertor: ExecutionPlanConvertor(),
       options: Options()
-        ..useLegend = false
         ..vertexShape = PlanNodeShape()
         ..graphStyle = (GraphStyle()
           ..tagColorByIndex = [

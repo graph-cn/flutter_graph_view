@@ -5,7 +5,6 @@
 import 'dart:ui' as ui;
 
 // ignore: depend_on_referenced_packages
-import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -19,7 +18,6 @@ class PlanNodeShape extends VertexShape {
 
   @override
   render(Vertex vertex, ui.Canvas canvas, paint, paintLayers) {
-    vertex.cpn?.anchor = Anchor.center;
     var originShader = paint.shader;
     canvas.drawRRect(
         RRect.fromLTRBR(0, 0, vertex.size!.width, vertex.size!.height + 10,
@@ -36,8 +34,7 @@ class PlanNodeShape extends VertexShape {
         paint);
     paint.shader = originShader;
     // 渲染标题
-    if (vertex.cpn?.options?.showText ??
-        true && vertex.cpn!.game.camera.viewfinder.zoom > 0.3) {
+    if (vertex.g?.options?.showText ?? true && vertex.zoom > 0.3) {
       textRenderer?.render(vertex, canvas, paint);
     }
   }
@@ -53,46 +50,29 @@ class PlanNodeShape extends VertexShape {
   }
 
   @override
-  ShapeHitbox hitBox(Vertex vertex, ShapeComponent cpn) {
-    return RectangleHitbox(
-      size: Vector2.zero(),
-      isSolid: true,
-      position: cpn.position,
-      anchor: cpn.anchor,
-    );
-  }
-
-  @override
-  void updateHitBox(Vertex vertex, ShapeHitbox hitBox) {
-    // hitBox as RectangleHitbox;
-    // hitBox.size = vertex.cpn?.size ?? Vector2.zero();
-  }
-
-  @override
-  void setPaint(Vertex vertex) {
-    var cpn = vertex.cpn!;
+  Paint getPaint(Vertex vertex) {
+    Paint paint = Paint();
     var colors = vertex.colors;
 
     if (isWeaken(vertex)) {
-      cpn.paint = ui.Paint()
-        ..shader = ui.Gradient.radial(
-          ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
-          vertex.radiusZoom,
-          List.generate(
-            colors.length,
-            (index) => colors[index].withOpacity(.5),
-          ),
-          List.generate(colors.length, (index) => (index + 1) / colors.length),
-        );
+      paint.shader = ui.Gradient.radial(
+        ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
+        vertex.radiusZoom,
+        List.generate(
+          colors.length,
+          (index) => colors[index].withOpacity(.5),
+        ),
+        List.generate(colors.length, (index) => (index + 1) / colors.length),
+      );
     } else {
-      cpn.paint = ui.Paint()
-        ..shader = ui.Gradient.radial(
-          ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
-          vertex.radiusZoom,
-          colors,
-          List.generate(colors.length, (index) => (index + 1) / colors.length),
-        );
+      paint.shader = ui.Gradient.radial(
+        ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
+        vertex.radiusZoom,
+        colors,
+        List.generate(colors.length, (index) => (index + 1) / colors.length),
+      );
     }
+    return paint;
   }
 }
 
@@ -102,9 +82,14 @@ class PlanNodeShape extends VertexShape {
 class VertexTextRendererImpl extends VertexTextRenderer {
   @override
   void render(Vertex<dynamic> vertex, ui.Canvas canvas, ui.Paint paint) {
+    TextStyle? textStyle =
+        vertex.g?.options?.graphStyle.vertexTextStyleGetter?.call(vertex, null);
+
     /// 1.生成 ParagraphStyle，可设置文本的基本信息
     final paragraphStyle = ui.ParagraphStyle(
-      fontSize: 14,
+      fontSize: textStyle?.fontSize ?? 14,
+      fontFamily: textStyle?.fontFamily,
+      fontWeight: textStyle?.fontWeight,
     );
 
     /// 2.根据 ParagraphStyle 生成 ParagraphBuilder
@@ -114,10 +99,14 @@ class VertexTextRendererImpl extends VertexTextRenderer {
 
     /// 3.添加样式和文字
     paragraphBuilder
-      ..pushStyle(ui.TextStyle(
-        fontSize: 14,
-        foreground: paint,
-      ))
+      ..pushStyle(
+        ui.TextStyle(
+          fontSize: textStyle?.fontSize ?? 14,
+          fontFamily: textStyle?.fontFamily,
+          fontWeight: textStyle?.fontWeight,
+          foreground: paint,
+        ),
+      )
       ..addText(text);
 
     /// 4.通过 build 取到 Paragraph
@@ -126,7 +115,11 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     TextPainter hpainter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
-        style: const TextStyle(fontSize: 14),
+        style: TextStyle(
+          fontSize: textStyle?.fontSize ?? 14,
+          fontFamily: textStyle?.fontFamily,
+          fontWeight: textStyle?.fontWeight,
+        ),
         text: text,
       ),
     )..layout();

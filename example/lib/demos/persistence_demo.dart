@@ -110,7 +110,6 @@ class _PersistenceDemoState extends State<PersistenceDemo> {
             Colors.blueGrey.shade200,
             Colors.deepOrange.shade200,
           ])
-        ..useLegend = true // default true
         ..edgePanelBuilder = edgePanelBuilder
         ..vertexPanelBuilder = vertexPanelBuilder
         ..edgeShape = EdgeLineShape() // default is EdgeLineShape.
@@ -118,8 +117,8 @@ class _PersistenceDemoState extends State<PersistenceDemo> {
     );
   }
 
-  Widget edgePanelBuilder(Edge edge, Viewfinder viewfinder) {
-    var c = viewfinder.localToGlobal(edge.position);
+  Widget edgePanelBuilder(Edge edge) {
+    var c = edge.g!.options!.localToGlobal(edge.position);
 
     return Stack(
       children: [
@@ -141,8 +140,8 @@ class _PersistenceDemoState extends State<PersistenceDemo> {
     );
   }
 
-  Widget vertexPanelBuilder(hoverVertex, Viewfinder viewfinder) {
-    var c = viewfinder.localToGlobal(hoverVertex.cpn!.position);
+  Widget vertexPanelBuilder(Vertex hoverVertex) {
+    var c = hoverVertex.g!.options!.localToGlobal(hoverVertex.position);
     return Stack(
       children: [
         Positioned(

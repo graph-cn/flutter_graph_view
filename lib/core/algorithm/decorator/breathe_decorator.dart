@@ -16,29 +16,28 @@ class BreatheDecorator extends GraphAlgorithm {
   @override
   void onLoad(Vertex v) {
     super.onLoad(v);
-    v.cpn?.properties.putIfAbsent('breatheCount', () => 0);
-    v.cpn?.properties.putIfAbsent('breatheDirect', math.Random().nextBool);
-    v.cpn?.properties.putIfAbsent('breatheOffsetY', () => 0);
+    v.properties.putIfAbsent('breatheCount', () => 0);
+    v.properties.putIfAbsent('breatheDirect', math.Random().nextBool);
+    v.properties.putIfAbsent('breatheOffsetY', () => 0);
   }
 
-  setBreatheCount(Vertex v, int value) =>
-      v.cpn!.properties['breatheCount'] = value;
+  setBreatheCount(Vertex v, int value) => v.properties['breatheCount'] = value;
   setBreatheDirect(Vertex v, bool value) =>
-      v.cpn!.properties['breatheDirect'] = value;
+      v.properties['breatheDirect'] = value;
   setBreatheOffsetY(Vertex v, int value) =>
-      v.cpn!.properties['breatheOffsetY'] = value;
+      v.properties['breatheOffsetY'] = value;
 
   @override
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
-    if (v.cpn!.properties['breatheCount'] % 150 == 0) {
-      v.cpn!.properties['breatheDirect'] = !v.cpn!.properties['breatheDirect'];
-      v.cpn!.properties['breatheOffsetY'] =
-          (v.cpn!.properties['breatheDirect'] ? 1 : -1) * .1;
+    if (v.properties['breatheCount'] % 150 == 0) {
+      v.properties['breatheDirect'] = !v.properties['breatheDirect'];
+      v.properties['breatheOffsetY'] =
+          (v.properties['breatheDirect'] ? 1 : -1) * .1;
     }
     if (v != graph.hoverVertex) {
-      v.position.y += v.cpn!.properties['breatheOffsetY'];
+      v.position.y += v.properties['breatheOffsetY'];
     }
-    v.cpn!.properties['breatheCount'] += 1;
+    v.properties['breatheCount'] += 1;
   }
 }

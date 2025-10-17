@@ -9,7 +9,7 @@ environment:
   sdk: ^3.0.3
 
 dependencies:
-  flame: ^1.29.0
+  vector_math: ^2.2.0
   flutter:
     sdk: flutter
 

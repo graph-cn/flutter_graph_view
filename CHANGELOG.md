@@ -1,3 +1,16 @@
+## 2.0.0
+- perf: remove duplicate method calls.
+    > 针对 ForceDecorator 的子类，移除`super.compute`避免重复执行
+- refac: replace flame with canvas
+    > 使用原生画布来替代 flame
+
+### Warning（注意事项）
+Due to the destructive changes made to most APIs that are incompatible with 1.x, please upgrade from 1.x with caution. However, if there are performance issues due to excessive data volume in the project, please do not hesitate to upgrade to 2.x, even if it requires a certain amount of work.
+
+> 由于多数 API 产生了破坏性的改动，与 1.x 不兼容，请谨慎从 1.x 中升级，但如果项目中因数据量过大，遇到了性能问题，请毫不犹豫升级到 2.x，即使需要一定工作量。
+
+---
+
 ## 1.2.1
 - feat: add a decorator for counting
     > 新增一个计数用的装饰器

@@ -11,7 +11,7 @@ class CircleLayout extends GraphAlgorithm {
   @override
   void onLoad(Vertex v) {
     super.onLoad(v);
-    v.cpn?.properties.putIfAbsent('timeCounter', () => 0);
+    v.properties.putIfAbsent('timeCounter', () => 0);
   }
 
   @override

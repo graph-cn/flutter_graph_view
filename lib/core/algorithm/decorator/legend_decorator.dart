@@ -24,7 +24,6 @@ class LegendDecorator extends GraphAlgorithm {
   changeTag(String tag) {
     if (hiddenTags.contains(tag)) {
       hiddenTags.remove(tag);
-      updateVertex();
     } else {
       hiddenTags.add(tag);
     }
@@ -38,20 +37,6 @@ class LegendDecorator extends GraphAlgorithm {
     }
   }
 
-  /// 之所以要另外更新节点，是因为节点隐藏时，无法触发节点对应的 compute 方法
-  /// 在 compute 方法中，无法添加隐藏的节点
-  updateVertex() {
-    graphComponent?.graph.vertexes.forEach((v) {
-      var isHidden = hiddenTags.contains(v.tag);
-      v.tags?.forEach((tag) {
-        isHidden |= hiddenTags.contains(tag);
-      });
-      if (!isHidden) {
-        addCpn(v.cpn!);
-      }
-    });
-  }
-
   @override
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
@@ -60,33 +45,19 @@ class LegendDecorator extends GraphAlgorithm {
       isHidden |= hiddenTags.contains(tag);
     });
     if (isHidden) {
-      removeCpn(v.cpn);
+      v.visible = false;
       for (var e in v.neighborEdges) {
-        removeCpn(e.cpn);
+        e.visible = false;
       }
+    } else {
+      v.visible = true;
     }
     for (var e in graph.edges) {
-      if (e.start.cpn != null &&
-          world?.contains(e.start.cpn!) == true &&
-          e.end!.cpn != null &&
-          world?.contains(e.end!.cpn!) == true &&
-          !hiddenEdges.contains(e.edgeName)) {
-        addCpn(e.cpn);
+      if (!hiddenEdges.contains(e.edgeName)) {
+        e.visible = true;
       } else {
-        removeCpn(e.cpn);
+        e.visible = false;
       }
-    }
-  }
-
-  void removeCpn(Component? c) {
-    if (c != null && world?.contains(c) == true) {
-      world?.remove(c);
-    }
-  }
-
-  void addCpn(Component? c) {
-    if (c != null && world?.contains(c) != true) {
-      world?.add(c);
     }
   }
 }

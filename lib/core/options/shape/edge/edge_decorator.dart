@@ -84,7 +84,7 @@ class SolidArrowEdgeDecorator extends DefaultEdgeDecorator {
 
     // 计算线宽调整系数
     double strokeWidthFactor =
-        (edge.isHovered ? 2.0 : 1.0) / edge.start.zoom; // 悬停时线宽增加的比例
+        (edge.isHovered ? 2.0 : 1.0) / edge.zoom; // 悬停时线宽增加的比例
 
     // 基于当前线宽计算箭头尺寸
     double currentArrowBaseDistance = arrowBaseDistance * strokeWidthFactor;
@@ -102,11 +102,13 @@ class SolidArrowEdgeDecorator extends DefaultEdgeDecorator {
     var perp =
         Vector2(-directionVector.y, directionVector.x) * currentArrowWidth;
 
+    var yOffset = currentArrowWidth * edge.zoom / 2;
+
     // 创建并填充箭头路径
     var path = Path()
-      ..moveTo(tipPoint.x, tipPoint.y) // 箭头尖端
-      ..lineTo(basePoint.x + perp.x, basePoint.y + perp.y) // 箭头左侧
-      ..lineTo(basePoint.x - perp.x, basePoint.y - perp.y) // 箭头右侧
+      ..moveTo(tipPoint.x, tipPoint.y - yOffset) // 箭头尖端
+      ..lineTo(basePoint.x + perp.x, basePoint.y + perp.y - yOffset) // 箭头左侧
+      ..lineTo(basePoint.x - perp.x, basePoint.y - perp.y - yOffset) // 箭头右侧
       ..close();
 
     // 创建填充画笔（确保是填充的）
@@ -135,13 +137,13 @@ class DefaultEdgeDecorator extends EdgeDecorator {
         0.35 * (edge.computeIndex.abs() + 1) / (edge.computeIndex.abs() + 2);
     var n1 = Vector2(
       distance / 2,
-      (edge.computeIndex + f) * distance / edgeCount * 2 + edge.cpn!.size.y / 2,
+      (edge.computeIndex + f) * distance / edgeCount * 2 + edge.size.y / 2,
     );
     drawArrow(edge, canvas, paint, n1);
 
     var n2 = Vector2(
       distance / 2,
-      (edge.computeIndex - f) * distance / edgeCount * 2 + edge.cpn!.size.y / 2,
+      (edge.computeIndex - f) * distance / edgeCount * 2 + edge.size.y / 2,
     );
     drawArrow(edge, canvas, paint, n2);
   }
@@ -162,10 +164,10 @@ class DefaultEdgeDecorator extends EdgeDecorator {
   }
 
   Vector2 srcPosition(Edge edge) {
-    return Vector2(0, edge.cpn!.size.y / 2);
+    return Vector2(0, edge.size.y / 2);
   }
 
   Vector2 dstPosition(Edge edge) {
-    return Vector2(EdgeShape.len(edge), edge.cpn!.size.y / 2);
+    return Vector2(EdgeShape.len(edge), edge.size.y / 2);
   }
 }

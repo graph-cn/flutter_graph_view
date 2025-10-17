@@ -2,8 +2,8 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'package:flame/collisions.dart';
-import 'package:flutter/painting.dart';
+import 'dart:ui';
+
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// Used to customize the vertex UI.
@@ -35,27 +35,16 @@ abstract class VertexShape {
     return Vector2(width(vertex), height(vertex));
   }
 
-  /// create a hit box, used for overlap judgment.
-  ///
-  /// 创建一个碰撞容器，用于碰撞检测，解决重叠问题。
-  ShapeHitbox hitBox(Vertex vertex, ShapeComponent cpn);
-
-  /// update the attributes of hit box. Such as x, y, radius, etc.
-  ///
-  /// 更新碰撞容器的信息。宽、高、半径等
-  void updateHitBox(Vertex vertex, ShapeHitbox hitBox);
-
   /// update the paint from data.
   ///
   /// 根据数据更新画笔属性。
-  void setPaint(Vertex vertex);
+  Paint getPaint(Vertex vertex);
 
   /// When some elements are activated and do not contain the current element.
   ///
   /// 当一些元素被激活且不包含当前元素
   bool isWeaken(Vertex vertex) {
-    var cpn = vertex.cpn!;
-    var graph = cpn.game.graph;
+    var graph = vertex.g!;
     return (graph.hoverVertex != null &&
             (vertex != graph.hoverVertex &&
                 !graph.hoverVertex!.neighbors.contains(vertex)) ||

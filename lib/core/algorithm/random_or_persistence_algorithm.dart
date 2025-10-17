@@ -10,12 +10,18 @@ class RandomOrPersistenceAlgorithm extends RandomAlgorithm {
   RandomOrPersistenceAlgorithm({super.decorators});
 
   @override
-  void compute(Vertex v, Graph graph) {
+  void onLoad(Vertex v) {
+    super.onLoad(v);
     Vector2? cachedPosition = positionStorage[v.id];
     if (cachedPosition != null) {
-      v.cpn?.position = cachedPosition;
+      v.position = cachedPosition;
     }
-    positionStorage[v.id] = v.cpn?.position;
+    positionStorage[v.id] = v.position;
+  }
+
+  @override
+  void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
+    positionStorage[v.id] = v.position;
   }
 }

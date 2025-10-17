@@ -15,7 +15,7 @@ class CoulombBorderDecorator extends ForceDecorator {
   @override
   // ignore: must_call_super
   void compute(Vertex v, Graph graph) {
-    var size = v.cpn!.game.size;
+    var size = graph.size.value.toVector2();
 
     var corner = [
       Vector2(0, 0),

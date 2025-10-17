@@ -2,6 +2,7 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 ///
@@ -9,6 +10,11 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 图组件的数据模型
 ///
 class Graph<ID> {
+  Options? options;
+  GraphAlgorithm? algorithm;
+  DataConvertor? convertor;
+  ValueNotifier<Size> get size => options!.size;
+
   /// All the vertexes' data in graph.
   /// 图中所有的节点数据
   List<Vertex<ID>> vertexes = [];
@@ -21,9 +27,32 @@ class Graph<ID> {
   /// 对节点的 id 进行缓存，为了方便通过 id 获取到接点
   Map<ID, Vertex<ID>> keyCache = {};
 
+  /// 记算鼠标上次触碰节点的开始时间
+  Map<Vertex?, DateTime> vHoverTime = {};
+
   /// The vertex which is focused by mouse.
   /// 鼠标浮入所命中的节点，用于做高亮显示。
-  Vertex<ID>? hoverVertex;
+  Vertex<ID>? _hoverVertex;
+
+  Vertex<ID>? get hoverVertex => _hoverVertex;
+
+  set hoverVertex(Vertex<ID>? v) {
+    if (v == _hoverVertex) return;
+    vHoverTime.putIfAbsent(v, DateTime.now);
+    if (v == null) vHoverTime.remove(_hoverVertex);
+    _hoverVertex = v;
+  }
+
+  bool showPanel(Vertex<ID> v) {
+    if (_hoverVertex != v) return false;
+    var vTime = vHoverTime[v];
+    if (vTime == null) return false;
+    var delay = options?.panelDelay ?? const Duration(milliseconds: 300);
+    if (vTime.add(delay).compareTo(DateTime.now()) < 0) {
+      return true;
+    }
+    return false;
+  }
 
   /// The edge which is focused by mouse.
   ///
@@ -90,4 +119,9 @@ class Graph<ID> {
     allEdgeNames.clear();
     edgesBetweenHash.clear();
   }
+
+  double get zoom => options?.scale.value ?? 1;
+  ValueNotifier get scale => options!.scale;
+  get refreshData => options?.refreshData;
+  get mergeGraph => options?.mergeGraph;
 }

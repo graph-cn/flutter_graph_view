@@ -54,7 +54,7 @@ class ErFlowLayout extends GraphAlgorithm {
   /// 对初始布局考虑充分的情况下，
   /// 可以通过覆盖[onDrag]方法，并使用空实现，以禁用节点的拖拽效果
   @override
-  void onDrag(Vertex hoverVertex, info, Viewfinder viewfinder) {}
+  void onDrag(Vertex? hoverVertex, info) {}
 
   /// 一次性布局完成时，不需要重复刷新图像信息，[compute]同样给上空实现
   @override

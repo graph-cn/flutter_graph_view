@@ -38,7 +38,7 @@ class GraphStyle {
   /// 通过[vertex]中的`tags`属性获取颜色列表
   List<Color> vertexColors(Vertex vertex) {
     var tags = vertex.tags;
-    var allTags = vertex.cpn!.game.graph.allTags;
+    var allTags = vertex.g!.allTags;
 
     if (tags == null) {
       return defaultColor();

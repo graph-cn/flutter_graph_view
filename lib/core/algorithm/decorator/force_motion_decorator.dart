@@ -13,12 +13,12 @@ class ForceMotionDecorator extends GraphAlgorithm {
   ForceMotionDecorator({this.unitTime = 1, super.decorators});
 
   Vector2 getForce(Vertex v) {
-    var force = v.cpn!.properties['force'] as Vector2?;
+    var force = v.properties['force'] as Vector2?;
     return force ?? Vector2.zero();
   }
 
   int getTimeCounter(Vertex v) {
-    var timeCounter = v.cpn!.properties['timeCounter'] as int?;
+    var timeCounter = v.properties['timeCounter'] as int?;
     return timeCounter ?? -1;
   }
 

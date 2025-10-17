@@ -48,11 +48,12 @@ class HookeBorderDecorator extends ForceDecorator {
 
   Vector2 hooke(Vertex s, Graph graph) {
     var viewport = (alwaysInScreen
-            ? s.cpn!.game.camera.visibleWorldRect
-            : Rect.fromPoints(Offset.zero, s.cpn!.game.size.toOffset())) *
+            ? graph.options!.visibleWorldRect
+            : Rect.fromPoints(Offset.zero,
+                Offset(graph.size.value.width, graph.size.value.height))) *
         borderFactor;
     var widthScale = 0;
-    var p = s.cpn!.position;
+    var p = s.position;
     double fx = 0;
     double fy = 0;
     if (p.x < viewport.left + widthScale) {

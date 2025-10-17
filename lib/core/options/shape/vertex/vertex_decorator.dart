@@ -5,7 +5,6 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -27,13 +26,12 @@ class VertexImgDecorator extends VertexDecorator {
     paint,
     paintLayers,
   ) {
-    var cpn = vertex.cpn!;
-    var imgUrl = cpn.options?.imgUrlGetter.call(vertex);
+    var imgUrl = vertex.g?.options?.imgUrlGetter.call(vertex);
     var img = getImg(imgUrl);
     if (img != null) {
       vertex.radius = 15;
       var imgRect = Rect.fromCircle(
-        center: Offset(vertex.radiusZoom, vertex.radiusZoom),
+        center: Offset.zero,
         radius: vertex.radiusZoom - 1 / vertex.zoom,
       );
       final clipPath = ui.Path()

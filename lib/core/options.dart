@@ -2,7 +2,8 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'package:flame/events.dart';
+import 'package:flutter/gestures.dart'
+    show PointerHoverEvent, PointerScrollEvent, PointerSignalEvent;
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -11,7 +12,6 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// @zh: 顶点数据面板的构建器，鼠标悬停到对应节点时触发。
 typedef VertexPanelBuilder = Widget Function(
   Vertex hoverVertex,
-  Viewfinder zoom,
 );
 
 /// @en: The builder of the edge data panel, triggered when the mouse hovers.
@@ -19,7 +19,6 @@ typedef VertexPanelBuilder = Widget Function(
 /// @zh: 边数据面板的构建器，鼠标悬停到对应节点时触发。
 typedef EdgePanelBuilder = Widget Function(
   Edge hoverEdge,
-  Viewfinder zoom,
 );
 
 /// @en: use for create background widget.
@@ -35,10 +34,21 @@ typedef VertexTextStyleGetter = TextStyle? Function(
   VertexShape? shape,
 );
 
+typedef GraphComponentBuilder = Widget Function({
+  Key? key,
+  required dynamic data,
+  required DataConvertor convertor,
+  required BuildContext context,
+  required GraphAlgorithm algorithm,
+  required Options options,
+});
+
 /// The core api for Graph Options.
 ///
 /// 图配置项
 class Options {
+  GraphComponentBuilder graphComponentBuilder = GraphComponentCanvas.new;
+
   /// The builder of the vertex panel, triggered when the mouse hovers.
   ///
   /// 顶点数据面板的构建器，鼠标悬停到对应节点时触发。
@@ -70,12 +80,6 @@ class Options {
 
   GraphStyle graphStyle = GraphStyle();
 
-  /// if render legend in canvas.
-  ///
-  /// 是否展示图例
-  @Deprecated("use LegendDecorator instead. will remove in 1.2.0")
-  bool useLegend = true;
-
   /// if enable hit.
   ///
   /// 是否开启碰撞检测
@@ -84,17 +88,17 @@ class Options {
   /// @en: event callback when tap down on vertex.
   ///
   /// @zh: 点下顶点时的回调
-  dynamic Function(Vertex vertex, TapDownEvent)? onVertexTapDown;
+  dynamic Function(Vertex vertex, dynamic)? onVertexTapDown;
 
   /// @en: event callback when tap up on vertex.
   ///
   /// @zh: 抬起顶点时的回调
-  dynamic Function(Vertex vertex, TapUpEvent)? onVertexTapUp;
+  dynamic Function(Vertex vertex, dynamic)? onVertexTapUp;
 
   /// @en: event callback when tap cancel on vertex.
   ///
   /// @zh: 取消顶点时的回调
-  dynamic Function(Vertex vertex, TapCancelEvent)? onVertexTapCancel;
+  dynamic Function(Vertex vertex, dynamic)? onVertexTapCancel;
 
   /// @en: the graph scale range. default to `Vector2(0.05, 5)`
   ///
@@ -121,25 +125,6 @@ class Options {
   /// @zh: overlay消失的延迟
   Duration? panelDelay;
 
-  /// @en: legend component builder
-  ///
-  /// @zh: 图例组件
-  PositionComponent Function(Color color, int i) legendBuilder = (color, i) {
-    return RectangleComponent.fromRect(Rect.fromLTWH(40, 50.0 + 30 * i, 30, 18),
-        paint: Paint()..color = color);
-  };
-
-  /// @en: default legend text builder
-  ///
-  /// @zh: 默认图例文字构建器
-  TextComponent Function(String tag, int i, Color color, Vector2 position)
-      legendTextBuilder = (tag, i, color, position) {
-    return TextComponent(
-      text: tag,
-      position: Vector2(position.x + 40, position.y - 6),
-    );
-  };
-
   /// @en: the horizontal controller panel height. Default to `50`
   ///
   /// @zh: 水平控制面板的高度。默认为`50`
@@ -158,7 +143,7 @@ class Options {
   /// @en: an custom vertex component constructor.
   ///
   /// @zh: 自定义顶点组件构造器
-  VertexComponentNew vertexComponentNew = VertexComponent.new;
+  // VertexComponentNew vertexComponentNew = VertexComponent.new;
 
   /// @en: control the game pause through external means.
   /// <br>Suitable for creating multiple flutter_graph_widget
@@ -168,4 +153,272 @@ class Options {
   /// <br>适用于创建了多个 flutter_graph_widget，
   /// <br>并且 keepAlive 的情况下，又不想让游戏引擎占用过高计算量
   ValueNotifier<bool> pause = ValueNotifier(false);
+
+  /// @en: Due to the large amount of data, layout calculations can easily get stuck in the UI,
+  /// <br>so data is calculated in batches to update section positions
+  /// <br> Default: Update the positions of 100 vertexes in a single update
+  ///
+  /// @zh: 由于在数据量大的情况下，布局计算容易卡住 UI，
+  /// <br> 因此将数据进行分批计算，从而更新节位置
+  /// <br> 默认：单次更新 100个节点的位置
+  int perBatchTotal = 100;
+
+  /// @en: Calculate the current batch of layout in batches
+  ///
+  /// @zh: 分批计算布局的当前批次
+  int batchIndex = 0;
+
+  /// @en
+  /// @zh: 鼠标滚轮，滚动次数转换成缩放比例的系数
+  /// `scale.value = scrollDelta.dy.sign * zoomPerScrollUnit`
+  double zoomPerScrollUnit = -0.05;
+
+  /// @en: The drag range of the touchpad is used to distinguish whether it triggers a node click event or a pure drag event
+  ///
+  /// @zh: 触摸版的拖动范围，用于区分是触发节点单击事件，还是纯拖动事件
+  final Vector2 panDelta = Vector2.zero();
+
+  Graph? graph;
+
+  run() {
+    if (graph!.vertexes.isEmpty) return;
+    var g = currantBatchRange();
+    var vertexs = graph!.vertexes.sublist(g[0], g[1]);
+    for (var vertex in vertexs) {
+      graph!.algorithm?.compute(vertex, graph!);
+    }
+    batchIndex++;
+  }
+
+  /// onPointerHover
+  void Function(PointerHoverEvent)? _onPointerHover;
+  void Function(PointerHoverEvent) get onPointerHover =>
+      _onPointerHover ??
+      (PointerHoverEvent details) {
+        pointer.x = details.localPosition.dx;
+        pointer.y = details.localPosition.dy;
+      };
+  set onPointerHover(void Function(PointerHoverEvent)? v) =>
+      _onPointerHover = v;
+
+  /// onPointerUp
+  void Function(PointerUpEvent)? _onPointerUp;
+  void Function(PointerUpEvent) get onPointerUp =>
+      _onPointerUp ??
+      (PointerUpEvent e) {
+        if (graph!.hoverVertex != null &&
+            panDelta.length < graph!.hoverVertex!.radius) {
+          onVertexTapUp?.call(graph!.hoverVertex!, null);
+        }
+      };
+  set onPointerUp(void Function(PointerUpEvent)? v) => _onPointerUp = v;
+
+  /// onPointerSignal
+  void Function(PointerSignalEvent)? _onPointerSignal;
+  void Function(PointerSignalEvent) get onPointerSignal =>
+      _onPointerSignal ??
+      (pointerSignal) {
+        assert(graph != null);
+        if (pointerSignal is PointerScrollEvent) {
+          var zoomDelta = pointerSignal.scrollDelta.dy.sign * zoomPerScrollUnit;
+          if (scale.value + zoomDelta > 0) {
+            var oz = scale.value;
+            scale.value += zoomDelta;
+            var nz = scale.value;
+            keepCenter(oz, nz, size.value, pointerSignal.localPosition, offset);
+          }
+        }
+      };
+  set onPointerSignal(void Function(PointerSignalEvent)? v) =>
+      _onPointerSignal = v;
+
+  /// onScaleStart
+  void Function(ScaleStartDetails)? _onScaleStart;
+  void Function(ScaleStartDetails) get onScaleStart =>
+      _onScaleStart ??
+      (d) {
+        assert(graph != null);
+        scaleVal = scale.value;
+        if (graph!.hoverVertex == null) hoverable = false;
+        panDelta.x = 0;
+        panDelta.y = 0;
+      };
+  set onScaleStart(void Function(ScaleStartDetails)? v) => _onScaleStart = v;
+
+  /// onScaleUpdate
+  void Function(ScaleUpdateDetails)? _onScaleUpdate;
+  void Function(ScaleUpdateDetails) get onScaleUpdate =>
+      _onScaleUpdate ??
+      (ScaleUpdateDetails details) {
+        assert(graph != null);
+        if (details.pointerCount == 2 && details.scale != 1.0) {
+          var oz = scale.value;
+          scale.value = scaleVal * details.scale;
+          var nz = scale.value;
+          keepCenter(oz, nz, size.value, pointer.toOffset(), offset);
+        } else {
+          var delta = details.focalPointDelta;
+          if (graph!.hoverVertex == null) {
+            offset.value += delta;
+          } else {
+            pointer.x += delta.dx;
+            pointer.y += delta.dy;
+            var dragDetail = delta.toVector2() / scale.value;
+            panDelta.add(dragDetail);
+            graph!.algorithm?.onDrag(graph!.hoverVertex, delta.toVector2());
+          }
+        }
+      };
+  set onScaleUpdate(void Function(ScaleUpdateDetails)? v) => _onScaleUpdate = v;
+
+  // ---------------------------------------------------------------------------
+
+  bool hoverable = true;
+
+  /// @en: The position of the mouse in the initial state.
+  ///
+  /// @zh: 起始状态下，鼠标的位置
+  final Vector2 pointer = Vector2.all((2 << 16) + 0.0);
+
+  /// @en: Real time zoom factor of canvas.
+  ///
+  /// @zh: 画布的实时缩放倍数
+  ValueNotifier<double> scale = ValueNotifier(1);
+
+  /// @en: Canvas zoom factor during the most recent touchpad zoom.
+  ///
+  /// @zh: 画布在最近一次触摸板缩放时，缩放倍数
+  double scaleVal = 1;
+
+  /// @en: The offset of the canvas relative to viewport.
+  ///
+  /// @zh: 画布相对于视窗的偏移量
+  ValueNotifier<Offset> offset = ValueNotifier(Offset.zero);
+
+  /// @en: The visual status of the panel when a vertex is clicked
+  ///
+  /// @zh: 节点被点击时，面板的可视状态
+  ValueNotifier<bool> vertexTapUpPanelVisible = ValueNotifier(false);
+
+  ///
+  ValueNotifier<bool> verticalControllerVisible = ValueNotifier(false);
+  ValueNotifier<bool> horizontalPanelVisible = ValueNotifier(true);
+
+  void hideVerticalPanel() {
+    verticalControllerVisible.value = false;
+  }
+
+  void hideVertexTapUpPanel() {
+    vertexTapUpPanelVisible.value = false;
+  }
+
+  void hideHorizontalOverlay() {
+    horizontalPanelVisible.value = false;
+  }
+
+  void showVertexTapUpPanel() {
+    vertexTapUpPanelVisible.value = true;
+    verticalControllerVisible.value = false;
+  }
+
+  void showVerticalPanel() {
+    vertexTapUpPanelVisible.value = false;
+    verticalControllerVisible.value = true;
+  }
+
+  ValueNotifier<Size> size = ValueNotifier(Size.zero);
+
+  /// @en: Convert the coordinates within the canvas to the coordinates in viewport.
+  ///
+  /// @zh: 将画布内的坐标，转换成在视窗内的坐标
+  Vector2 localToGlobal(Vector2 position) {
+    var scaleOffset = size.value * (1 - scale.value) / 2;
+    var scaleVector = Vector2(scaleOffset.width, scaleOffset.height);
+    return (position * scale.value + scaleVector + offset.value.toVector2());
+  }
+
+  /// @en: Convert coordinates from viewport to coordinates within the canvas.
+  ///
+  /// @zh: 将视窗中的坐标，转换成画布内的坐标
+  Vector2 globalToLocal(Vector2 global, {double? scale}) {
+    var scaleVal = scale ?? this.scale.value;
+    var scaleOffset = size.value * (1 - scaleVal) / 2;
+    var scaleVector = Vector2(scaleOffset.width, scaleOffset.height);
+    return (global - scaleVector - offset.value.toVector2()) / scaleVal;
+  }
+
+  /// @en: When the canvas undergoes a zoom operation,
+  /// <br> make the canvas zoom in and out with the mouse focus as the center.
+  ///
+  /// @zh: 当画布产生缩放操作时，使画布以鼠标焦点为中心，进行缩放
+  void keepCenter(
+    double oldScale,
+    double newScale,
+    Size size,
+    Offset localPosition,
+    ValueNotifier<Offset> offset,
+  ) {
+    var oldLocal = globalToLocal(localPosition.toVector2(), scale: oldScale);
+    var newLocal = globalToLocal(localPosition.toVector2(), scale: newScale);
+    var delta = newLocal - oldLocal;
+    var global = delta * newScale;
+    offset.value += global.toOffset();
+  }
+
+  /// @en: Merge the graph data.
+  ///
+  /// @zh: 合并图数据
+  void mergeGraph(graphData, {bool manual = true}) {
+    if (manual) graph?.algorithm?.beforeMerge(graphData);
+    graph?.convertor?.convertGraph(graphData, graph: graph);
+  }
+
+  /// @en: Refresh graph data.
+  ///
+  /// @zh: 刷新图数据
+  void refreshData(data) {
+    if (graph == null) return;
+    graph?.clear();
+    graph?.convertor?.convertGraph(data, graph: graph);
+    graph?.vertexes = graph!.vertexes.toSet().toList()
+      ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
+    setDefaultVertexColor();
+    graph?.algorithm?.onGraphLoad(graph!);
+    graphStyle.graphColor(graph!);
+  }
+
+  /// @en: Set default colors for different labels.
+  ///
+  /// @zh: 为不同标签设置默认颜色
+  setDefaultVertexColor() {
+    if (graph == null) return;
+    var tagColorByIndex = graphStyle.tagColorByIndex;
+    var needCount = graph!.allTags.length - tagColorByIndex.length;
+    for (var i = tagColorByIndex.length; i < needCount; i++) {
+      tagColorByIndex.add(graphStyle.defaultColor()[0]);
+    }
+  }
+
+  /// @en: The coordinates formed by the viewport on the canvas
+  ///
+  /// @zh: 视窗在画布中形成的坐标
+  Rect get visibleWorldRect {
+    return Rect.fromPoints(
+      globalToLocal(Vector2.zero()).toOffset(),
+      globalToLocal(Vector2(size.value.width, size.value.height)).toOffset(),
+    );
+  }
+
+  /// @en: Retrieve the index range of the current batch in the vertex collection
+  ///
+  /// @zh: 获取当前批在节点集合中的下标范围
+  List<int> currantBatchRange() {
+    var batchLen = graph!.vertexes.length ~/ perBatchTotal + 1;
+    batchIndex = (batchIndex % batchLen).toInt();
+    var start = batchIndex * perBatchTotal;
+    var end = (batchIndex + 1) * perBatchTotal < graph!.vertexes.length
+        ? (batchIndex + 1) * perBatchTotal
+        : graph!.vertexes.length;
+    return [start, end];
+  }
 }

@@ -22,9 +22,15 @@ class ExecutionPlanDemo extends StatelessWidget {
       algorithm: FlowLayout(),
       convertor: ExecutionPlanConvertor(),
       options: Options()
-        ..useLegend = false
         ..vertexShape = PlanNodeShape()
         ..graphStyle = (GraphStyle()
+          ..vertexTextStyleGetter = ((vertex, shape) {
+            return const TextStyle(
+              fontFamily: '华文行楷',
+              // fontWeight: FontWeight.bold,
+              fontSize: 19,
+            );
+          })
           ..tagColorByIndex = [
             Colors.red.shade200,
             Colors.orange.shade200,

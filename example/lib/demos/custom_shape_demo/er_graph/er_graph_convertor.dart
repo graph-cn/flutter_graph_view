@@ -12,6 +12,7 @@ class ErGraphConvertor extends DataConvertor<TableVo, Constants> {
   @override
   Edge convertEdge(Constants e, Graph g) {
     Edge result = Edge();
+    result.g = g;
     result.ranking = 0;
     result.edgeName = e.schema;
 
@@ -47,6 +48,7 @@ class ErGraphConvertor extends DataConvertor<TableVo, Constants> {
   @override
   Vertex convertVertex(TableVo v, Graph g) {
     Vertex vertex = Vertex();
+    vertex.g = g;
     vertex.id = '${v.db == null ? '' : v.db!.name}.${v.name}';
     vertex.tag = v.name;
     vertex.tags = [v.db?.name ?? ''];

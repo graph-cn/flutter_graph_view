@@ -20,21 +20,25 @@ class ForceDecorator extends GraphAlgorithm {
   @override
   void onLoad(Vertex v) {
     super.onLoad(v);
-    v.cpn?.properties.putIfAbsent(
+    v.properties.putIfAbsent(
         'forceMap', () => <GraphAlgorithm, Map<Vertex, Vector2>>{});
-    v.cpn!.properties['forceMap'][this] = <Vertex, Vector2>{};
-    v.cpn?.properties.putIfAbsent('force', () => <Vertex, Vector2>{});
+    v.properties['forceMap'][this] = <Vertex, Vector2>{};
+    v.properties.putIfAbsent('force', () => <Vertex, Vector2>{});
   }
 
-  Map<GraphAlgorithm, Map<Vertex, Vector2>> getForceMap(Vertex v) =>
-      v.cpn!.properties['forceMap']
-          as Map<GraphAlgorithm, Map<Vertex, Vector2>>;
+  Map<GraphAlgorithm, Map<Vertex, Vector2>> getForceMap(Vertex v) {
+    var map = v.properties['forceMap'];
+    if (map == null) {
+      onLoad(v);
+    }
+    return v.properties['forceMap']
+        as Map<GraphAlgorithm, Map<Vertex, Vector2>>;
+  }
 
   setForceMap(Vertex v, Vertex d, Vector2 force) {
     if (v.position == Vector2.zero() || d.position == Vector2.zero()) return;
-    var forceMap = v.cpn!.properties['forceMap']
-        as Map<GraphAlgorithm, Map<Vertex, Vector2>>;
-    forceMap[this]![d] = computeSameTagsFactor(force, v, d);
+    var forceMap = getForceMap(v);
+    forceMap[this]?[d] = computeSameTagsFactor(force, v, d);
   }
 
   _setForce(Vertex v) {
@@ -46,13 +50,13 @@ class ForceDecorator extends GraphAlgorithm {
       }
     }
     if (force == Vector2.zero()) {
-      v.cpn!.properties['force'] = force;
+      v.properties['force'] = force;
       return;
     }
     var scaleX = (2 << 12) * (force.x > 0 ? 1 : -1) / force.x;
     var scaleY = (2 << 12) * (force.y > 0 ? 1 : -1) / force.y;
     var scaleMin = min(scaleX, scaleY);
-    v.cpn!.properties['force'] = force * min(1, scaleMin);
+    v.properties['force'] = force * min(1, scaleMin);
   }
 
   @override

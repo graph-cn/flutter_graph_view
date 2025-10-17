@@ -57,8 +57,8 @@ class DecoratorDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     var vertexes = <Map>{};
     var r = Random();
-
-    for (var i = 0; i < 50; i++) {
+    var len = 50;
+    for (var i = 0; i < len; i++) {
       var t = r.nextInt(9);
       vertexes.add(
         {
@@ -76,15 +76,13 @@ class DecoratorDemo extends StatelessWidget {
     }
     var edges = <Map>{};
 
-    for (var i = 0; i < 50; i++) {
-      if (i % 4 != i) {
-        edges.add({
-          'srcId': 'node${i % 4}',
-          'dstId': 'node$i',
-          'edgeName': 'edge${r.nextInt(3)}',
-          'ranking': r.nextInt(DateTime.now().millisecond),
-        });
-      }
+    for (var i = 0; i < len; i++) {
+      edges.add({
+        'srcId': 'node${Random().nextInt(len)}',
+        'dstId': 'node${Random().nextInt(len)}',
+        'edgeName': 'edge${r.nextInt(3)}',
+        'ranking': r.nextInt(DateTime.now().millisecondsSinceEpoch % 10000),
+      });
     }
 
     var data = {
@@ -98,7 +96,7 @@ class DecoratorDemo extends StatelessWidget {
       convertor: MapConvertor(),
       options: Options()
         ..onVertexTapUp = ((vertex, event) {
-          vertex.cpn?.graphComponent?.mergeGraph(genData(vertex.id));
+          vertex.g?.mergeGraph(genData(vertex.id));
         })
         ..enableHit = false
         ..panelDelay = const Duration(milliseconds: 500)
@@ -117,7 +115,6 @@ class DecoratorDemo extends StatelessWidget {
             Colors.blueGrey.shade200,
             Colors.deepOrange.shade200,
           ])
-        ..useLegend = false // default true
         ..imgUrlGetter = imgUrlGetter
         ..edgePanelBuilder = edgePanelBuilder
         ..vertexPanelBuilder = vertexPanelBuilder
@@ -134,14 +131,12 @@ class DecoratorDemo extends StatelessWidget {
     );
   }
 
-  Widget edgePanelBuilder(Edge edge, Viewfinder viewfinder) {
-    var c = viewfinder.localToGlobal(edge.position);
-
+  Widget edgePanelBuilder(Edge edge) {
     return Stack(
       children: [
         Positioned(
-          left: c.x + 5,
-          top: c.y,
+          left: edge.g!.options!.pointer.x + 1,
+          top: edge.g!.options!.pointer.y + 1,
           child: SizedBox(
             width: 200,
             child: ColoredBox(
@@ -157,13 +152,12 @@ class DecoratorDemo extends StatelessWidget {
     );
   }
 
-  Widget vertexPanelBuilder(hoverVertex, Viewfinder viewfinder) {
-    var c = viewfinder.localToGlobal(hoverVertex.cpn!.position);
+  Widget vertexPanelBuilder(Vertex hoverVertex) {
     return Stack(
       children: [
         Positioned(
-          left: c.x + hoverVertex.radius + 5,
-          top: c.y - 20,
+          left: hoverVertex.g!.options!.pointer.x + 1,
+          top: hoverVertex.g!.options!.pointer.y + 1,
           child: SizedBox(
             width: 120,
             child: ColoredBox(
@@ -187,7 +181,7 @@ class DecoratorDemo extends StatelessWidget {
     var edges = <Map>{};
     var r = Random();
     for (var i = 0; i < 5; i++) {
-      var dstId = r.nextInt(30) + 40;
+      var dstId = r.nextInt(1300);
       var newTag = 'tag${r.nextInt(12) + 9}';
       vertexes.add(
         {

@@ -6,7 +6,6 @@
 
 import 'dart:ui';
 
-import 'package:flame/collisions.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 class NothingEdgeShape extends EdgeShape {
@@ -16,53 +15,31 @@ class NothingEdgeShape extends EdgeShape {
   }
 
   @override
-  ShapeHitbox? hitBox(Edge edge, EdgeComponent edgeComponent) {
-    return RectangleHitbox(
-      size: Vector2.zero(),
-      isSolid: true,
-      position: edgeComponent.position,
-      anchor: edgeComponent.anchor,
-    );
-  }
-
-  @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {}
 
   @override
-  void setPaint(Edge edge) {}
+  Paint getPaint(Edge edge) {
+    return Paint();
+  }
 }
 
 class NothingShape extends VertexShape {
   @override
   double height(Vertex vertex) {
-    return (vertex.cpn?.size.x ?? 0.0) / 2;
+    return (vertex.size?.toVector2().x ?? 0.0) / 2;
   }
 
   @override
   double width(Vertex vertex) {
-    return (vertex.cpn?.size.y ?? 0.0) / 2;
-  }
-
-  @override
-  ShapeHitbox hitBox(Vertex vertex, ShapeComponent cpn) {
-    return RectangleHitbox(
-      size: Vector2.zero(),
-      isSolid: true,
-      position: cpn.position,
-      anchor: cpn.anchor,
-    );
+    return (vertex.size?.toVector2().y ?? 0.0) / 2;
   }
 
   @override
   render(Vertex vertex, Canvas canvas, Paint paint, List<Paint> paintLayers) {}
 
   @override
-  void setPaint(Vertex vertex) {
+  Paint getPaint(Vertex vertex) {
     // TODO: implement setPaint
-  }
-
-  @override
-  void updateHitBox(Vertex vertex, ShapeHitbox hitBox) {
-    // TODO: implement updateHitBox
+    return Paint();
   }
 }

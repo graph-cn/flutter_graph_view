@@ -31,7 +31,7 @@ class HookeDecorator extends ForceDecorator {
 
   Vector2 hooke(Vertex s, Vertex d, Graph graph) {
     var len = degreeFactor?.call(length, d.neighborEdges.length) ?? length;
-    var delta = s.cpn!.position - d.cpn!.position;
+    var delta = s.position - d.position;
     var distance = delta.length;
     var force = -(distance - len - log(s.degree + d.degree)) * k;
     return delta * force;

@@ -14,6 +14,7 @@ class ExecutionPlanConvertor extends DataConvertor<ExecutionPlanNode, Map> {
   @override
   Vertex convertVertex(v, g) {
     Vertex vertex = Vertex();
+    vertex.g = g;
     vertex.id = v.id;
     vertex.tag = v.name ?? '';
     vertex.tags = [v.name ?? ''];
@@ -21,22 +22,25 @@ class ExecutionPlanConvertor extends DataConvertor<ExecutionPlanNode, Map> {
     vertexAsGraphComponse(v, g, vertex);
     var node = vertex.data as ExecutionPlanNode;
     // 计算三行文本的宽度，最大宽度为结点的宽度
-    var row1 = textPainter(node.nameWithId);
-    var row2 = textPainter(node.outputVarWithLabel);
-    var row3 = textPainter(node.inputVarWithLabel);
+
+    var textStyle =
+        g.options?.graphStyle.vertexTextStyleGetter?.call(vertex, null);
+    var row1 = textPainter(node.nameWithId, textStyle);
+    var row2 = textPainter(node.outputVarWithLabel, textStyle);
+    var row3 = textPainter(node.inputVarWithLabel, textStyle);
     vertex.size = Size(
-      max(max(row1.width, row2.width) + 14, row3.width),
+      max(max(row1.width, row2.width), row3.width),
       row1.height * 3,
     );
 
     return vertex;
   }
 
-  TextPainter textPainter(String text) {
+  TextPainter textPainter(String text, TextStyle? textStyle) {
     return TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
-        style: const TextStyle(fontSize: 14),
+        style: textStyle ?? const TextStyle(fontSize: 14),
         text: text,
       ),
     )..layout();
@@ -45,6 +49,7 @@ class ExecutionPlanConvertor extends DataConvertor<ExecutionPlanNode, Map> {
   @override
   Edge convertEdge(e, g) {
     Edge result = Edge();
+    result.g = g;
     result.ranking = 0;
     result.edgeName = "";
 
@@ -58,7 +63,7 @@ class ExecutionPlanConvertor extends DataConvertor<ExecutionPlanNode, Map> {
 
   @override
   Graph convertGraph(data, {Graph? graph}) {
-    var result = Graph();
+    var result = graph ?? Graph();
     result.data = data;
 
     if (data is ExecutionPlan) {

@@ -17,7 +17,8 @@ class HookeCenterDecorator extends ForceDecorator {
   });
 
   Vector2 hooke(Vertex s, Graph graph) {
-    var center = s.cpn!.game.size / 2;
+    var size = graph.size.value;
+    var center = Vector2(size.width, size.height) / 2;
 
     var delta = s.position - center;
     var distance = delta.length;

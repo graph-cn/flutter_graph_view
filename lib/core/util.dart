@@ -2,7 +2,9 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
-import 'package:flame/extensions.dart';
+import 'dart:ui';
+
+import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// Common tools.
 ///

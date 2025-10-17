@@ -44,11 +44,11 @@ class GraphRouteDecorator extends GraphAlgorithm {
     if (backwordQueue.value.isEmpty) return;
     var graphData = backwordQueue.value.removeLast();
     forwardQueue.value.add(graphData);
-    graphComponent?.refreshData(initData);
+    graph?.refreshData?.call(initData);
     if (hideVertexPanel) hideVertexTapUpOverlay();
     setState();
     backwordQueue.value.forEach((element) {
-      graphComponent?.mergeGraph(element, manual: false);
+      graph?.mergeGraph(element, manual: false);
     });
   }
 
@@ -56,7 +56,7 @@ class GraphRouteDecorator extends GraphAlgorithm {
     if (forwardQueue.value.isEmpty) return;
     var graphData = forwardQueue.value.removeLast();
     backwordQueue.value.add(graphData);
-    graphComponent?.mergeGraph(graphData, manual: false);
+    graph?.mergeGraph(graphData, manual: false);
     setState();
   }
 

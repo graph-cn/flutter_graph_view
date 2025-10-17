@@ -14,11 +14,12 @@ class VertexTextRendererImpl extends VertexTextRenderer {
   VertexTextRendererImpl({VertexShape? shape}) : super(shape: shape);
   @override
   void render(Vertex<dynamic> vertex, ui.Canvas canvas, ui.Paint paint) {
+    var zoom = vertex.zoom;
     TextStyle? vertexTextStyle = vertex
-        .cpn?.options?.graphStyle.vertexTextStyleGetter
+        .g?.options?.graphStyle.vertexTextStyleGetter
         ?.call(vertex, shape);
-
-    var paragraphFontSize = vertexTextStyle?.fontSize ?? 14;
+    var fontSize = (vertexTextStyle?.fontSize ?? 14);
+    var paragraphFontSize = fontSize / zoom;
     var fontWeight = vertexTextStyle?.fontWeight ?? FontWeight.normal;
     var fontColor = vertexTextStyle?.color;
     var backgroundColor = vertexTextStyle?.backgroundColor;
@@ -33,13 +34,10 @@ class VertexTextRendererImpl extends VertexTextRenderer {
 
     /// 2.根据 ParagraphStyle 生成 ParagraphBuilder
     final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle);
-    var zoom = vertex.cpn!.game.camera.viewfinder.zoom;
-    var text = vertex.cpn?.options?.textGetter.call(vertex) ?? '';
-
-    var fontSize = (paragraphFontSize + 2) / zoom;
+    var text = vertex.g?.options?.textGetter.call(vertex) ?? '';
 
     ui.TextStyle? textStyle = ui.TextStyle(
-      fontSize: fontSize,
+      fontSize: paragraphFontSize,
       foreground: fontColor != null ? (Paint()..color = fontColor) : paint,
       fontWeight: fontWeight,
       background:
@@ -57,27 +55,22 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     final paragraph = paragraphBuilder.build();
 
     TextPainter hpainter = TextPainter(
+      textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
       text: TextSpan(
-        style:
-            TextStyle(fontSize: paragraphFontSize + 2, fontWeight: fontWeight),
+        style: TextStyle(fontSize: paragraphFontSize, fontWeight: fontWeight),
         text: text,
       ),
     )..layout();
 
     /// 5.根据宽高进行布局layout
-    paragraph
-        .layout(ui.ParagraphConstraints(width: hpainter.width / zoom * 1.1));
+    paragraph.layout(ui.ParagraphConstraints(width: hpainter.width));
 
     var tw = paragraph.width;
-    var vw = vertex.cpn!.size.x;
+    var vw = vertex.radiusZoom;
 
     /// 6.绘制
     canvas.drawParagraph(
-        paragraph,
-        ui.Offset(
-          (vw - tw) / 2,
-          -vertex.radiusZoom - 20 / zoom,
-        ));
+        paragraph, ui.Offset(-tw / 2, -vw - paragraphFontSize / 0.7));
   }
 }

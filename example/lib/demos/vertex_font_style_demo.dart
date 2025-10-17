@@ -52,7 +52,7 @@ class VertexFontStyleDemo extends StatelessWidget {
         ..graphStyle = (GraphStyle()
           ..vertexTextStyleGetter = (vertex, shape) {
             var opacity = shape?.isWeaken(vertex) == true
-                ? (vertex.cpn?.options?.graphStyle.hoverOpacity ?? 1)
+                ? (vertex.g?.options?.graphStyle.hoverOpacity ?? 1)
                 : 1.0;
             return TextStyle(color: Colors.white.withOpacity(opacity));
           })

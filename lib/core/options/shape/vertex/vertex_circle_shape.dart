@@ -3,8 +3,8 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'dart:ui' as ui;
+import 'dart:ui';
 
-import 'package:flame/collisions.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 /// The default shape impl.
@@ -18,13 +18,12 @@ class VertexCircleShape extends VertexShape {
   @override
   render(Vertex vertex, ui.Canvas canvas, paint, paintLayers) {
     canvas.drawCircle(
-      ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
+      const ui.Offset(0, 0),
       vertex.radiusZoom,
       paint,
     );
     // 渲染标题
-    if (vertex.cpn?.options?.showText ??
-        true && vertex.cpn!.game.camera.viewfinder.zoom > 0.3) {
+    if (vertex.g?.options?.showText ?? true && vertex.zoom > 0.3) {
       textRenderer?.render(vertex, canvas, paint);
     }
     decorators?.forEach((decorator) {
@@ -43,45 +42,28 @@ class VertexCircleShape extends VertexShape {
   }
 
   @override
-  ShapeHitbox hitBox(Vertex vertex, ShapeComponent cpn) {
-    return CircleHitbox(
-      isSolid: true,
-      position: cpn.position,
-      anchor: cpn.anchor,
-    );
-  }
-
-  @override
-  void updateHitBox(Vertex vertex, ShapeHitbox hitBox) {
-    hitBox as CircleHitbox;
-    hitBox.radius = vertex.radiusZoom * 2;
-  }
-
-  @override
-  void setPaint(Vertex vertex) {
-    var cpn = vertex.cpn!;
+  Paint getPaint(Vertex vertex) {
+    Paint paint = Paint();
     var colors = vertex.colors;
     if (isWeaken(vertex)) {
-      var hoverOpacity =
-          vertex.cpn?.game.options.graphStyle.hoverOpacity ?? 1.0;
-      cpn.paint = ui.Paint()
-        ..shader = ui.Gradient.radial(
-          ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
-          vertex.radiusZoom,
-          List.generate(
-            colors.length,
-            (index) => colors[index].withOpacity(hoverOpacity),
-          ),
-          List.generate(colors.length, (index) => (index + 1) / colors.length),
-        );
+      var hoverOpacity = vertex.g?.options?.graphStyle.hoverOpacity ?? 1.0;
+      paint.shader = ui.Gradient.radial(
+        ui.Offset.zero,
+        vertex.radiusZoom,
+        List.generate(
+          colors.length,
+          (index) => colors[index].withValues(alpha: hoverOpacity),
+        ),
+        List.generate(colors.length, (index) => (index + 1) / colors.length),
+      );
     } else {
-      cpn.paint = ui.Paint()
-        ..shader = ui.Gradient.radial(
-          ui.Offset(vertex.radiusZoom, vertex.radiusZoom),
-          vertex.radiusZoom,
-          colors,
-          List.generate(colors.length, (index) => (index + 1) / colors.length),
-        );
+      paint.shader = ui.Gradient.radial(
+        ui.Offset.zero,
+        vertex.radiusZoom,
+        colors,
+        List.generate(colors.length, (index) => (index + 1) / colors.length),
+      );
     }
+    return paint;
   }
 }

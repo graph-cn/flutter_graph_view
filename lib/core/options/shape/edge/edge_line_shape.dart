@@ -5,7 +5,6 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -34,28 +33,28 @@ class EdgeLineShape extends EdgeShape {
     );
 
     var edgesBetweenTwoVertex =
-        edge.cpn?.graph.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+        edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
 
     var edgeCount = edgesBetweenTwoVertex.length;
 
     /// 法线点
     var normalPoint = Vector2(
       distance / 2,
-      edge.computeIndex * distance / edgeCount * 2 + edge.cpn!.size.y / 2,
+      edge.computeIndex * distance / edgeCount * 2 + edge.size.y / 2,
     );
 
     if (normalPoint.isNaN) {
       return;
     }
     Path path = Path();
-    path.moveTo(0, edge.cpn!.size.y / 2);
+    path.moveTo(0, -paint.strokeWidth / edge.g!.options!.scale.value / 2);
     path.cubicTo(
       0,
-      edge.cpn!.size.y / 2,
+      0,
       normalPoint.x,
       normalPoint.y,
       endPoint.dx,
-      edge.cpn!.size.y / 2,
+      0,
     );
     // path.extendWithPath(path, Offset(0, paint.strokeWidth));
     edge.path = path;
@@ -73,14 +72,14 @@ class EdgeLineShape extends EdgeShape {
     edge.path = path;
   }
 
+  @override
   Path loopPath(Edge edge, [double minusRadius = 0]) {
     var ratio = edge.edgeIdxRatio;
     var radius = ratio * edge.start.radius * 5 + edge.start.radiusZoom;
     Path path = Path();
     path.addArc(
       Rect.fromCircle(
-          center: Offset(radius, 0),
-          radius: radius - minusRadius / edge.cpn!.game.camera.viewfinder.zoom),
+          center: Offset(radius, 0), radius: radius - minusRadius / edge.zoom),
       0,
       -2 * pi,
     );
@@ -89,14 +88,14 @@ class EdgeLineShape extends EdgeShape {
   }
 
   @override
-  void setPaint(Edge edge) {
-    var paint = edge.cpn!.paint;
-    paint.strokeWidth = edge.isHovered ? 4 : 1.2;
-    paint.strokeWidth /= edge.cpn!.game.camera.viewfinder.zoom;
+  Paint getPaint(Edge edge) {
+    var paint = Paint();
+    paint.strokeWidth = (edge.isHovered ? 4 : 1.2) / edge.zoom;
+    // paint.strokeWidth = edge.zoom;
     paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
     var endPoint = Offset(EdgeShape.len(edge), paint.strokeWidth);
-    var hoverOpacity = edge.cpn?.gameRef.options.graphStyle.hoverOpacity ?? .5;
+    var hoverOpacity = edge.g?.options?.graphStyle.hoverOpacity ?? .5;
     if (isWeaken(edge)) {
       paint.shader = ui.Gradient.linear(
         startPoint,
@@ -104,8 +103,10 @@ class EdgeLineShape extends EdgeShape {
         List.generate(
           2,
           (index) => [
-            (edge.start.colors.last).withOpacity(hoverOpacity),
-            (edge.end?.colors.last ?? Colors.white).withOpacity(hoverOpacity)
+            (edge.start.colors.lastOrNull ?? Colors.white)
+                .withValues(alpha: hoverOpacity),
+            (edge.end?.colors.lastOrNull ?? Colors.white)
+                .withValues(alpha: hoverOpacity)
           ][index],
         ),
       );
@@ -116,41 +117,17 @@ class EdgeLineShape extends EdgeShape {
         List.generate(
           2,
           (index) => [
-            edge.start.colors.last,
-            (edge.end?.colors.last ?? Colors.white)
+            edge.start.colors.lastOrNull ?? Colors.white,
+            (edge.end?.colors.lastOrNull ?? Colors.white)
           ][index],
         ),
       );
     }
+    return paint;
   }
 
   @override
   double height(Edge edge) {
     return 3.0;
-  }
-
-  @override
-  ShapeHitbox? hitBox(Edge edge, EdgeComponent edgeComponent) {
-    return null;
-  }
-
-  @override
-  bool? hoverTest(Vector2 point, Edge edge, EdgeComponent edgeComponent) {
-    var offset = Offset(point.x, point.y);
-    var hoverStrokeWidth = (edge.isHovered ? 2.0 : 1.2);
-    if (edge.isLoop) {
-      return edge.path!.contains(offset) &&
-          !loopPath(edge, hoverStrokeWidth).contains(offset);
-    } else {
-      if (edge.computeIndex == 0) {
-        return null;
-      }
-      Path? minusArea = edge.path?.shift(Offset(
-        0,
-        edge.computeIndex > 0 ? -hoverStrokeWidth : hoverStrokeWidth,
-      ));
-      return ((edge.path?.contains(offset) ?? false) &&
-          (!(minusArea?.contains(offset) ?? true)));
-    }
   }
 }
