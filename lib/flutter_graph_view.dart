@@ -34,7 +34,6 @@ export 'core/algorithm/force_directed.dart';
 export 'core/algorithm/circle_layout.dart';
 
 /// decorators
-export 'core/algorithm/decorator/breathe_decorator.dart';
 export 'core/algorithm/decorator/force_decorator.dart';
 export 'core/algorithm/decorator/pin_center_decorator.dart';
 export 'core/algorithm/decorator/force_motion_decorator.dart';
