@@ -23,4 +23,13 @@ class RandomAlgorithm extends GraphAlgorithm {
     }
     super.onLoad(v);
   }
+
+  @override
+  void onDrag(Vertex? hoverVertex, Vector2 globalDelta) {
+    if (hoverVertex == null) return;
+    var zoom = graph?.options?.scale.value ?? 1;
+    var delta = globalDelta / zoom;
+    hoverVertex.position += delta;
+    afterDrag(hoverVertex, globalDelta);
+  }
 }

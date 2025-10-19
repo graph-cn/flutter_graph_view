@@ -3,6 +3,7 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'package:example/demos/custom_shape_demo/er_graph/er_graph_demo.dart';
+import 'package:example/demos/object_graph_demo.dart' show ObjectGraphDemo;
 import 'package:flutter/material.dart';
 
 import 'demos/custom_shape_demo/execution_plan/execution_plan_demo.dart';
@@ -31,6 +32,7 @@ class _ShowroomState extends State<Showroom>
   late TabController mainTabController;
 
   final List<String> tabNames = <String>[
+    'ObjectGraphDemo',
     'ErGraphDemo',
     'DecoratorDemo',
     'PersistenceDemo',
@@ -42,6 +44,7 @@ class _ShowroomState extends State<Showroom>
     "VertexFontStyleDemo",
   ];
   final List<Widget> tabs = <Widget>[
+    const ObjectGraphDemo(),
     const ErGraphDemo(),
     const DecoratorDemo(),
     const PersistenceDemo(),
@@ -57,7 +60,7 @@ class _ShowroomState extends State<Showroom>
   void initState() {
     super.initState();
     mainTabController =
-        TabController(initialIndex: 1, length: tabs.length, vsync: this);
+        TabController(initialIndex: 0, length: tabs.length, vsync: this);
   }
 
   Uri repo = Uri.parse('https://github.com/graph-cn/flutter_graph_view');

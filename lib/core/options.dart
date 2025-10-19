@@ -41,6 +41,7 @@ typedef GraphComponentBuilder = Widget Function({
   required BuildContext context,
   required GraphAlgorithm algorithm,
   required Options options,
+  required Graph graph,
 });
 
 /// The core api for Graph Options.
@@ -178,14 +179,14 @@ class Options {
   /// @zh: 触摸版的拖动范围，用于区分是触发节点单击事件，还是纯拖动事件
   final Vector2 panDelta = Vector2.zero();
 
-  Graph? graph;
+  late Graph graph;
 
   run() {
-    if (graph!.vertexes.isEmpty) return;
+    if (graph.vertexes.isEmpty) return;
     var g = currantBatchRange();
-    var vertexs = graph!.vertexes.sublist(g[0], g[1]);
+    var vertexs = graph.vertexes.sublist(g[0], g[1]);
     for (var vertex in vertexs) {
-      graph!.algorithm?.compute(vertex, graph!);
+      graph.algorithm?.compute(vertex, graph);
     }
     batchIndex++;
   }
@@ -206,9 +207,9 @@ class Options {
   void Function(PointerUpEvent) get onPointerUp =>
       _onPointerUp ??
       (PointerUpEvent e) {
-        if (graph!.hoverVertex != null &&
-            panDelta.length < graph!.hoverVertex!.radius) {
-          onVertexTapUp?.call(graph!.hoverVertex!, null);
+        if (graph.hoverVertex != null &&
+            panDelta.length < graph.hoverVertex!.radius) {
+          onVertexTapUp?.call(graph.hoverVertex!, null);
         }
       };
   set onPointerUp(void Function(PointerUpEvent)? v) => _onPointerUp = v;
@@ -218,7 +219,6 @@ class Options {
   void Function(PointerSignalEvent) get onPointerSignal =>
       _onPointerSignal ??
       (pointerSignal) {
-        assert(graph != null);
         if (pointerSignal is PointerScrollEvent) {
           var zoomDelta = pointerSignal.scrollDelta.dy.sign * zoomPerScrollUnit;
           if (scale.value + zoomDelta > 0) {
@@ -237,9 +237,8 @@ class Options {
   void Function(ScaleStartDetails) get onScaleStart =>
       _onScaleStart ??
       (d) {
-        assert(graph != null);
         scaleVal = scale.value;
-        if (graph!.hoverVertex == null) hoverable = false;
+        if (graph.hoverVertex == null) hoverable = false;
         panDelta.x = 0;
         panDelta.y = 0;
       };
@@ -250,7 +249,6 @@ class Options {
   void Function(ScaleUpdateDetails) get onScaleUpdate =>
       _onScaleUpdate ??
       (ScaleUpdateDetails details) {
-        assert(graph != null);
         if (details.pointerCount == 2 && details.scale != 1.0) {
           var oz = scale.value;
           scale.value = scaleVal * details.scale;
@@ -258,14 +256,14 @@ class Options {
           keepCenter(oz, nz, size.value, pointer.toOffset(), offset);
         } else {
           var delta = details.focalPointDelta;
-          if (graph!.hoverVertex == null) {
+          if (graph.hoverVertex == null) {
             offset.value += delta;
           } else {
             pointer.x += delta.dx;
             pointer.y += delta.dy;
             var dragDetail = delta.toVector2() / scale.value;
             panDelta.add(dragDetail);
-            graph!.algorithm?.onDrag(graph!.hoverVertex, delta.toVector2());
+            graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
           }
         }
       };
@@ -369,31 +367,29 @@ class Options {
   ///
   /// @zh: 合并图数据
   void mergeGraph(graphData, {bool manual = true}) {
-    if (manual) graph?.algorithm?.beforeMerge(graphData);
-    graph?.convertor?.convertGraph(graphData, graph: graph);
+    if (manual) graph.algorithm?.beforeMerge(graphData);
+    graph.convertor?.convertGraph(graphData, graph: graph);
   }
 
   /// @en: Refresh graph data.
   ///
   /// @zh: 刷新图数据
   void refreshData(data) {
-    if (graph == null) return;
-    graph?.clear();
-    graph?.convertor?.convertGraph(data, graph: graph);
-    graph?.vertexes = graph!.vertexes.toSet().toList()
+    graph.clear();
+    graph.convertor?.convertGraph(data, graph: graph);
+    graph.vertexes = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
     setDefaultVertexColor();
-    graph?.algorithm?.onGraphLoad(graph!);
-    graphStyle.graphColor(graph!);
+    graph.algorithm?.onGraphLoad(graph);
+    graphStyle.graphColor(graph);
   }
 
   /// @en: Set default colors for different labels.
   ///
   /// @zh: 为不同标签设置默认颜色
   setDefaultVertexColor() {
-    if (graph == null) return;
     var tagColorByIndex = graphStyle.tagColorByIndex;
-    var needCount = graph!.allTags.length - tagColorByIndex.length;
+    var needCount = graph.allTags.length - tagColorByIndex.length;
     for (var i = tagColorByIndex.length; i < needCount; i++) {
       tagColorByIndex.add(graphStyle.defaultColor()[0]);
     }
@@ -413,12 +409,12 @@ class Options {
   ///
   /// @zh: 获取当前批在节点集合中的下标范围
   List<int> currantBatchRange() {
-    var batchLen = graph!.vertexes.length ~/ perBatchTotal + 1;
+    var batchLen = graph.vertexes.length ~/ perBatchTotal + 1;
     batchIndex = (batchIndex % batchLen).toInt();
     var start = batchIndex * perBatchTotal;
-    var end = (batchIndex + 1) * perBatchTotal < graph!.vertexes.length
+    var end = (batchIndex + 1) * perBatchTotal < graph.vertexes.length
         ? (batchIndex + 1) * perBatchTotal
-        : graph!.vertexes.length;
+        : graph.vertexes.length;
     return [start, end];
   }
 }

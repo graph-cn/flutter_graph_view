@@ -1,3 +1,9 @@
+## 2.0.1
+- deprecated: DreatheDecorator
+    > 废弃节点上下浮动的呼吸特效
+- feat: Ensure that the graph object is not null and supports external specification.
+    >  确保 graph 对象不为空，且支持从外部指定
+
 ## 2.0.0
 - perf: remove duplicate method calls.
     > 针对 ForceDecorator 的子类，移除`super.compute`避免重复执行

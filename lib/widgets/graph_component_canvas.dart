@@ -11,6 +11,7 @@ class GraphComponentCanvas extends StatefulWidget {
   final DataConvertor convertor;
   final BuildContext context;
   final Options options;
+  final Graph graph;
 
   const GraphComponentCanvas({
     super.key,
@@ -19,6 +20,7 @@ class GraphComponentCanvas extends StatefulWidget {
     required this.context,
     required this.convertor,
     required this.options,
+    required this.graph,
   });
 
   @override
@@ -28,7 +30,7 @@ class GraphComponentCanvas extends StatefulWidget {
 class _GraphComponentCanvasState extends State<GraphComponentCanvas>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  Graph graph = Graph();
+  Graph get graph => widget.graph;
 
   GraphAlgorithm get algorithm => widget.algorithm;
   dynamic get data => widget.data;
@@ -70,12 +72,6 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
       duration: const Duration(seconds: 10), // 长期运行
     )..addListener(run);
     _controller.repeat();
-
-    graph.convertor = convertor;
-    graph.options = options;
-    graph.algorithm = algorithm;
-    options.graph = graph;
-    algorithm.setGlobalData(rootAlg: algorithm, graph: graph);
 
     options.pause.addListener(playOrPause);
     offset.addListener(update);

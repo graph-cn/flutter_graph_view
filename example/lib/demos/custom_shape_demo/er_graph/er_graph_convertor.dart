@@ -27,7 +27,7 @@ class ErGraphConvertor extends DataConvertor<TableVo, Constants> {
 
   @override
   Graph convertGraph(data, {Graph? graph}) {
-    var result = Graph();
+    var result = graph ?? Graph();
     result.data = data;
 
     if (data is List<List<dynamic>>) {

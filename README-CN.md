@@ -8,11 +8,8 @@
 # Flutter Graph View
 
 <p align="center">
-  <a title="Pub" href="https://flame-engine.org" >
-      <img src="https://img.shields.io/badge/Powered%20by-%F0%9F%94%A5-orange.svg" />
-  </a>
-  <a title="Powered by Flame" href="https://pub.dev/packages/flutter_graph_view" >
-      <img src="https://img.shields.io/badge/Pub-v1.x-red?style=popout" />
+  <a title="Pub" href="https://pub.dev/packages/flutter_graph_view" >
+      <img src="https://img.shields.io/badge/Pub-v2.x-red?style=popout" />
   </a>
   <a href="https://github.com/dudu-ltd/flutter_graph_view/stargazers">
       <img src="https://img.shields.io/github/stars/dudu-ltd/flutter_graph_view" alt="GitHub stars" />
@@ -141,7 +138,6 @@ class DecoratorDemo extends StatelessWidget {
             Colors.blueGrey.shade200,
             Colors.deepOrange.shade200,
           ])
-        ..useLegend = true // default true
         ..edgePanelBuilder = edgePanelBuilder
         ..vertexPanelBuilder = vertexPanelBuilder
         ..edgeShape = EdgeLineShape() // default is EdgeLineShape.

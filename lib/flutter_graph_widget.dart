@@ -12,25 +12,35 @@ class FlutterGraphWidget extends StatelessWidget {
   final dynamic data;
   final GraphAlgorithm algorithm;
   final DataConvertor convertor;
-  final Options? options;
+  final Options options;
+  final Graph graph;
 
-  const FlutterGraphWidget({
+  FlutterGraphWidget({
     Key? key,
     required this.data,
     required this.convertor,
     required this.algorithm,
-    this.options,
-  }) : super(key: key);
+    Options? options,
+    Graph? graph,
+  })  : graph = graph ?? Graph(),
+        options = options ?? Options(),
+        super(key: key) {
+    this.graph.options = options;
+    this.options.graph = this.graph;
+    this.graph.convertor = convertor;
+    this.graph.algorithm = algorithm;
+    algorithm.setGlobalData(rootAlg: algorithm, graph: this.graph);
+  }
 
   @override
   Widget build(BuildContext context) {
-    Options opt = options ?? Options();
-    return opt.graphComponentBuilder(
+    return options.graphComponentBuilder(
       data: data,
       convertor: convertor,
       algorithm: algorithm,
-      options: opt,
+      options: options,
       context: context,
+      graph: graph,
     );
   }
 }

@@ -66,6 +66,7 @@ abstract class EdgeShape {
 
   bool? hoverTest(Vector2 position, Edge edge, r.Matrix4 transformMatrix,
       double hoverStrokeWidth) {
+    if (edge.path == null) return false;
     var local = edge.g!.options!.globalToLocal(position);
     if (edge.isLoop) {
       return hoverByPath(local, edge.path!, transformMatrix) &&

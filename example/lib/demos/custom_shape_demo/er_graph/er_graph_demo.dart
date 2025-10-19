@@ -80,8 +80,8 @@ class ErGraphDemo extends StatelessWidget {
             Colors.blueGrey.shade200,
             Colors.deepOrange.shade200,
           ])
-        ..backgroundBuilder = ((context) => ColoredBox(
-              color: Colors.grey.shade800,
+        ..backgroundBuilder = ((context) => const ColoredBox(
+              color: Colors.transparent,
               // child: logo,
             )),
     );
