@@ -121,4 +121,8 @@ class Edge {
           other.start == start &&
           other.end == end &&
           other.edgeName == edgeName);
+
+  double get length {
+    return g?.options?.edgeShape.len(this) ?? 0;
+  }
 }

@@ -168,6 +168,6 @@ class DefaultEdgeDecorator extends EdgeDecorator {
   }
 
   Vector2 dstPosition(Edge edge) {
-    return Vector2(EdgeShape.len(edge), edge.size.y / 2);
+    return Vector2(edge.length, edge.size.y / 2);
   }
 }

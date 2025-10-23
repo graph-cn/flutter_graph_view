@@ -31,7 +31,7 @@ class CounterDecorator extends GraphAlgorithm {
     e.value = graph.edges.length;
   }
 
-  kCounterOverlayBuilder() {
+  Widget Function(CounterDecorator) kCounterOverlayBuilder() {
     return (CounterDecorator counter) {
       return ListenableBuilder(
         listenable: counter.val,

@@ -59,11 +59,11 @@ class GraphPainter extends CustomPainter {
       } else {
         unhoverCount++;
       }
+      var shape = graph.options!.vertexShape;
       canvas.save();
-      canvas.translate(vertex.position.x - (vertex.size?.width ?? 0) / 2,
-          vertex.position.y - (vertex.size?.height ?? 0) / 2);
-      graph.options?.vertexShape.render(
-          vertex, canvas, graph.options!.vertexShape.getPaint(vertex), []);
+      var transformMatrix = shape.transformMatrix(vertex);
+      canvas.transform(Float64List.fromList(transformMatrix.storage.toList()));
+      shape.render(vertex, canvas, shape.getPaint(vertex), []);
       canvas.restore();
     }
     if (unhoverCount == vertexes.length) graph.hoverVertex = null;

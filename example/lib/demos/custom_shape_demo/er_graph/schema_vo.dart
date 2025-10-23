@@ -48,6 +48,7 @@ class Constants {
   String referencedTableSchema;
   String referencedTableName;
   String referencedColumnName;
+  bool isVirtual;
 
   Constants({
     required this.schema,
@@ -58,5 +59,6 @@ class Constants {
     required this.referencedTableSchema,
     required this.referencedTableName,
     required this.referencedColumnName,
+    this.isVirtual = false,
   });
 }

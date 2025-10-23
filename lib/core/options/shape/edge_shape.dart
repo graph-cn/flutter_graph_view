@@ -6,7 +6,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/rendering.dart' as r;
-import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart' hide Vector3;
 import 'package:vector_math/vector_math_64.dart' hide Vector2;
 
@@ -46,9 +45,17 @@ abstract class EdgeShape {
   /// 根据数据更新画笔属性。
   Paint getPaint(Edge edge);
 
+  Vector2 startPosition(Edge edge) {
+    return edge.start.position;
+  }
+
+  Vector2 endPosition(Edge edge) {
+    return edge.end?.position ?? Vector2.zero();
+  }
+
   r.Matrix4 transformMatrix(Edge edge, Paint p) {
-    var start = edge.start.position;
-    var end = edge.end!.position;
+    var start = startPosition(edge);
+    var end = endPosition(edge);
     r.Matrix4 transformMatrix = r.Matrix4.identity();
     // 假设我们进行了一系列变换，这里我们记录下这些变换
     // 例如：先平移(100,100)，再旋转45度，再平移(50,50)
@@ -112,9 +119,8 @@ abstract class EdgeShape {
   /// Compute the line length by two vertex.
   ///
   /// 通过两个节点的坐标，计算线的长度。
-  static double len(Edge edge) => edge.end == null
-      ? 10
-      : Util.distance(edge.start.position, edge.end!.position);
+  double len(Edge edge) =>
+      edge.end == null ? 10 : startPosition(edge).distanceTo(endPosition(edge));
 
   /// Compute the shape angle by two vertex.
   ///

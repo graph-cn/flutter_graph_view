@@ -1,4 +1,6 @@
 ## 2.0.2
+- feat: in the `VertexShape`, add new callback functions onLoad, onDrag, onPointerUp, and onPointerDown.
+    > 在实现`VertexShape`时，增加`onLoad`、`onDrag`、`onPointerUp`、`onPointerDown`回调以实现个性化的事件响应。
 - fix: the text wrapping issue in `VertexTextRendererImpl`
     > 修复 `VertexTextRendererImpl` 段落长度与实际文本长度不符导致换行的问题。
 

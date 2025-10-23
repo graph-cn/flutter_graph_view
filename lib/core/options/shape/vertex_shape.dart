@@ -4,7 +4,10 @@
 
 import 'dart:ui';
 
-import 'package:flutter_graph_view/flutter_graph_view.dart';
+import 'package:flutter/rendering.dart' as r;
+
+import 'package:flutter_graph_view/flutter_graph_view.dart' hide Vector3;
+import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 /// Used to customize the vertex UI.
 ///
@@ -54,4 +57,27 @@ abstract class VertexShape {
   }
 
   VertexTextRenderer? textRenderer;
+
+  void onLoad(Graph graph) {}
+
+  bool onDrag(Vector2 delta) => false;
+
+  void onPointerUp(r.PointerUpEvent e) {}
+
+  void onPointerDown(r.PointerDownEvent e) {}
+
+  r.Matrix4 transformMatrix(Vertex vertex) {
+    r.Matrix4 transformMatrix = r.Matrix4.identity();
+    transformMatrix
+        .translateByVector3(Vector3(vertex.position.x, vertex.position.y, 0));
+    transformMatrix.translateByVector3(Vector3(
+        -(vertex.size?.width ?? 0) / 2, -(vertex.size?.height ?? 0) / 2, 0));
+    return transformMatrix;
+  }
+
+  bool hoverTest(Vertex v) {
+    var p = v.g!.options!.pointer;
+    var distance = v.g!.options!.localToGlobal(v.position).distanceTo(p);
+    return distance <= v.radiusActual; // 因为节点与全图缩放比例不同，所以距离需要经过一次换算
+  }
 }

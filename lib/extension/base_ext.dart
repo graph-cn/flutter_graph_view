@@ -8,6 +8,7 @@ import 'package:vector_math/vector_math.dart' show Vector2;
 
 extension SizeExt on ui.Size {
   Vector2 toVector2() => Vector2(width, height);
+  ui.Offset toOffset() => ui.Offset(width, height);
 }
 
 extension Vector2Ext on Vector2 {

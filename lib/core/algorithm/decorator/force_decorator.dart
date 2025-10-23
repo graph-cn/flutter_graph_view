@@ -35,13 +35,13 @@ class ForceDecorator extends GraphAlgorithm {
         as Map<GraphAlgorithm, Map<Vertex, Vector2>>;
   }
 
-  setForceMap(Vertex v, Vertex d, Vector2 force) {
+  void setForceMap(Vertex v, Vertex d, Vector2 force) {
     if (v.position == Vector2.zero() || d.position == Vector2.zero()) return;
     var forceMap = getForceMap(v);
     forceMap[this]?[d] = computeSameTagsFactor(force, v, d);
   }
 
-  _setForce(Vertex v) {
+  void _setForce(Vertex v) {
     var forceMap = getForceMap(v);
     var force = Vector2.zero();
     for (var forces in forceMap.values) {

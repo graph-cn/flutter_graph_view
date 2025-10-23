@@ -121,10 +121,7 @@ class Vertex<I> {
     var g = this.g as Graph;
     // 排他
     if (g.hoverVertex != null && g.hoverVertex != this) return false;
-
-    var p = g.options!.pointer;
-    var distance = g.options!.localToGlobal(position).distanceTo(p);
-    return distance <= radiusActual; // 因为节点与全图缩放比例不同，所以距离需要经过一次换算
+    return g.options!.vertexShape.hoverTest(this);
   }
 
   Graph? g;

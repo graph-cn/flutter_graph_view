@@ -18,6 +18,7 @@ class Util {
   }
 
   // Type cast.
+  @Deprecated('Please use `v?.toOffset()` insteads of')
   static Offset? toOffsetByVector2(Vector2? v) {
     return v == null ? null : Offset(v.x, v.y);
   }

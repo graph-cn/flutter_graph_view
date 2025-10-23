@@ -254,6 +254,7 @@ List<Constants> constants = [
     referencedTableSchema: 'tmalldemodb',
     referencedTableName: 'category',
     referencedColumnName: 'category_id',
+    isVirtual: true,
   ),
   Constants(
     schema: 'tmalldemodb',

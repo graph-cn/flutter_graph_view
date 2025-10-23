@@ -51,7 +51,6 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
   }
 
   run() {
-    if (graph.vertexes.isEmpty) return;
     options.run();
     if (mounted) setState(() {});
   }
@@ -65,11 +64,12 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
       algorithm.$size.value = Size(size.width, size.height);
       options.size.value = Size(size.width, size.height);
       options.refreshData(data);
+      options.vertexShape.onLoad(graph);
     });
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10), // 长期运行
+      duration: const Duration(days: 10), // 长期运行
     )..addListener(run);
     _controller.repeat();
 
@@ -115,6 +115,7 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
           onPointerHover: options.onPointerHover,
           onPointerUp: options.onPointerUp,
           onPointerSignal: options.onPointerSignal,
+          onPointerDown: options.onPointerDown,
         )),
         Positioned.fill(
           child: GestureDetector(

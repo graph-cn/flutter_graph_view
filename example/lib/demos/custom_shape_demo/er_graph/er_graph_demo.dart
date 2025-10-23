@@ -3,9 +3,10 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'package:example/demos/custom_shape_demo/er_graph/connect_widget.dart';
+import 'package:example/demos/custom_shape_demo/er_graph/er_graph_constants_shape.dart'
+    show ErGraphConstantsShape;
 import 'package:example/demos/custom_shape_demo/er_graph/er_graph_table_shape.dart'
     show ErGraphTableShape;
-import 'package:example/demos/custom_shape_demo/er_graph/nothing_shape.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -16,18 +17,13 @@ import 'schema_vo.dart';
 final List<Connection> connections = [];
 
 class ErGraphDemo extends StatelessWidget {
-  const ErGraphDemo({super.key});
+  final Graph graph = Graph();
+  ErGraphDemo({super.key});
   static final decorators1 = [
-    CoulombDecorator(),
-    HookeDecorator(),
-    CoulombReverseDecorator(),
-    HookeBorderDecorator(alwaysInScreen: false),
-    ForceDecorator(),
-    ForceMotionDecorator(),
-    TimeCounterDecorator(),
-    GraphRouteDecorator(),
-    PauseDecorator(),
     PinDecorator(),
+    CoulombDecorator(),
+    // HorizontalHookeDecorator(),
+    PauseDecorator(),
     CoulombDecorator(
       // sameTagsFactor: 5,
       k: 50,
@@ -55,11 +51,11 @@ class ErGraphDemo extends StatelessWidget {
     return FlutterGraphWidget(
       data: [tables, constants],
       algorithm: rootAlg,
+      graph: graph,
       // algorithm: ErFlowLayout(),
       convertor: ErGraphConvertor(),
       options: Options()
-        ..vertexShape = NothingShape()
-        ..edgeShape = NothingEdgeShape()
+        ..edgeShape = ErGraphConstantsShape(color: Colors.white)
         ..textGetter = (data) {
           if (data.data is TableVo) {
             return (data.data as TableVo).name;
@@ -68,6 +64,9 @@ class ErGraphDemo extends StatelessWidget {
         }
         ..vertexShape = ErGraphTableShape()
         ..graphStyle = (GraphStyle()
+          ..vertexTextStyleGetter = ((v, s) {
+            return const TextStyle(fontSize: 10, color: Colors.white);
+          })
           ..tagColorByIndex = [
             Colors.red.shade200,
             Colors.orange.shade200,

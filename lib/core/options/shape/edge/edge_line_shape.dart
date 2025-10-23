@@ -25,7 +25,7 @@ class EdgeLineShape extends EdgeShape {
   }
 
   void vertexDifferent(Edge edge, ui.Canvas canvas, ui.Paint paint) {
-    var endPoint = Offset(EdgeShape.len(edge), paint.strokeWidth);
+    var endPoint = Offset(len(edge), paint.strokeWidth);
 
     var distance = Util.distance(
       Vector2(0, 0),
@@ -94,7 +94,7 @@ class EdgeLineShape extends EdgeShape {
     // paint.strokeWidth = edge.zoom;
     paint.style = PaintingStyle.stroke;
     var startPoint = Offset.zero;
-    var endPoint = Offset(EdgeShape.len(edge), paint.strokeWidth);
+    var endPoint = Offset(len(edge), paint.strokeWidth);
     var hoverOpacity = edge.g?.options?.graphStyle.hoverOpacity ?? .5;
     if (isWeaken(edge)) {
       paint.shader = ui.Gradient.linear(

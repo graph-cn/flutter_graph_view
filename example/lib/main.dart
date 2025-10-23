@@ -2,6 +2,8 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'dart:async' show runZonedGuarded;
+
 import 'package:example/demos/custom_shape_demo/er_graph/er_graph_demo.dart';
 import 'package:example/demos/object_graph_demo.dart' show ObjectGraphDemo;
 import 'package:flutter/material.dart';
@@ -17,7 +19,12 @@ import 'demos/self_loop_demo.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
-  runApp(const Showroom());
+  runZonedGuarded(() {
+    runApp(const Showroom());
+  }, (error, stackTrace) {
+    // ... 错误处理
+    print(stackTrace);
+  });
 }
 
 class Showroom extends StatefulWidget {
@@ -32,8 +39,8 @@ class _ShowroomState extends State<Showroom>
   late TabController mainTabController;
 
   final List<String> tabNames = <String>[
-    'ObjectGraphDemo',
     'ErGraphDemo',
+    'ObjectGraphDemo',
     'DecoratorDemo',
     'PersistenceDemo',
     'ForceDirected',
@@ -44,8 +51,8 @@ class _ShowroomState extends State<Showroom>
     "VertexFontStyleDemo",
   ];
   final List<Widget> tabs = <Widget>[
+    ErGraphDemo(),
     const ObjectGraphDemo(),
-    const ErGraphDemo(),
     const DecoratorDemo(),
     const PersistenceDemo(),
     ForceDirectedDemo(),

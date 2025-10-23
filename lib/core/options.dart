@@ -44,6 +44,13 @@ typedef GraphComponentBuilder = Widget Function({
   required Graph graph,
 });
 
+typedef OnScaleStart = void Function(ScaleStartDetails);
+typedef OnScaleUpdate = void Function(ScaleUpdateDetails);
+typedef OnPointerSignal = void Function(PointerSignalEvent);
+typedef OnPointerUp = void Function(PointerUpEvent);
+typedef OnPointerDown = void Function(PointerDownEvent);
+typedef OnPointerHover = void Function(PointerHoverEvent);
+
 /// The core api for Graph Options.
 ///
 /// 图配置项
@@ -192,31 +199,39 @@ class Options {
   }
 
   /// onPointerHover
-  void Function(PointerHoverEvent)? _onPointerHover;
-  void Function(PointerHoverEvent) get onPointerHover =>
+  OnPointerHover? _onPointerHover;
+  OnPointerHover get onPointerHover =>
       _onPointerHover ??
       (PointerHoverEvent details) {
         pointer.x = details.localPosition.dx;
         pointer.y = details.localPosition.dy;
       };
-  set onPointerHover(void Function(PointerHoverEvent)? v) =>
-      _onPointerHover = v;
+  set onPointerHover(OnPointerHover? v) => _onPointerHover = v;
 
   /// onPointerUp
-  void Function(PointerUpEvent)? _onPointerUp;
-  void Function(PointerUpEvent) get onPointerUp =>
+  OnPointerUp? _onPointerUp;
+  OnPointerUp get onPointerUp =>
       _onPointerUp ??
       (PointerUpEvent e) {
         if (graph.hoverVertex != null &&
             panDelta.length < graph.hoverVertex!.radius) {
           onVertexTapUp?.call(graph.hoverVertex!, null);
         }
+        vertexShape.onPointerUp(e);
       };
-  set onPointerUp(void Function(PointerUpEvent)? v) => _onPointerUp = v;
+  set onPointerUp(OnPointerUp? v) => _onPointerUp = v;
+
+  OnPointerDown? _onPointerDown;
+  OnPointerDown get onPointerDown =>
+      _onPointerDown ??
+      (PointerDownEvent e) {
+        vertexShape.onPointerDown(e);
+      };
+  set onPointerDown(OnPointerDown? v) => _onPointerDown = v;
 
   /// onPointerSignal
-  void Function(PointerSignalEvent)? _onPointerSignal;
-  void Function(PointerSignalEvent) get onPointerSignal =>
+  OnPointerSignal? _onPointerSignal;
+  OnPointerSignal get onPointerSignal =>
       _onPointerSignal ??
       (pointerSignal) {
         if (pointerSignal is PointerScrollEvent) {
@@ -229,12 +244,11 @@ class Options {
           }
         }
       };
-  set onPointerSignal(void Function(PointerSignalEvent)? v) =>
-      _onPointerSignal = v;
+  set onPointerSignal(OnPointerSignal? v) => _onPointerSignal = v;
 
   /// onScaleStart
-  void Function(ScaleStartDetails)? _onScaleStart;
-  void Function(ScaleStartDetails) get onScaleStart =>
+  OnScaleStart? _onScaleStart;
+  OnScaleStart get onScaleStart =>
       _onScaleStart ??
       (d) {
         scaleVal = scale.value;
@@ -242,11 +256,11 @@ class Options {
         panDelta.x = 0;
         panDelta.y = 0;
       };
-  set onScaleStart(void Function(ScaleStartDetails)? v) => _onScaleStart = v;
+  set onScaleStart(OnScaleStart? v) => _onScaleStart = v;
 
   /// onScaleUpdate
-  void Function(ScaleUpdateDetails)? _onScaleUpdate;
-  void Function(ScaleUpdateDetails) get onScaleUpdate =>
+  OnScaleUpdate? _onScaleUpdate;
+  OnScaleUpdate get onScaleUpdate =>
       _onScaleUpdate ??
       (ScaleUpdateDetails details) {
         if (details.pointerCount == 2 && details.scale != 1.0) {
@@ -256,18 +270,20 @@ class Options {
           keepCenter(oz, nz, size.value, pointer.toOffset(), offset);
         } else {
           var delta = details.focalPointDelta;
+          pointer.x += delta.dx;
+          pointer.y += delta.dy;
+          var ifBreak = vertexShape.onDrag(delta.toVector2());
+          if (ifBreak) return;
           if (graph.hoverVertex == null) {
             offset.value += delta;
           } else {
-            pointer.x += delta.dx;
-            pointer.y += delta.dy;
             var dragDetail = delta.toVector2() / scale.value;
             panDelta.add(dragDetail);
             graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
           }
         }
       };
-  set onScaleUpdate(void Function(ScaleUpdateDetails)? v) => _onScaleUpdate = v;
+  set onScaleUpdate(OnScaleUpdate? v) => _onScaleUpdate = v;
 
   // ---------------------------------------------------------------------------
 
@@ -376,9 +392,13 @@ class Options {
   /// @zh: 刷新图数据
   void refreshData(data) {
     graph.clear();
+    graph.data = data;
     graph.convertor?.convertGraph(data, graph: graph);
-    graph.vertexes = graph.vertexes.toSet().toList()
+    var sortedList = graph.vertexes.toSet().toList()
       ..sort((key1, key2) => key1.degree - key2.degree > 0 ? -1 : 1);
+    sortedList
+        .where((e) => !graph.vertexes.contains(e))
+        .forEach(graph.vertexes.add);
     setDefaultVertexColor();
     graph.algorithm?.onGraphLoad(graph);
     graphStyle.graphColor(graph);

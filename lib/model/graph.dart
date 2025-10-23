@@ -17,7 +17,7 @@ class Graph<ID> {
 
   /// All the vertexes' data in graph.
   /// 图中所有的节点数据
-  List<Vertex<ID>> vertexes = [];
+  final List<Vertex<ID>> vertexes = [];
 
   /// All the edges' data in graph.
   /// 图中所有的关系数据
@@ -29,6 +29,8 @@ class Graph<ID> {
 
   /// 记算鼠标上次触碰节点的开始时间
   Map<Vertex?, DateTime> vHoverTime = {};
+
+  final Map<String, dynamic> extraOnLoad = {};
 
   /// The vertex which is focused by mouse.
   /// 鼠标浮入所命中的节点，用于做高亮显示。
