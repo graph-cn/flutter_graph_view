@@ -1,3 +1,7 @@
+## 2.0.2
+- fix: the text wrapping issue in `VertexTextRendererImpl`
+    > 修复 `VertexTextRendererImpl` 段落长度与实际文本长度不符导致换行的问题。
+
 ## 2.0.1
 - deprecated: DreatheDecorator
     > 废弃节点上下浮动的呼吸特效

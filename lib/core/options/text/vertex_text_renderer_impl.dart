@@ -36,7 +36,7 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle);
     var text = vertex.g?.options?.textGetter.call(vertex) ?? '';
 
-    ui.TextStyle? textStyle = ui.TextStyle(
+    TextStyle? textStyle = TextStyle(
       fontSize: paragraphFontSize,
       foreground: fontColor != null ? (Paint()..color = fontColor) : paint,
       fontWeight: fontWeight,
@@ -48,7 +48,7 @@ class VertexTextRendererImpl extends VertexTextRenderer {
 
     /// 3.添加样式和文字
     paragraphBuilder
-      ..pushStyle(textStyle)
+      ..pushStyle(textStyle.getTextStyle())
       ..addText(text);
 
     /// 4.通过 build 取到 Paragraph
@@ -57,10 +57,7 @@ class VertexTextRendererImpl extends VertexTextRenderer {
     TextPainter hpainter = TextPainter(
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
-      text: TextSpan(
-        style: TextStyle(fontSize: paragraphFontSize, fontWeight: fontWeight),
-        text: text,
-      ),
+      text: TextSpan(style: textStyle, text: text),
     )..layout();
 
     /// 5.根据宽高进行布局layout
