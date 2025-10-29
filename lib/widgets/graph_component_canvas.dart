@@ -160,42 +160,41 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
       child: ListenableBuilder(
           listenable: options.horizontalPanelVisible,
           builder: (context, child) {
-            return Offstage(
-              offstage: !options.horizontalPanelVisible.value,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: options.size.value.width,
-                  maxHeight: options.horizontalControllerHeight,
-                ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      ...(algorithm.horizontalOverlays(
-                            rootAlg: algorithm,
-                            graph: graph,
-                          ) ??
-                          []),
-                      if (algorithm
-                              .verticalOverlays(
-                                  rootAlg: algorithm, graph: graph)
-                              ?.isNotEmpty ==
-                          true)
-                        IconButton(
-                          onPressed: () {
-                            if (options.verticalControllerVisible.value) {
-                              options.hideVerticalPanel();
-                            } else {
-                              options.showVerticalPanel();
-                            }
-                          },
-                          icon: const Icon(Icons.tune),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            );
+            return options.horizontalPanelVisible.value
+                ? ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: options.size.value.width,
+                      maxHeight: options.horizontalControllerHeight,
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ...(algorithm.horizontalOverlays(
+                                rootAlg: algorithm,
+                                graph: graph,
+                              ) ??
+                              []),
+                          if (algorithm
+                                  .verticalOverlays(
+                                      rootAlg: algorithm, graph: graph)
+                                  ?.isNotEmpty ==
+                              true)
+                            IconButton(
+                              onPressed: () {
+                                if (options.verticalControllerVisible.value) {
+                                  options.hideVerticalPanel();
+                                } else {
+                                  options.showVerticalPanel();
+                                }
+                              },
+                              icon: const Icon(Icons.tune),
+                            ),
+                        ],
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink();
           }),
     );
   }
@@ -206,33 +205,36 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
         right: 0,
         top: options.horizontalControllerHeight,
         bottom: 10,
-        child: Offstage(
-          offstage: !options.vertexTapUpPanelVisible.value,
-          child: ListenableBuilder(
-            listenable: algorithm.$size,
-            builder: (context, child) {
-              return ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: options.size.value.height,
-                  maxWidth: options.vertexTapUpPanelWidth,
-                ),
-                child: Listener(
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: ColoredBox(
-                        color: Colors.grey.withValues(alpha: 0.1),
-                        child: options.vertexTapUpPanel,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
+        child: ListenableBuilder(
+            listenable: options.vertexTapUpPanelVisible,
+            builder: (context, w) {
+              return options.vertexTapUpPanelVisible.value
+                  ? ListenableBuilder(
+                      listenable: algorithm.$size,
+                      builder: (context, child) {
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: options.size.value.height,
+                            maxWidth: options.vertexTapUpPanelWidth,
+                          ),
+                          child: Listener(
+                            behavior: HitTestBehavior.opaque,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: ColoredBox(
+                                  color: Colors.grey.withValues(alpha: 0.1),
+                                  child: options.vertexTapUpPanel,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : const SizedBox.shrink();
+            }),
       ),
       Positioned(
         right: 8,
