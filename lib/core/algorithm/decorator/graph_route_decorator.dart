@@ -40,19 +40,19 @@ class GraphRouteDecorator extends GraphAlgorithm {
     initData = data;
   }
 
-  backword({bool hideVertexPanel = false}) {
+  void backword({bool hideVertexPanel = false}) {
     if (backwordQueue.value.isEmpty) return;
     var graphData = backwordQueue.value.removeLast();
     forwardQueue.value.add(graphData);
     graph?.refreshData?.call(initData);
     if (hideVertexPanel) hideVertexTapUpOverlay();
     setState();
-    backwordQueue.value.forEach((element) {
+    for (var element in backwordQueue.value) {
       graph?.mergeGraph(element, manual: false);
-    });
+    }
   }
 
-  forward() {
+  void forward() {
     if (forwardQueue.value.isEmpty) return;
     var graphData = forwardQueue.value.removeLast();
     backwordQueue.value.add(graphData);

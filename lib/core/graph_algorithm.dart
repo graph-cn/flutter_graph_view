@@ -117,7 +117,7 @@ abstract class GraphAlgorithm {
   }
 
   @mustCallSuper
-  beforeMerge(dynamic data) {
+  void beforeMerge(dynamic data) {
     for (GraphAlgorithm decorator in decorators ?? []) {
       decorator.beforeMerge(data);
     }
