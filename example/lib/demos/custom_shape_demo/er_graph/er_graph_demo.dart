@@ -48,41 +48,54 @@ class ErGraphDemo extends StatelessWidget {
   );
   @override
   Widget build(BuildContext context) {
-    return FlutterGraphWidget(
-      data: [tables, constants],
-      algorithm: rootAlg,
-      graph: graph,
-      // algorithm: ErFlowLayout(),
-      convertor: ErGraphConvertor(),
-      options: Options()
-        ..edgeShape = ErGraphConstantsShape(color: Colors.white)
-        ..textGetter = (data) {
-          if (data.data is TableVo) {
-            return (data.data as TableVo).name;
-          }
-          return '';
-        }
-        ..vertexShape = ErGraphTableShape()
-        ..graphStyle = (GraphStyle()
-          ..vertexTextStyleGetter = ((v, s) {
-            return const TextStyle(fontSize: 10, color: Colors.white);
-          })
-          ..tagColorByIndex = [
-            Colors.red.shade200,
-            Colors.orange.shade200,
-            Colors.yellow.shade200,
-            Colors.green.shade200,
-            Colors.blue.shade200,
-            Colors.blueAccent.shade200,
-            Colors.purple.shade200,
-            Colors.pink.shade200,
-            Colors.blueGrey.shade200,
-            Colors.deepOrange.shade200,
-          ])
-        ..backgroundBuilder = ((context) => const ColoredBox(
-              color: Colors.transparent,
-              // child: logo,
-            )),
-    );
+    return StatefulBuilder(builder: (contex, setStatet) {
+      return Stack(
+        children: [
+          FlutterGraphWidget(
+            data: [tables, constants],
+            algorithm: rootAlg,
+            // algorithm: ErFlowLayout(),
+            convertor: ErGraphConvertor(),
+            options: Options()
+              ..edgeShape = ErGraphConstantsShape(color: Colors.white)
+              ..textGetter = (data) {
+                if (data.data is TableVo) {
+                  return (data.data as TableVo).name;
+                }
+                return '';
+              }
+              ..vertexShape = ErGraphTableShape()
+              ..graphStyle = (GraphStyle()
+                ..vertexTextStyleGetter = ((v, s) {
+                  return const TextStyle(fontSize: 10, color: Colors.white);
+                })
+                ..tagColorByIndex = [
+                  Colors.red.shade200,
+                  Colors.orange.shade200,
+                  Colors.yellow.shade200,
+                  Colors.green.shade200,
+                  Colors.blue.shade200,
+                  Colors.blueAccent.shade200,
+                  Colors.purple.shade200,
+                  Colors.pink.shade200,
+                  Colors.blueGrey.shade200,
+                  Colors.deepOrange.shade200,
+                ])
+              ..backgroundBuilder = ((context) => const ColoredBox(
+                    color: Colors.transparent,
+                    // child: logo,
+                  )),
+          ),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: TextButton(
+              onPressed: () => setStatet(() {}),
+              child: const Text('Refresh'),
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

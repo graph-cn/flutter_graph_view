@@ -20,7 +20,7 @@ class ErGraphTableShape extends VertexShape with DashPainter {
   Color lineColor;
   EdgeInsets padding = const EdgeInsets.symmetric(vertical: 4, horizontal: 8);
 
-  late Graph graph;
+  Graph? graph;
 
   @override
   void onLoad(Graph graph) {
@@ -94,7 +94,7 @@ class ErGraphTableShape extends VertexShape with DashPainter {
   @override
   void onPointerUp(PointerUpEvent e) {
     if (start != null && temp != null) {
-      graph.mergeGraph([
+      graph!.mergeGraph([
         [],
         [
           Constants(
@@ -128,6 +128,7 @@ class ErGraphTableShape extends VertexShape with DashPainter {
   @override
   render(Vertex vertex, ui.Canvas canvas, ui.Paint paint,
       List<ui.Paint> paintLayers) {
+    if (graph == null) return;
     this.canvas = canvas;
     this.paint = paint;
     var table = vertex.data as TableVo;
@@ -147,7 +148,7 @@ class ErGraphTableShape extends VertexShape with DashPainter {
 
     /// 1.生成 ParagraphStyle，可设置文本的基本信息
     var textStyle =
-        graph.options!.graphStyle.vertexTextStyleGetter?.call(vertex, this);
+        graph!.options!.graphStyle.vertexTextStyleGetter?.call(vertex, this);
     final paragraphStyle = ui.ParagraphStyle(
       fontSize: textStyle!.fontSize,
       fontFamily: textStyle.fontFamily,
@@ -194,7 +195,7 @@ class ErGraphTableShape extends VertexShape with DashPainter {
     TextStyle textStyle,
     ui.ParagraphStyle paragraphStyle,
   ) {
-    var width = graph.extraOnLoad['vertexWidth'][vertex];
+    var width = graph!.extraOnLoad['vertexWidth'][vertex];
     var matrix = transformMatrix(vertex);
 
     paint.color = propBackground.withValues(alpha: 0.3);

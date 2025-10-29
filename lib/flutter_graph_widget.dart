@@ -13,7 +13,7 @@ class FlutterGraphWidget extends StatelessWidget {
   final GraphAlgorithm algorithm;
   final DataConvertor convertor;
   final Options options;
-  final Graph graph;
+  final Graph graph = Graph();
 
   FlutterGraphWidget({
     Key? key,
@@ -21,20 +21,19 @@ class FlutterGraphWidget extends StatelessWidget {
     required this.convertor,
     required this.algorithm,
     Options? options,
-    Graph? graph,
-  })  : graph = graph ?? Graph(),
-        options = options ?? Options(),
+  })  : options = options ?? Options(),
         super(key: key) {
-    this.graph.options = options;
-    this.options.graph = this.graph;
-    this.graph.convertor = convertor;
-    this.graph.algorithm = algorithm;
+    graph.options = options;
+    this.options.graph = graph;
+    graph.convertor = convertor;
+    graph.algorithm = algorithm;
     algorithm.setGlobalData(rootAlg: algorithm, graph: this.graph);
   }
 
   @override
   Widget build(BuildContext context) {
     return options.graphComponentBuilder(
+      key: ValueKey(graph),
       data: data,
       convertor: convertor,
       algorithm: algorithm,

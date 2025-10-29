@@ -1,3 +1,10 @@
+## 2.0.2+1
+
+- fix: the issue of incorrect rendering when calling `setState` from the outside
+    > 修复从外部setState时无法正常渲染的问题
+- fix: the issue where the data panel is still initialized even if the vertex is not `tapUp`
+    > 修复当节点未点击，但数据面板依然被初始化的问题
+
 ## 2.0.2
 - feat: in the `VertexShape`, add new callback functions onLoad, onDrag, onPointerUp, and onPointerDown.
     > 在实现`VertexShape`时，增加`onLoad`、`onDrag`、`onPointerUp`、`onPointerDown`回调以实现个性化的事件响应。
