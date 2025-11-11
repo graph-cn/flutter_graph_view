@@ -26,7 +26,7 @@ class SelfLoopDemo extends StatelessWidget {
     ]);
     var edges = <Map>{};
 
-    for (var i = 0; i < 300; i++) {
+    for (var i = 0; i < 9; i++) {
       edges.add({
         'srcId': 'node',
         'dstId': 'node${i.isEven ? '2' : ''}',
@@ -48,7 +48,7 @@ class SelfLoopDemo extends StatelessWidget {
         ..graphStyle = (GraphStyle()
           // tagColor is prior to tagColorByIndex. use vertex.tags to get color
           ..tagColor = {'tag': Colors.orangeAccent.shade200})
-        ..edgeShape = EdgeLineShape() // default is EdgeLineShape.
+        ..edgeShape = EdgeLineShape(decorators: [LabelEdgeDecorator()]) // default is EdgeLineShape.
         ..vertexShape = VertexCircleShape(), // default is VertexCircleShape.
     );
   }

@@ -122,6 +122,111 @@ class SolidArrowEdgeDecorator extends DefaultEdgeDecorator {
   }
 }
 
+class LabelEdgeDecorator extends DefaultEdgeDecorator {
+  Offset getCenterPoint(Vector2 vector1, Vector2 vector2) {
+    return Offset(
+      (vector1.x + vector2.x) / 2,
+      (vector1.y + vector2.y) / 2,
+    );
+  }
+
+  @override
+  void decorate(
+    Edge edge,
+    Canvas canvas,
+    Paint paint,
+  ) {
+    ParagraphBuilder paragraphBuilder = ParagraphBuilder(ParagraphStyle(
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.ltr,
+    ));
+    paragraphBuilder.addText(edge.edgeName);
+    var paragraphConstraints = const ParagraphConstraints(width: double.infinity);
+    final paragraph = paragraphBuilder.build();
+    paragraph.layout(paragraphConstraints);
+
+    if (edge.isLoop) {
+      var ratio = edge.edgeIdxRatio;
+      var radius = ratio * edge.start.radius * 5 + edge.start.radiusZoom;
+      var center = Offset(radius, 0);
+      var r = radius / edge.zoom;
+      final a = sqrt((r * r) / 2);
+      final offset = Offset(center.dx + a, center.dy + a);
+      canvas.drawParagraph(paragraph, offset);
+    } else {
+      var endPoint = Offset(len(edge), paint.strokeWidth);
+      var distance = Util.distance(Vector2(0, 0), Vector2(endPoint.dx, 0));
+      var edgesBetweenTwoVertex = edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+      var edgeCount = edgesBetweenTwoVertex.length;
+
+      /// 法线点
+      var normalPoint = Vector2(
+        distance / 2,
+        edge.computeIndex * distance / edgeCount * 2 + edge.size.y / 2,
+      );
+      if (normalPoint.isNaN) {
+        return;
+      }
+      Offset offset = Offset(normalPoint.x, normalPoint.y);
+      if (edgeCount > 1) {
+        final b = Offset(len(edge), paint.strokeWidth);
+        final p = Offset(normalPoint.x, normalPoint.y);
+        final r = Util.distance(normalPoint, Vector2(0, 0));
+        offset = calculateQPoint(Offset.zero, b, p, r);
+      }
+      canvas.drawParagraph(paragraph, offset);
+    }
+  }
+
+  Offset getPathMidpoint(Path path) {
+    final PathMetrics pathMetrics = path.computeMetrics();
+    final List<Offset> points = [];
+
+    for (PathMetric pathMetric in pathMetrics) {
+      double length = pathMetric.length;
+      for (double i = 0; i < length; i += 1) {
+        // 每1个单位长度采样一个点
+        Tangent? tangent = pathMetric.getTangentForOffset(i);
+        if (tangent != null) {
+          points.add(tangent.position);
+        }
+      }
+    }
+
+    if (points.isEmpty) {
+      return Offset.zero;
+    }
+
+    // 计算所有点的平均位置
+    double xSum = 0.0;
+    double ySum = 0.0;
+    for (Offset point in points) {
+      xSum += point.dx;
+      ySum += point.dy;
+    }
+
+    return Offset(xSum / points.length, ySum / points.length);
+  }
+
+  Offset calculateQPoint(Offset a, Offset b, Offset p, double r) {
+    // 计算ab的中点坐标（弦ab与m线的交点，用于推导方向）
+    double midX = (a.dx + b.dx) / 2;
+    double midY = (a.dy + b.dy) / 2;
+
+    // 计算向量p到中点的分量
+    double dx = midX - p.dx;
+    double dy = midY - p.dy;
+
+    // 计算向量长度
+    double length = sqrt(dx * dx + dy * dy);
+
+    // 单位向量缩放至半径r，得到q点坐标
+    double qX = p.dx + (dx / length) * r;
+    double qY = p.dy + (dy / length) * r;
+    return Offset(qX, qY);
+  }
+}
+
 class DefaultEdgeDecorator extends EdgeDecorator {
   Vector2 startPosition(Edge edge) {
     return edge.start.position;
