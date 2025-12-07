@@ -53,6 +53,7 @@ export 'core/algorithm/decorator/legend_decorator.dart';
 export 'core/algorithm/decorator/counter_decorator.dart';
 
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
+export 'core/options/shape/vertex/vertex_diamond_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
 export 'core/options/text/vertex_text_renderer_impl.dart';
 
