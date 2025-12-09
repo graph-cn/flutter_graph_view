@@ -31,7 +31,7 @@ class Edge {
   /// 对当前关系的起始节点进行缓存
   late Vertex start;
 
-  late bool solid;
+  bool solid = true;
 
   /// Cache the destination vertex.
   ///
