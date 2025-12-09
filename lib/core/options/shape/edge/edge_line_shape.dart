@@ -22,6 +22,9 @@ class EdgeLineShape extends EdgeShape {
     } else {
       vertexDifferent(edge, canvas, paint);
     }
+    decorators?.forEach((decorator) {
+      decorator.decorate(edge, canvas, paint);
+    });
   }
 
   void vertexDifferent(Edge edge, ui.Canvas canvas, ui.Paint paint) {
@@ -32,8 +35,7 @@ class EdgeLineShape extends EdgeShape {
       Vector2(endPoint.dx, 0),
     );
 
-    var edgesBetweenTwoVertex =
-        edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+    var edgesBetweenTwoVertex = edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
 
     var edgeCount = edgesBetweenTwoVertex.length;
 
@@ -58,12 +60,7 @@ class EdgeLineShape extends EdgeShape {
     );
     // path.extendWithPath(path, Offset(0, paint.strokeWidth));
     edge.path = path;
-
     canvas.drawPath(path, paint);
-
-    decorators?.forEach((decorator) {
-      decorator.decorate(edge, canvas, paint, distance, edgeCount);
-    });
   }
 
   void vertexSame(Edge edge, ui.Canvas canvas, ui.Paint paint) {
@@ -78,8 +75,7 @@ class EdgeLineShape extends EdgeShape {
     var radius = ratio * edge.start.radius * 5 + edge.start.radiusZoom;
     Path path = Path();
     path.addArc(
-      Rect.fromCircle(
-          center: Offset(radius, 0), radius: radius - minusRadius / edge.zoom),
+      Rect.fromCircle(center: Offset(radius, 0), radius: radius - minusRadius / edge.zoom),
       0,
       -2 * pi,
     );
@@ -103,10 +99,8 @@ class EdgeLineShape extends EdgeShape {
         List.generate(
           2,
           (index) => [
-            (edge.start.colors.lastOrNull ?? Colors.white)
-                .withValues(alpha: hoverOpacity),
-            (edge.end?.colors.lastOrNull ?? Colors.white)
-                .withValues(alpha: hoverOpacity)
+            (edge.start.colors.lastOrNull ?? Colors.white).withValues(alpha: hoverOpacity),
+            (edge.end?.colors.lastOrNull ?? Colors.white).withValues(alpha: hoverOpacity)
           ][index],
         ),
       );
