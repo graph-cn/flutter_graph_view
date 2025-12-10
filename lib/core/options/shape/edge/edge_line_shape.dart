@@ -13,7 +13,8 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 默认使用 直线做边。
 class EdgeLineShape extends EdgeShape {
-  EdgeLineShape({super.decorators});
+  final double scaleLoop;
+  EdgeLineShape({this.scaleLoop = 1.0, super.decorators});
 
   @override
   render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
@@ -72,7 +73,7 @@ class EdgeLineShape extends EdgeShape {
   @override
   Path loopPath(Edge edge, [double minusRadius = 0]) {
     var ratio = edge.edgeIdxRatio;
-    var radius = ratio * edge.start.radius * 5 + edge.start.radiusZoom;
+    var radius = (ratio * edge.start.radius * 5 + edge.start.radiusZoom) * scaleLoop;
     Path path = Path();
     path.addArc(
       Rect.fromCircle(center: Offset(radius, 0), radius: radius - minusRadius / edge.zoom),
@@ -92,6 +93,13 @@ class EdgeLineShape extends EdgeShape {
     var startPoint = Offset.zero;
     var endPoint = Offset(len(edge), paint.strokeWidth);
     var hoverOpacity = edge.g?.options?.graphStyle.hoverOpacity ?? .5;
+
+    if (edge.solid) {
+      paint.color = edge.start.colors.lastOrNull ?? Colors.white;
+      
+      return paint;
+    }
+
     if (isWeaken(edge)) {
       paint.shader = ui.Gradient.linear(
         startPoint,
