@@ -110,22 +110,24 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
           ),
         ),
         Positioned.fill(
-            child: Listener(
-          behavior: HitTestBehavior.translucent,
-          onPointerHover: options.onPointerHover,
-          onPointerUp: options.onPointerUp,
-          onPointerSignal: options.onPointerSignal,
-          onPointerDown: options.onPointerDown,
-        )),
-        Positioned.fill(
           child: GestureDetector(
             // 为了不让在拖动画面的过程中，触碰到点，变成拖动节点
             onScaleStart: options.onScaleStart,
             onScaleUpdate: options.onScaleUpdate,
             onScaleEnd: (d) {
               options.hoverable = true;
+              options.pointer.x = (2 << 16) + 0.0;
+              options.pointer.y = (2 << 16) + 0.0;
             },
+            onTapDown: options.onTapDown,
             behavior: HitTestBehavior.translucent,
+            child: Listener(
+              behavior: HitTestBehavior.translucent,
+              onPointerHover: options.onPointerHover,
+              onPointerUp: options.onPointerUp,
+              onPointerSignal: options.onPointerSignal,
+              onPointerDown: options.onPointerDown,
+            ),
           ),
         ),
         verticalController,

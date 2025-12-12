@@ -46,6 +46,7 @@ typedef GraphComponentBuilder = Widget Function({
 
 typedef OnScaleStart = void Function(ScaleStartDetails);
 typedef OnScaleUpdate = void Function(ScaleUpdateDetails);
+typedef OnTapDown = void Function(TapDownDetails);
 typedef OnPointerSignal = void Function(PointerSignalEvent);
 typedef OnPointerUp = void Function(PointerUpEvent);
 typedef OnPointerDown = void Function(PointerDownEvent);
@@ -246,6 +247,16 @@ class Options {
       };
   set onPointerSignal(OnPointerSignal? v) => _onPointerSignal = v;
 
+  OnTapDown? _onTapDown;
+  OnTapDown get onTapDown =>
+    _onTapDown ??
+    (details) {
+      pointer.x = details.localPosition.dx;
+      pointer.y = details.localPosition.dy;
+    };
+  
+  set onTapDown(OnTapDown? v) => _onTapDown = v;
+
   /// onScaleStart
   OnScaleStart? _onScaleStart;
   OnScaleStart get onScaleStart =>
@@ -260,29 +271,44 @@ class Options {
 
   /// onScaleUpdate
   OnScaleUpdate? _onScaleUpdate;
-  OnScaleUpdate get onScaleUpdate =>
-      _onScaleUpdate ??
-      (ScaleUpdateDetails details) {
-        if (details.pointerCount == 2 && details.scale != 1.0) {
-          var oz = scale.value;
-          scale.value = scaleVal * details.scale;
-          var nz = scale.value;
-          keepCenter(oz, nz, size.value, pointer.toOffset(), offset);
-        } else {
-          var delta = details.focalPointDelta;
-          pointer.x += delta.dx;
-          pointer.y += delta.dy;
-          var ifBreak = vertexShape.onDrag(delta.toVector2());
-          if (ifBreak) return;
-          if (graph.hoverVertex == null) {
-            offset.value += delta;
-          } else {
-            var dragDetail = delta.toVector2() / scale.value;
-            panDelta.add(dragDetail);
-            graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
-          }
-        }
-      };
+
+  OnScaleUpdate get onScaleUpdate => _onScaleUpdate ??
+  (ScaleUpdateDetails details) {
+    
+    if (details.pointerCount > 1) {
+      
+      var oldScale = scale.value;
+      var k = 1 / (1 + oldScale * 0.2);
+      var newScale = scaleVal * (1 + (details.scale - 1) * k);
+
+      if (newScale >= scaleRange.x && newScale <= scaleRange.y) {
+        scale.value = newScale;
+        keepCenter(oldScale, newScale, size.value, details.localFocalPoint, offset);
+
+      }
+    } 
+
+    var delta = details.focalPointDelta;
+
+    pointer.x += delta.dx;
+    pointer.y += delta.dy;
+    
+    var ifBreak = vertexShape.onDrag(delta.toVector2());
+    
+    if (ifBreak) return;
+
+    if (graph.hoverVertex == null) {
+      offset.value += delta;
+
+      return;
+    }
+    
+    var dragDetail = delta.toVector2() / scale.value;
+    panDelta.add(dragDetail);
+    graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
+    
+  };
+  
   set onScaleUpdate(OnScaleUpdate? v) => _onScaleUpdate = v;
 
   // ---------------------------------------------------------------------------
