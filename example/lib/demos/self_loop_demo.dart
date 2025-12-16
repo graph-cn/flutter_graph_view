@@ -48,7 +48,8 @@ class SelfLoopDemo extends StatelessWidget {
         ..graphStyle = (GraphStyle()
           // tagColor is prior to tagColorByIndex. use vertex.tags to get color
           ..tagColor = {'tag': Colors.orangeAccent.shade200})
-        ..edgeShape = EdgeLineShape(decorators: [LabelEdgeDecorator()]) // default is EdgeLineShape.
+        ..edgeShape = EdgeLineShape(
+            decorators: [LabelEdgeDecorator()]) // default is EdgeLineShape.
         ..vertexShape = VertexCircleShape(), // default is VertexCircleShape.
     );
   }

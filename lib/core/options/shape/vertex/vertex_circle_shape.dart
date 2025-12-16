@@ -45,10 +45,9 @@ class VertexCircleShape extends VertexShape {
   Paint getPaint(Vertex vertex) {
     Paint paint = Paint();
     var colors = vertex.colors;
-    
+
     if (vertex.solid) {
       paint.color = vertex.colors.first;
-      
       return paint;
     }
 

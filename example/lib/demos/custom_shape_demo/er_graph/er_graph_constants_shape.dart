@@ -11,7 +11,8 @@ import 'package:flutter/rendering.dart' as r;
 import 'package:flutter_graph_view/flutter_graph_view.dart' hide Vector3;
 
 mixin DashPainter {
-  ui.Paint getDashPaint(ui.Offset start, ui.Offset end, Color color, {int? specSpace}) {
+  ui.Paint getDashPaint(ui.Offset start, ui.Offset end, Color color,
+      {int? specSpace}) {
     var space = specSpace ??
         (((end.dx - start.dx).abs() > (end.dy - start.dy).abs())
                 ? (end.dx.toInt() - start.dx.toInt()) ~/ 5
@@ -74,27 +75,31 @@ class ErGraphConstantsShape extends EdgeShape with DashPainter {
   Vector2 startPosition(Edge edge) {
     var c = (edge.data as Constants);
     TableVo startTable = edge.start.data as TableVo;
-    PropertyVo startProp = startTable.properties.firstWhere((p) => p.name == c.columnName);
+    PropertyVo startProp =
+        startTable.properties.firstWhere((p) => p.name == c.columnName);
     int startIdx = startTable.properties.indexOf(startProp);
-    var painters = edge.g!.extraOnLoad['vertexPainters'][edge.start] as List<r.TextPainter>;
-    var offset = painters
-            .sublist(0, startIdx + 1)
-            .fold(0.0, (pre, painter) => pre + painter.height + vPadding.top * 2) +
+    var painters = edge.g!.extraOnLoad['vertexPainters'][edge.start]
+        as List<r.TextPainter>;
+    var offset = painters.sublist(0, startIdx + 1).fold(
+            0.0, (pre, painter) => pre + painter.height + vPadding.top * 2) +
         painters[startIdx + 1].height / 2 +
         vPadding.top;
-    return (-(edge.start.size! / 2).toOffset() + ui.Offset(0, offset)).toVector2() + edge.start.position;
+    return (-(edge.start.size! / 2).toOffset() + ui.Offset(0, offset))
+            .toVector2() +
+        edge.start.position;
   }
 
   @override
   Vector2 endPosition(Edge edge) {
     var c = (edge.data as Constants);
     TableVo endTable = edge.end!.data as TableVo;
-    PropertyVo endProp = endTable.properties.firstWhere((p) => p.name == c.referencedColumnName);
-    var ePainters = edge.g!.extraOnLoad['vertexPainters'][edge.end] as List<r.TextPainter>;
+    PropertyVo endProp =
+        endTable.properties.firstWhere((p) => p.name == c.referencedColumnName);
+    var ePainters =
+        edge.g!.extraOnLoad['vertexPainters'][edge.end] as List<r.TextPainter>;
     int endIdx = endTable.properties.indexOf(endProp);
-    var eOffset = ePainters
-            .sublist(0, endIdx + 1)
-            .fold(0.0, (pre, painter) => pre + painter.height + vPadding.top * 2) +
+    var eOffset = ePainters.sublist(0, endIdx + 1).fold(
+            0.0, (pre, painter) => pre + painter.height + vPadding.top * 2) +
         ePainters[endIdx + 1].height / 2 +
         vPadding.top;
     var end = edge.end!.position -
@@ -104,7 +109,8 @@ class ErGraphConstantsShape extends EdgeShape with DashPainter {
   }
 
   @override
-  render(Edge edge, ui.Canvas canvas, ui.Paint paint, List<ui.Paint> paintLayers) {
+  render(
+      Edge edge, ui.Canvas canvas, ui.Paint paint, List<ui.Paint> paintLayers) {
     var path = ui.Path();
     path.moveTo(0, paint.strokeWidth / 2);
     path.lineTo(edge.length, paint.strokeWidth / 2);
@@ -117,7 +123,8 @@ class ErGraphConstantsShape extends EdgeShape with DashPainter {
   }
 
   @override
-  bool? hoverTest(Vector2 position, Edge edge, r.Matrix4 transformMatrix, double hoverStrokeWidth) {
+  bool? hoverTest(Vector2 position, Edge edge, r.Matrix4 transformMatrix,
+      double hoverStrokeWidth) {
     var local = edge.g!.options!.globalToLocal(position);
     var isHover = hoverByPath(local, edge.path!, transformMatrix);
     if (isHover) print('-----------isHover-----------');

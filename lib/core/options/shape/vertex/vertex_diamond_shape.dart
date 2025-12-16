@@ -1,4 +1,3 @@
-
 import 'dart:ui' as ui;
 import 'dart:ui';
 import 'dart:math' as math;
@@ -18,10 +17,11 @@ class VertexDiamondShape extends VertexShape {
     final double s = r * math.sqrt2;
     final rect = Rect.fromCenter(center: ui.Offset.zero, width: s, height: s);
     final double cornerRadius = math.min(r * 0.35, r * 0.6);
-    
+
     final double cornerRadiusClamped = math.min(cornerRadius, s / 2);
-    final RRect rrect = RRect.fromRectAndRadius(rect, Radius.circular(cornerRadiusClamped));
-    
+    final RRect rrect =
+        RRect.fromRectAndRadius(rect, Radius.circular(cornerRadiusClamped));
+
     canvas.save();
     canvas.rotate(math.pi / 4);
     canvas.drawRRect(rrect, paint);
@@ -33,7 +33,6 @@ class VertexDiamondShape extends VertexShape {
     decorators?.forEach((decorator) {
       decorator.decorate(vertex, canvas, paint, paintLayers);
     });
-    
   }
 
   @override
@@ -50,10 +49,9 @@ class VertexDiamondShape extends VertexShape {
   Paint getPaint(Vertex vertex) {
     Paint paint = Paint();
     var colors = vertex.colors;
-    
+
     if (vertex.solid) {
       paint.color = vertex.colors.first;
-      
       return paint;
     }
 
