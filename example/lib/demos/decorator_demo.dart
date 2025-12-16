@@ -96,7 +96,7 @@ class DecoratorDemo extends StatelessWidget {
       convertor: MapConvertor(),
       options: Options()
         ..onVertexTapUp = ((vertex, event) {
-          vertex.g?.mergeGraph(genData(vertex.id));
+          vertex.g?.mergeGraph?.call(genData(vertex.id));
         })
         ..enableHit = false
         ..panelDelay = const Duration(milliseconds: 500)
@@ -181,7 +181,7 @@ class DecoratorDemo extends StatelessWidget {
     );
   }
 
-  genData(srcId) {
+  Map<String, Set<Map>> genData(dynamic srcId) {
     var vertexes = <Map>{};
     var edges = <Map>{};
     var r = Random();

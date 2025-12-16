@@ -10,7 +10,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 import '../../../util.dart';
 
 abstract class EdgeDecorator {
-  decorate(
+  void decorate(
     Edge edge,
     Canvas canvas,
     Paint paint,

@@ -13,7 +13,7 @@ class Util {
   /// Compute distance between two point.
   ///
   /// 计算两点间的距离。
-  static distance(Vector2 p1, Vector2 p2) {
+  static double distance(Vector2 p1, Vector2 p2) {
     return (p1 - p2).length;
   }
 

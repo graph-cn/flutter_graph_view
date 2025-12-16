@@ -71,9 +71,9 @@ class ErFlowLayout extends GraphAlgorithm {
 
   /// 建立结点的缓存，更快通过 id 获取到执行计划数据
   void fillCache(Graph graph) {
-    graph.vertexes.forEach((node) {
+    for (var node in graph.vertexes) {
       if (node.id != null) nodeCache.putIfAbsent(node.id!, () => node);
-    });
+    }
   }
 
   /// 建立节点排序，将遍历方式固化
@@ -92,13 +92,13 @@ class ErFlowLayout extends GraphAlgorithm {
     ]);
     for (int i = 0; i < list.length; i++) {
       dynamic id = list[i];
-      graph.vertexes.forEach((node) {
-        node.nextVertexes.forEach((d) {
+      for (var node in graph.vertexes) {
+        for (var d in node.nextVertexes) {
           if (id == d.id && !list.contains(node.id!)) {
             list.add(node.id!);
           }
-        });
-      });
+        }
+      }
     }
     nodeOrder.addAll(list);
   }
@@ -113,12 +113,12 @@ class ErFlowLayout extends GraphAlgorithm {
             k++) {
           var sameParent = <int>[];
           var parentId = sameLevelParent[j][k];
-          graph.vertexes.forEach((n) {
+          for (var n in graph.vertexes) {
             if (n.nextVertexes.contains(parentId) == true &&
                 !sameParent.contains(n.id)) {
               sameParent.add(n.id!);
             }
-          });
+          }
           if (sameParent.isNotEmpty && !nextLevel.deepContains(sameParent)) {
             nextLevel.add(sameParent);
           }
@@ -154,7 +154,7 @@ class ErFlowLayout extends GraphAlgorithm {
     double topOffset = 80;
     for (int i = 0; i < children.length; i++) {
       var child = children[i];
-      var last = null;
+      Vertex? last;
       double leftOffset = maxWidth / 2;
       double maxHeight = 0;
       leftOffset -=

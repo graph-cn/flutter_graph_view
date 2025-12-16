@@ -11,7 +11,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 默认的标题渲染器实现
 class EdgeTextRendererImpl extends EdgeTextRenderer {
-  EdgeTextRendererImpl({EdgeShape? shape}) : super(shape: shape);
+  EdgeTextRendererImpl({super.shape});
   @override
   void render(Edge edge, ui.Canvas canvas, ui.Paint paint) {
     canvas.save();

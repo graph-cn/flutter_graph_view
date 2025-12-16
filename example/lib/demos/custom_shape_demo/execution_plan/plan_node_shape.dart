@@ -60,7 +60,7 @@ class PlanNodeShape extends VertexShape {
         vertex.radiusZoom,
         List.generate(
           colors.length,
-          (index) => colors[index].withOpacity(.5),
+          (index) => colors[index].withValues(alpha: .5),
         ),
         List.generate(colors.length, (index) => (index + 1) / colors.length),
       );

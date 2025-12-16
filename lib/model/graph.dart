@@ -124,6 +124,7 @@ class Graph<ID> {
 
   double get zoom => options?.scale.value ?? 1;
   ValueNotifier get scale => options!.scale;
-  get refreshData => options?.refreshData;
-  get mergeGraph => options?.mergeGraph;
+  void Function(dynamic data)? get refreshData => options?.refreshData;
+  void Function(dynamic graphData, {bool manual})? get mergeGraph =>
+      options?.mergeGraph;
 }

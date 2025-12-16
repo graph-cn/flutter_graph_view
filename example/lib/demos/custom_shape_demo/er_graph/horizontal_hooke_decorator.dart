@@ -31,7 +31,7 @@ class HorizontalHookeDecorator extends ForceDecorator {
           v.position != Vector2.zero() &&
           b.position != Vector2.zero()) {
         // F = k * q1 * q2 / r^2
-        if (v.nextVertexes.contains(b) || b.neighborEdges.contains(v)) {
+        if (v.nextVertexes.contains(b) || b.neighbors.contains(v)) {
           var f = hooke(v, b, graph);
           setForceMap(v, b, f);
         }

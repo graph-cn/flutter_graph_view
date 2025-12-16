@@ -63,7 +63,7 @@ class VertexImgDecorator extends VertexDecorator {
     }
   }
 
-  startTask(String img) {
+  void startTask(String img) {
     if (tasks.contains(img)) {
       return;
     }

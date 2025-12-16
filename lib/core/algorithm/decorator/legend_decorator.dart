@@ -13,15 +13,15 @@ class LegendDecorator extends GraphAlgorithm {
 
   LegendDecorator({
     this.handleOverlay,
-    List<GraphAlgorithm>? decorators,
-  }) : super(decorators: decorators) {
+    super.decorators,
+  }) {
     handleOverlay = handleOverlay ?? kLegendOverlayBuilder();
   }
 
   final List<String> hiddenTags = [];
   final List<String> hiddenEdges = [];
 
-  changeTag(String tag) {
+  void changeTag(String tag) {
     if (hiddenTags.contains(tag)) {
       hiddenTags.remove(tag);
     } else {
@@ -29,7 +29,7 @@ class LegendDecorator extends GraphAlgorithm {
     }
   }
 
-  changeEdge(String edge) {
+  void changeEdge(String edge) {
     if (hiddenEdges.contains(edge)) {
       hiddenEdges.remove(edge);
     } else {

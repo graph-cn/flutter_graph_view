@@ -23,7 +23,6 @@ class Vertex<I> {
   bool solid = true; // the color
   double radiusScale = 1.0;
 
-
   /// All the tags of vertex.
   /// 节点所有标签
   List<String>? tags;
@@ -61,13 +60,7 @@ class Vertex<I> {
 
   /// The degree of this vertex.
   /// 当前节点总的【度】数量
-  int _degree = 0;
-
-  int get degree => _degree;
-
-  set degree(d) {
-    _degree = d;
-  }
+  int degree = 0;
 
   /// Whether this vertex being picked.
   bool picked = false;
@@ -89,7 +82,7 @@ class Vertex<I> {
   late dynamic data;
 
   double _radius = 5;
-  
+
   set radius(double radius) => _radius = radius;
 
   /// The radius of this vertex, that which assigment by StyleConfiguration.

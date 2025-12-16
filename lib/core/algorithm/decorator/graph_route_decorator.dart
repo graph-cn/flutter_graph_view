@@ -21,8 +21,8 @@ class GraphRouteDecorator extends GraphAlgorithm {
 
   GraphRouteDecorator({
     this.handleOverlay,
-    List<GraphAlgorithm>? decorators,
-  }) : super(decorators: decorators) {
+    super.decorators,
+  }) {
     handleOverlay = handleOverlay ?? kGraphRouteOverlayBuilder();
   }
 
@@ -48,7 +48,7 @@ class GraphRouteDecorator extends GraphAlgorithm {
     if (hideVertexPanel) hideVertexTapUpOverlay();
     setState();
     for (var element in backwordQueue.value) {
-      graph?.mergeGraph(element, manual: false);
+      graph?.mergeGraph?.call(element, manual: false);
     }
   }
 
@@ -56,11 +56,11 @@ class GraphRouteDecorator extends GraphAlgorithm {
     if (forwardQueue.value.isEmpty) return;
     var graphData = forwardQueue.value.removeLast();
     backwordQueue.value.add(graphData);
-    graph?.mergeGraph(graphData, manual: false);
+    graph?.mergeGraph?.call(graphData, manual: false);
     setState();
   }
 
-  setState() {
+  void setState() {
     if ([0, 1].contains(backwordQueue.value.length)) {
       // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
       backwordQueue.notifyListeners();

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 extension RectExt on Rect {
-  operator *(double scale) {
+  Rect operator *(double scale) {
     return Rect.fromLTRB(
       center.dx - (center.dx - left) * scale,
       center.dy - (center.dy - top) * scale,

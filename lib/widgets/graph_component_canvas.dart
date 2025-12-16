@@ -41,16 +41,16 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
   ValueNotifier<Offset> get offset => options.offset;
   ValueNotifier<int> timestamp = ValueNotifier(0);
 
-  update() {
+  void update() {
     timestamp.value = DateTime.now().millisecondsSinceEpoch;
   }
 
-  playOrPause() {
+  void playOrPause() {
     if (options.pause.value) _controller.stop();
     if (!options.pause.value) _controller.repeat();
   }
 
-  run() {
+  void run() {
     options.run();
     if (mounted) setState(() {});
   }

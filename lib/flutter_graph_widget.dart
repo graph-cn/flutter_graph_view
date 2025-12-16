@@ -16,13 +16,12 @@ class FlutterGraphWidget extends StatelessWidget {
   final Graph graph = Graph();
 
   FlutterGraphWidget({
-    Key? key,
+    super.key,
     required this.data,
     required this.convertor,
     required this.algorithm,
     Options? options,
-  })  : options = options ?? Options(),
-        super(key: key) {
+  }) : options = options ?? Options() {
     graph.options = options;
     this.options.graph = graph;
     graph.convertor = convertor;

@@ -94,7 +94,7 @@ class ErGraphTableShape extends VertexShape with DashPainter {
   @override
   void onPointerUp(PointerUpEvent e) {
     if (start != null && temp != null) {
-      graph!.mergeGraph([
+      graph!.mergeGraph?.call([
         [],
         [
           Constants(

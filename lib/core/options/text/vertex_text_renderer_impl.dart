@@ -11,7 +11,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 ///
 /// 默认的标题渲染器实现
 class VertexTextRendererImpl extends VertexTextRenderer {
-  VertexTextRendererImpl({VertexShape? shape}) : super(shape: shape);
+  VertexTextRendererImpl({super.shape});
   @override
   void render(Vertex<dynamic> vertex, ui.Canvas canvas, ui.Paint paint) {
     var zoom = vertex.zoom;

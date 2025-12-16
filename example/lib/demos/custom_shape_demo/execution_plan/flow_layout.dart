@@ -153,7 +153,7 @@ class FlowLayout extends GraphAlgorithm {
     double topOffset = 80;
     for (int i = 0; i < children.length; i++) {
       var child = children[i];
-      var last = null;
+      Vertex? last;
       double leftOffset = maxWidth / 2;
       double maxHeight = 0;
       leftOffset -=

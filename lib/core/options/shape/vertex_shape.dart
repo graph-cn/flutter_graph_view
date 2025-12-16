@@ -19,7 +19,8 @@ abstract class VertexShape {
   /// render the vertex shape to canvas by data.
   ///
   /// 通过节点数据将自定义的图形绘制到画布中。
-  render(Vertex vertex, Canvas canvas, Paint paint, List<Paint> paintLayers);
+  void render(
+      Vertex vertex, Canvas canvas, Paint paint, List<Paint> paintLayers);
 
   /// compute the width of the shape from data, used for overlap and mouse event judgment.
   ///

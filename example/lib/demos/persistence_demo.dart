@@ -20,7 +20,7 @@ class PersistenceDemo extends StatefulWidget {
 }
 
 class _PersistenceDemoState extends State<PersistenceDemo> {
-  saveVertex(Vertex v) {
+  void saveVertex(Vertex v) {
     vertexStorage[v.id as String] = v;
   }
 

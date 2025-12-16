@@ -34,8 +34,7 @@ abstract class GraphAlgorithm {
       if (decorators != null)
         ...decorators!
             .where((alg) => alg.horizontalOverlay != null)
-            .map((ob) => ob.horizontalOverlay!())
-            .toList(),
+            .map((ob) => ob.horizontalOverlay!()),
     ];
   }
 
@@ -60,8 +59,7 @@ abstract class GraphAlgorithm {
       if (decorators != null)
         ...decorators!
             .where((alg) => alg.verticalOverlay != null)
-            .map((ob) => ob.verticalOverlay!())
-            .toList(),
+            .map((ob) => ob.verticalOverlay!()),
     ];
   }
 
@@ -74,12 +72,11 @@ abstract class GraphAlgorithm {
       if (decorators != null)
         ...decorators!
             .where((alg) => alg.leftOverlay != null)
-            .map((ob) => ob.leftOverlay!())
-            .toList(),
+            .map((ob) => ob.leftOverlay!()),
     ];
   }
 
-  setGlobalData({
+  void setGlobalData({
     required GraphAlgorithm rootAlg,
     required Graph graph,
   }) {
@@ -124,7 +121,7 @@ abstract class GraphAlgorithm {
   }
 
   @mustCallSuper
-  void beforeLoad(data) {
+  void beforeLoad(dynamic data) {
     for (GraphAlgorithm decorator in decorators ?? []) {
       decorator.beforeLoad(data);
     }

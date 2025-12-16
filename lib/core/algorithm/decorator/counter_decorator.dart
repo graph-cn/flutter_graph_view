@@ -16,8 +16,8 @@ class CounterDecorator extends GraphAlgorithm {
 
   CounterDecorator({
     this.handleOverlay,
-    List<GraphAlgorithm>? decorators,
-  }) : super(decorators: decorators) {
+    super.decorators,
+  }) {
     handleOverlay = handleOverlay ?? kCounterOverlayBuilder();
     update() => val.value = DateTime.now().millisecondsSinceEpoch;
     v.addListener(update);

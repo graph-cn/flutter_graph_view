@@ -15,8 +15,8 @@ class PauseDecorator extends GraphAlgorithm {
   PauseDecorator({
     this.pause = false,
     this.handleOverlay,
-    List<GraphAlgorithm>? decorators,
-  }) : super(decorators: decorators) {
+    super.decorators,
+  }) {
     handleOverlay = handleOverlay ?? kPauseOverlayBuilder();
   }
 

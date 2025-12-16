@@ -140,7 +140,7 @@ class _ConnectableWidgetState extends State<ConnectableWidget> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -305,11 +305,11 @@ class _AnchorPointState extends State<AnchorPoint>
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: Colors.green.withOpacity(0.8),
+            color: Colors.green.withValues(alpha: 0.8),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 8,
                 spreadRadius: 2,
               ),
@@ -362,7 +362,7 @@ class _AnchorPointState extends State<AnchorPoint>
                   boxShadow: _isHovering
                       ? [
                           BoxShadow(
-                            color: Colors.blue.shade800.withOpacity(0.8),
+                            color: Colors.blue.shade800.withValues(alpha: 0.8),
                             blurRadius: 8,
                             spreadRadius: 2,
                           )

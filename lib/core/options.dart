@@ -201,7 +201,7 @@ class Options {
 
   late Graph graph;
 
-  run() {
+  void run() {
     if (graph.vertexes.isEmpty) return;
     var g = currantBatchRange();
     var vertexs = graph.vertexes.sublist(g[0], g[1]);
@@ -395,7 +395,7 @@ class Options {
   /// @en: Merge the graph data.
   ///
   /// @zh: 合并图数据
-  void mergeGraph(graphData, {bool manual = true}) {
+  void mergeGraph(dynamic graphData, {bool manual = true}) {
     if (manual) graph.algorithm?.beforeMerge(graphData);
     graph.convertor?.convertGraph(graphData, graph: graph);
   }
@@ -403,7 +403,7 @@ class Options {
   /// @en: Refresh graph data.
   ///
   /// @zh: 刷新图数据
-  void refreshData(data) {
+  void refreshData(dynamic data) {
     graph.clear();
     graph.data = data;
     graph.convertor?.convertGraph(data, graph: graph);
@@ -420,7 +420,7 @@ class Options {
   /// @en: Set default colors for different labels.
   ///
   /// @zh: 为不同标签设置默认颜色
-  setDefaultVertexColor() {
+  void setDefaultVertexColor() {
     var tagColorByIndex = graphStyle.tagColorByIndex;
     var needCount = graph.allTags.length - tagColorByIndex.length;
     for (var i = tagColorByIndex.length; i < needCount; i++) {

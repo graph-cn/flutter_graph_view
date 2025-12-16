@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 extension WidgetExt on Widget {
-  _expanded({int flex = 1}) {
+  Expanded _expanded({int flex = 1}) {
     return Expanded(
       flex: flex,
       child: this,
@@ -38,7 +38,7 @@ extension WidgetExt on Widget {
   }
 }
 
-kCoulombReserseOverlayBuilder({
+Widget Function(CoulombReverseDecorator crd) kCoulombReserseOverlayBuilder({
   String? kTitle = '节点互斥系数',
   String? sameTagsFactorTitle = '同类聚散',
   String? sameNeighborsFactorTitle = '同邻居聚散',
@@ -108,7 +108,7 @@ kCoulombReserseOverlayBuilder({
   };
 }
 
-kHookeOverlayBuilder({
+Widget Function(HookeDecorator hd) kHookeOverlayBuilder({
   String? lengthTitle = '上下游距离',
   String? kTitle = '上下游变化系数',
   String? sameTagsFactorTitle = '上下游同类聚散',
@@ -178,7 +178,7 @@ kHookeOverlayBuilder({
   };
 }
 
-kHookeBorderOverlayBuilder({
+Widget Function(HookeBorderDecorator hbd) kHookeBorderOverlayBuilder({
   String? kTitle = '边界约束强弱',
   String? borderFactorRangeTitle = '边界大小',
   String? alwaysInScreenTitle = '视窗居中',
@@ -246,7 +246,7 @@ kHookeBorderOverlayBuilder({
   };
 }
 
-kPauseOverlayBuilder() {
+Widget Function(PauseDecorator pd) kPauseOverlayBuilder() {
   return (PauseDecorator pd) {
     return StatefulBuilder(builder: (context, setState) {
       return IconButton(
@@ -260,7 +260,7 @@ kPauseOverlayBuilder() {
   };
 }
 
-kGraphRouteOverlayBuilder() {
+Widget Function(GraphRouteDecorator grd) kGraphRouteOverlayBuilder() {
   return (GraphRouteDecorator grd) {
     return Row(
       mainAxisSize: MainAxisSize.min,
