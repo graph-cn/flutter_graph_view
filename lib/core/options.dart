@@ -29,9 +29,17 @@ typedef BackgroundBuilder = Widget Function(BuildContext context);
 /// @en: The getter of the vertex text style.
 ///
 /// @zh: 顶点文字样式获取器
-typedef VertexTextStyleGetter = TextStyle? Function(
+typedef VertexTextStyleGetter = TextStyle Function(
   Vertex vertex,
   VertexShape? shape,
+);
+
+/// @en: The getter of the edge text style.
+///
+/// @zh: 边文字样式获取器
+typedef EdgeTextStyleGetter = TextStyle Function(
+  Edge vertex,
+  EdgeShape? shape,
 );
 
 typedef GraphComponentBuilder = Widget Function({
@@ -122,6 +130,11 @@ class Options {
   ///
   /// @zh: 顶点文字获取器
   String Function(Vertex) textGetter = (Vertex vertex) => '${vertex.id}';
+
+  /// @en: the text getter of vertex.
+  ///
+  /// @zh: 顶点文字获取器
+  String Function(Edge) edgeTextGetter = (Edge edge) => '${edge.ranking}';
 
   /// @en: the url getter of vertex image.
   ///

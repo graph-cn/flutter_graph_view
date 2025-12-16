@@ -18,7 +18,7 @@ class ForceDirected extends GraphAlgorithm {
   void compute(Vertex v, Graph graph) {
     super.compute(v, graph);
     if (v.position == Vector2(0, 0)) {
-      var ct = Util.toOffsetByVector2(v.prevVertex?.position) ?? center / 2;
+      var ct = v.prevVertex?.position.toOffset() ?? center / 2;
       var distanceFromCenter = 1 / v.deep * offset;
       var noAllowCircleRadius = .3 * distanceFromCenter;
       v.position = randomInCircle(ct, distanceFromCenter, noAllowCircleRadius);

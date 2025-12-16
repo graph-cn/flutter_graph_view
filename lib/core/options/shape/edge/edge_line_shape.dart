@@ -5,6 +5,7 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:flutter/rendering.dart' as r;
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/core/util.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -14,18 +15,41 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 默认使用 直线做边。
 class EdgeLineShape extends EdgeShape {
   final double scaleLoop;
-  EdgeLineShape({this.scaleLoop = 1.0, super.decorators});
+  EdgeLineShape({
+    this.scaleLoop = 1.0,
+    super.decorators,
+    EdgeTextRenderer? textRenderer,
+  }) {
+    super.textRenderer = textRenderer;
+  }
 
   @override
-  render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
+  void render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers) {
     if (edge.isLoop) {
       vertexSame(edge, canvas, paint);
     } else {
       vertexDifferent(edge, canvas, paint);
     }
+    // 渲染标题
+    if (edge.g?.options?.showText ?? true && edge.zoom > 0.3) {
+      textRenderer?.render(edge, canvas, paint);
+    }
     decorators?.forEach((decorator) {
       decorator.decorate(edge, canvas, paint);
     });
+  }
+
+  @override
+  r.Matrix4 edgeCenter(Edge edge) {
+    if (edge.isLoop) {
+      var ratio = edge.edgeIdxRatio;
+      var radius = (ratio * edge.start.radius * 5 +
+              edge.start.radiusZoom -
+              height(edge) / 2) *
+          scaleLoop;
+      return Vector2(radius * 2, 0).toMatrix()..rotateZ(pi / 2);
+    }
+    return super.edgeCenter(edge);
   }
 
   void vertexDifferent(Edge edge, ui.Canvas canvas, ui.Paint paint) {
@@ -36,7 +60,8 @@ class EdgeLineShape extends EdgeShape {
       Vector2(endPoint.dx, 0),
     );
 
-    var edgesBetweenTwoVertex = edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+    var edgesBetweenTwoVertex =
+        edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
 
     var edgeCount = edgesBetweenTwoVertex.length;
 
@@ -73,10 +98,14 @@ class EdgeLineShape extends EdgeShape {
   @override
   Path loopPath(Edge edge, [double minusRadius = 0]) {
     var ratio = edge.edgeIdxRatio;
-    var radius = (ratio * edge.start.radius * 5 + edge.start.radiusZoom) * scaleLoop;
+    var radius = (ratio * edge.start.radius * 5 +
+            edge.start.radiusZoom -
+            height(edge) / 2) *
+        scaleLoop;
     Path path = Path();
     path.addArc(
-      Rect.fromCircle(center: Offset(radius, 0), radius: radius - minusRadius / edge.zoom),
+      Rect.fromCircle(
+          center: Offset(radius, 0), radius: radius - minusRadius / edge.zoom),
       0,
       -2 * pi,
     );
@@ -96,7 +125,7 @@ class EdgeLineShape extends EdgeShape {
 
     if (edge.solid) {
       paint.color = edge.start.colors.lastOrNull ?? Colors.white;
-      
+
       return paint;
     }
 
@@ -107,8 +136,10 @@ class EdgeLineShape extends EdgeShape {
         List.generate(
           2,
           (index) => [
-            (edge.start.colors.lastOrNull ?? Colors.white).withValues(alpha: hoverOpacity),
-            (edge.end?.colors.lastOrNull ?? Colors.white).withValues(alpha: hoverOpacity)
+            (edge.start.colors.lastOrNull ?? Colors.white)
+                .withValues(alpha: hoverOpacity),
+            (edge.end?.colors.lastOrNull ?? Colors.white)
+                .withValues(alpha: hoverOpacity)
           ][index],
         ),
       );

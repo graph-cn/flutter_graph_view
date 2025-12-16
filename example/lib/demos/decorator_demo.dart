@@ -57,7 +57,7 @@ class DecoratorDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     var vertexes = <Map>{};
     var r = Random();
-    var len = 50;
+    var len = 500;
     for (var i = 0; i < len; i++) {
       var t = r.nextInt(9);
       vertexes.add(
@@ -118,7 +118,12 @@ class DecoratorDemo extends StatelessWidget {
         ..imgUrlGetter = imgUrlGetter
         ..edgePanelBuilder = edgePanelBuilder
         ..vertexPanelBuilder = vertexPanelBuilder
+        // ..painter = GraphGlPainter.new
+        ..edgeTextGetter = (e) {
+          return '${e.ranking}';
+        }
         ..edgeShape = EdgeLineShape(
+          textRenderer: EdgeTextRendererImpl(),
           decorators: [
             SolidArrowEdgeDecorator(),
           ],

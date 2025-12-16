@@ -9,7 +9,7 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// Used to render the vertex text.
 ///
 /// 用于渲染节点的标题
-abstract class VertexTextRenderer {
+abstract class VertexTextRenderer extends TextRenderer {
   VertexShape? shape;
 
   VertexTextRenderer({this.shape});

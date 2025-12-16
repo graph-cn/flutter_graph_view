@@ -27,7 +27,7 @@ class FlutterGraphWidget extends StatelessWidget {
     this.options.graph = graph;
     graph.convertor = convertor;
     graph.algorithm = algorithm;
-    algorithm.setGlobalData(rootAlg: algorithm, graph: this.graph);
+    algorithm.setGlobalData(rootAlg: algorithm, graph: graph);
   }
 
   @override

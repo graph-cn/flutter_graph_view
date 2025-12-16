@@ -2,6 +2,8 @@
 //
 // This source code is licensed under Apache 2.0 License.
 
+import 'dart:typed_data';
+import 'package:flutter/rendering.dart' as r;
 import 'dart:ui';
 
 import 'package:flutter_graph_view/core/util.dart';
@@ -126,5 +128,15 @@ class Edge {
 
   double get length {
     return g?.options?.edgeShape.len(this) ?? 0;
+  }
+
+  Float64List edgeCenter() {
+    late r.Matrix4 matrix4;
+    if (g?.options?.edgeShape == null) {
+      matrix4 = r.Matrix4.zero();
+    } else {
+      matrix4 = g!.options!.edgeShape.edgeCenter(this);
+    }
+    return Float64List.fromList(matrix4.storage.toList());
   }
 }

@@ -3,10 +3,8 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
 import '../../../util.dart';
@@ -67,7 +65,8 @@ class SolidArrowEdgeDecorator extends DefaultEdgeDecorator {
 
       if (tangent != null) {
         // 使用路径切线作为方向向量
-        directionVector = Vector2(tangent.vector.dx, tangent.vector.dy).normalized();
+        directionVector =
+            Vector2(tangent.vector.dx, tangent.vector.dy).normalized();
       } else {
         // 如果无法获取切线，回退到直线方式
         var start = srcPosition(edge);
@@ -83,7 +82,8 @@ class SolidArrowEdgeDecorator extends DefaultEdgeDecorator {
     var tipPoint = end - directionVector * edge.end!.radiusZoom;
 
     // 计算线宽调整系数
-    double strokeWidthFactor = (edge.isHovered ? 2.0 : 1.0) / edge.zoom; // 悬停时线宽增加的比例
+    double strokeWidthFactor =
+        (edge.isHovered ? 2.0 : 1.0) / edge.zoom; // 悬停时线宽增加的比例
 
     // 基于当前线宽计算箭头尺寸
     double currentArrowBaseDistance = arrowBaseDistance * strokeWidthFactor;
@@ -98,7 +98,8 @@ class SolidArrowEdgeDecorator extends DefaultEdgeDecorator {
 
     // 计算垂直于方向向量的向量，用于箭头两侧
     // 不再需要额外的悬停修正系数，因为已经在currentArrowWidth中处理
-    var perp = Vector2(-directionVector.y, directionVector.x) * currentArrowWidth;
+    var perp =
+        Vector2(-directionVector.y, directionVector.x) * currentArrowWidth;
 
     var yOffset = currentArrowWidth * edge.zoom / 2;
 
@@ -141,7 +142,8 @@ class LabelEdgeDecorator extends DefaultEdgeDecorator {
       textDirection: TextDirection.ltr,
     ));
     paragraphBuilder.addText(edge.edgeName);
-    var paragraphConstraints = const ParagraphConstraints(width: double.infinity);
+    var paragraphConstraints =
+        const ParagraphConstraints(width: double.infinity);
     final paragraph = paragraphBuilder.build();
     paragraph.layout(paragraphConstraints);
 
@@ -156,7 +158,8 @@ class LabelEdgeDecorator extends DefaultEdgeDecorator {
     } else {
       var endPoint = Offset(len(edge), paint.strokeWidth);
       var distance = Util.distance(Vector2(0, 0), Vector2(endPoint.dx, 0));
-      var edgesBetweenTwoVertex = edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+      var edgesBetweenTwoVertex =
+          edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
       var edgeCount = edgesBetweenTwoVertex.length;
 
       /// 法线点
@@ -236,7 +239,8 @@ class DefaultEdgeDecorator extends EdgeDecorator {
     return edge.end?.position ?? Vector2.zero();
   }
 
-  double len(Edge edge) => edge.end == null ? 10 : startPosition(edge).distanceTo(endPosition(edge));
+  double len(Edge edge) =>
+      edge.end == null ? 10 : startPosition(edge).distanceTo(endPosition(edge));
 
   @override
   void decorate(
@@ -249,22 +253,18 @@ class DefaultEdgeDecorator extends EdgeDecorator {
       Vector2(0, 0),
       Vector2(endPoint.dx, 0),
     );
-    var edgesBetweenTwoVertex = edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
+    var edgesBetweenTwoVertex =
+        edge.g?.edgesFromTwoVertex(edge.start, edge.end) ?? [];
 
     var edgeCount = edgesBetweenTwoVertex.length;
 
-    /// 法线点
-    var normalPoint = Vector2(
-      distance / 2,
-      edge.computeIndex * distance / edgeCount * 2 + edge.size.y / 2,
-    );
-
-    var f = 0.35 * (edge.computeIndex.abs() + 1) / (edge.computeIndex.abs() + 2);
+    var f =
+        0.35 * (edge.computeIndex.abs() + 1) / (edge.computeIndex.abs() + 2);
     var n1 = Vector2(
       distance / 2,
       (edge.computeIndex + f) * distance / edgeCount * 2 + edge.size.y / 2,
     );
-    paint.color = const Color(0xFF00FF00);
+
     drawArrow(edge, canvas, paint, n1);
 
     var n2 = Vector2(
@@ -272,7 +272,6 @@ class DefaultEdgeDecorator extends EdgeDecorator {
       (edge.computeIndex - f) * distance / edgeCount * 2 + edge.size.y / 2,
     );
 
-    paint.color = const Color(0xFFFF00FF);
     drawArrow(edge, canvas, paint, n2);
   }
 

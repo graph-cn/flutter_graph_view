@@ -14,12 +14,14 @@ import 'package:vector_math/vector_math_64.dart' hide Vector2;
 /// 用于自定义边的UI
 abstract class EdgeShape {
   List<EdgeDecorator>? decorators;
+
+  EdgeTextRenderer? textRenderer;
   EdgeShape({this.decorators});
 
   /// render the edge shape to canvas by data.
   ///
   /// 通过边数据将自定义的图形绘制到画布中。
-  render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers);
+  void render(Edge edge, Canvas canvas, Paint paint, List<Paint> paintLayers);
 
   /// compute the width of the shape from data, used for overlap and mouse event judgment.
   ///
@@ -148,5 +150,47 @@ abstract class EdgeShape {
     );
 
     return path;
+  }
+
+  r.Matrix4 edgeCenter(Edge edge) {
+    if (edge.g?.options?.edgeShape == null) return r.Matrix4.zero();
+    Path? path = edge.path;
+    if (path == null) return r.Matrix4.zero();
+
+    var tolerance = 0.1;
+    var targetX = edge.length / 2;
+
+    final metrics = path.computeMetrics().toList();
+    for (final metric in metrics) {
+      double start = 0;
+      double end = metric.length;
+
+      while (end - start > tolerance) {
+        double mid = (start + end) / 2;
+        Tangent? tangent = metric.getTangentForOffset(mid);
+
+        if (tangent == null) break;
+
+        Offset point = tangent.position;
+        if (point.dx < targetX) {
+          start = mid;
+        } else {
+          end = mid;
+        }
+      }
+      // 检查最终结果
+      Tangent? finalTangent = metric.getTangentForOffset((start + end) / 2);
+      if (finalTangent != null &&
+          (finalTangent.position.dx - targetX).abs() <= tolerance) {
+        var matrix =
+            Vector2(edge.length / 2, finalTangent.position.dy).toMatrix();
+        var a = angle(edge);
+
+        var rotateZ = (a > (pi / 2) || a < (-pi / 2)) ? pi : 0.0;
+        matrix.rotateZ(rotateZ);
+        return matrix;
+      }
+    }
+    return r.Matrix4.zero();
   }
 }
