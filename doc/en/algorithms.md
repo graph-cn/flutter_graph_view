@@ -201,19 +201,19 @@ final algorithm = ForceDirected(
 
 for more see the decorators section
 
-## Dicas de Performance
+## Performance Tips
 
-### Para Grafos Grandes
+### For Large Graphs
 
-1. Use `CircleLayout` para posição inicial rápida
-2. Combine com `PauseDecorator` para pausar iterações
-3. Limite iterações com `time_counter_decorator`
-4. Desabilite física desnecessária
+1. Use `CircleLayout` for a quick initial positioning
+2. Combine with `PauseDecorator` to pause iterations 
+3. Limit iterations with `time_counter_decorator`
+4. Disable unnecessary physics
 
-## Próximas Leituras
+## Further Reading
 
-- [Decoradores](decorators.md) - Estender comportamentos
-- [Opções](options.md) - Configurar comportamentos do algoritmo
+- [Decoradores](decorators.md) - Extend behaviors
+- [Opções](options.md) - Configure algorithm behaviors
 
 ---
 
