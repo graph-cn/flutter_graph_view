@@ -116,8 +116,7 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
             onScaleUpdate: options.onScaleUpdate,
             onScaleEnd: (d) {
               options.hoverable = true;
-              options.pointer.x = (2 << 16) + 0.0;
-              options.pointer.y = (2 << 16) + 0.0;
+              options.graph.hoverVertex = null;
             },
             onTapDown: options.onTapDown,
             behavior: HitTestBehavior.translucent,

@@ -3,7 +3,7 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'package:flutter/gestures.dart'
-    show PointerHoverEvent, PointerScrollEvent, PointerSignalEvent;
+    show PointerHoverEvent, PointerScrollEvent, PointerSignalEvent, PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -198,12 +198,14 @@ class Options {
     }
     batchIndex++;
   }
+  PointerDeviceKind? _firstPointerDeviceKind;
 
-  /// onPointerHover
   OnPointerHover? _onPointerHover;
   OnPointerHover get onPointerHover =>
       _onPointerHover ??
       (PointerHoverEvent details) {
+        _firstPointerDeviceKind ??= details.kind;
+
         pointer.x = details.localPosition.dx;
         pointer.y = details.localPosition.dy;
       };
@@ -283,7 +285,8 @@ class Options {
 
       if (newScale >= scaleRange.x && newScale <= scaleRange.y) {
         scale.value = newScale;
-        keepCenter(oldScale, newScale, size.value, details.localFocalPoint, offset);
+        // if have a mause pointer, keep center by mouse position
+        keepCenter(oldScale, newScale, size.value, _firstPointerDeviceKind == null ? details.localFocalPoint : pointer.toOffset(), offset);
 
       }
     } 
