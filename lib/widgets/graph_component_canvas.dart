@@ -117,6 +117,11 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
             onScaleEnd: (d) {
               options.hoverable = true;
               options.graph.hoverVertex = null;
+
+              // reset pointer in non-mouse mode for it dosen't hover vertex again
+              if (options.firstPointerDeviceKind == null) {
+                options.pointer.xy = Vector2.all((2 << 16) + 0.0);
+              }
             },
             onTapDown: options.onTapDown,
             behavior: HitTestBehavior.translucent,

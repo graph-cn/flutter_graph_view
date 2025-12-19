@@ -3,7 +3,11 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'package:flutter/gestures.dart'
-    show PointerHoverEvent, PointerScrollEvent, PointerSignalEvent, PointerDeviceKind;
+    show
+        PointerHoverEvent,
+        PointerScrollEvent,
+        PointerSignalEvent,
+        PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -198,7 +202,9 @@ class Options {
     }
     batchIndex++;
   }
+
   PointerDeviceKind? _firstPointerDeviceKind;
+  get firstPointerDeviceKind => _firstPointerDeviceKind;
 
   OnPointerHover? _onPointerHover;
   OnPointerHover get onPointerHover =>
@@ -251,12 +257,12 @@ class Options {
 
   OnTapDown? _onTapDown;
   OnTapDown get onTapDown =>
-    _onTapDown ??
-    (details) {
-      pointer.x = details.localPosition.dx;
-      pointer.y = details.localPosition.dy;
-    };
-  
+      _onTapDown ??
+      (details) {
+        pointer.x = details.localPosition.dx;
+        pointer.y = details.localPosition.dy;
+      };
+
   set onTapDown(OnTapDown? v) => _onTapDown = v;
 
   /// onScaleStart
@@ -274,44 +280,50 @@ class Options {
   /// onScaleUpdate
   OnScaleUpdate? _onScaleUpdate;
 
-  OnScaleUpdate get onScaleUpdate => _onScaleUpdate ??
-  (ScaleUpdateDetails details) {
-    
-    if (details.pointerCount > 1) {
-      
-      var oldScale = scale.value;
-      var k = 1 / (1 + oldScale * 0.2);
-      var newScale = scaleVal * (1 + (details.scale - 1) * k);
+  OnScaleUpdate get onScaleUpdate =>
+      _onScaleUpdate ??
+      (ScaleUpdateDetails details) {
+        if (details.pointerCount > 1) {
+          final double oldScale = scale.value;
+          final double k = 1 / (1 + oldScale * 0.2);
+          final double newScale = scaleVal * (1 + (details.scale - 1) * k);
 
-      if (newScale >= scaleRange.x && newScale <= scaleRange.y) {
-        scale.value = newScale;
-        // if have a mause pointer, keep center by mouse position
-        keepCenter(oldScale, newScale, size.value, _firstPointerDeviceKind == null ? details.localFocalPoint : pointer.toOffset(), offset);
+          void g(local) =>
+              keepCenter(oldScale, newScale, size.value, local, offset);
 
-      }
-    } 
+          if (newScale >= scaleRange.x && newScale <= scaleRange.y) {
+            scale.value = newScale;
 
-    var delta = details.focalPointDelta;
+            // if have a mause pointer, only zoom
+            if (_firstPointerDeviceKind != null) {
+              g(pointer.toOffset());
+              return;
+            }
 
-    pointer.x += delta.dx;
-    pointer.y += delta.dy;
-    
-    var ifBreak = vertexShape.onDrag(delta.toVector2());
-    
-    if (ifBreak) return;
+            g(details.localFocalPoint);
+          }
+        }
 
-    if (graph.hoverVertex == null) {
-      offset.value += delta;
+        var delta = details.focalPointDelta;
 
-      return;
-    }
-    
-    var dragDetail = delta.toVector2() / scale.value;
-    panDelta.add(dragDetail);
-    graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
-    
-  };
-  
+        pointer.x += delta.dx;
+        pointer.y += delta.dy;
+
+        var ifBreak = vertexShape.onDrag(delta.toVector2());
+
+        if (ifBreak) return;
+
+        if (graph.hoverVertex == null) {
+          offset.value += delta;
+
+          return;
+        }
+
+        var dragDetail = delta.toVector2() / scale.value;
+        panDelta.add(dragDetail);
+        graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
+      };
+
   set onScaleUpdate(OnScaleUpdate? v) => _onScaleUpdate = v;
 
   // ---------------------------------------------------------------------------
