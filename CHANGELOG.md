@@ -1,3 +1,15 @@
+## 2.1.1
+
+- fix: issues with the gesture handling (mobile end).
+    > 修复移动端手势处理的问题
+- feat: add onScaleEnd, vertexSolidSetter and edgeSolidSetter to `options`.
+    > 为`opitons`新增 onScaleEnd、vertexSolidSetter 跟 edgeSolidSetter。
+
+### Dev habit change
+
+- (Compared to 2.1.0) Edge.solid and Vertex.solid default to true, now changed to false, to maintain the habits before 2.1.0.
+    > （与 2.1.0 相比）Edge.solid 跟 Vertex.solid 默认为 true，为了保持与 2.1.0 之前版本的习惯，现在修改成默认false。
+
 ## 2.1.0
 
 - **doc: the first complete documentation for using the markdown format. Contributed by [@NoachDev](https://github.com/NoachDev) [#31](https://github.com/graph-cn/flutter_graph_view/pull/31)**
