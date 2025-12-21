@@ -51,6 +51,7 @@ typedef GraphComponentBuilder = Widget Function({
 typedef OnScaleStart = void Function(ScaleStartDetails);
 typedef OnScaleUpdate = void Function(ScaleUpdateDetails);
 typedef OnTapDown = void Function(TapDownDetails);
+typedef OnTapUp = void Function(TapUpDetails);
 typedef OnPointerSignal = void Function(PointerSignalEvent);
 typedef OnPointerUp = void Function(PointerUpEvent);
 typedef OnPointerDown = void Function(PointerDownEvent);
@@ -264,6 +265,17 @@ class Options {
       };
 
   set onTapDown(OnTapDown? v) => _onTapDown = v;
+
+  OnTapUp? _onTapUp;
+  OnTapUp get onTapUp =>
+      _onTapUp ??
+      (details) {
+        if (graph.hoverVertex != null &&
+            panDelta.length < graph.hoverVertex!.radius &&
+            _firstPointerDeviceKind == null) {
+          onVertexTapUp?.call(graph.hoverVertex!, null);
+        }
+      };
 
   /// onScaleStart
   OnScaleStart? _onScaleStart;

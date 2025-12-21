@@ -124,6 +124,7 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
               }
             },
             onTapDown: options.onTapDown,
+            onTapUp: options.onTapUp,
             behavior: HitTestBehavior.translucent,
             child: Listener(
               behavior: HitTestBehavior.translucent,
