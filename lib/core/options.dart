@@ -3,7 +3,11 @@
 // This source code is licensed under Apache 2.0 License.
 
 import 'package:flutter/gestures.dart'
-    show PointerHoverEvent, PointerScrollEvent, PointerSignalEvent;
+    show
+        PointerHoverEvent,
+        PointerScrollEvent,
+        PointerSignalEvent,
+        PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
@@ -54,6 +58,8 @@ typedef GraphComponentBuilder = Widget Function({
 
 typedef OnScaleStart = void Function(ScaleStartDetails);
 typedef OnScaleUpdate = void Function(ScaleUpdateDetails);
+typedef OnTapDown = void Function(TapDownDetails);
+typedef OnTapUp = void Function(TapUpDetails);
 typedef OnPointerSignal = void Function(PointerSignalEvent);
 typedef OnPointerUp = void Function(PointerUpEvent);
 typedef OnPointerDown = void Function(PointerDownEvent);
@@ -211,11 +217,15 @@ class Options {
     batchIndex++;
   }
 
-  /// onPointerHover
+  PointerDeviceKind? _firstPointerDeviceKind;
+  get firstPointerDeviceKind => _firstPointerDeviceKind;
+
   OnPointerHover? _onPointerHover;
   OnPointerHover get onPointerHover =>
       _onPointerHover ??
       (PointerHoverEvent details) {
+        _firstPointerDeviceKind ??= details.kind;
+
         pointer.x = details.localPosition.dx;
         pointer.y = details.localPosition.dy;
       };
@@ -259,6 +269,27 @@ class Options {
       };
   set onPointerSignal(OnPointerSignal? v) => _onPointerSignal = v;
 
+  OnTapDown? _onTapDown;
+  OnTapDown get onTapDown =>
+      _onTapDown ??
+      (details) {
+        pointer.x = details.localPosition.dx;
+        pointer.y = details.localPosition.dy;
+      };
+
+  set onTapDown(OnTapDown? v) => _onTapDown = v;
+
+  OnTapUp? _onTapUp;
+  OnTapUp get onTapUp =>
+      _onTapUp ??
+      (details) {
+        if (graph.hoverVertex != null &&
+            panDelta.length < graph.hoverVertex!.radius &&
+            _firstPointerDeviceKind == null) {
+          onVertexTapUp?.call(graph.hoverVertex!, null);
+        }
+      };
+
   /// onScaleStart
   OnScaleStart? _onScaleStart;
   OnScaleStart get onScaleStart =>
@@ -273,29 +304,51 @@ class Options {
 
   /// onScaleUpdate
   OnScaleUpdate? _onScaleUpdate;
+
   OnScaleUpdate get onScaleUpdate =>
       _onScaleUpdate ??
       (ScaleUpdateDetails details) {
-        if (details.pointerCount == 2 && details.scale != 1.0) {
-          var oz = scale.value;
-          scale.value = scaleVal * details.scale;
-          var nz = scale.value;
-          keepCenter(oz, nz, size.value, pointer.toOffset(), offset);
-        } else {
-          var delta = details.focalPointDelta;
-          pointer.x += delta.dx;
-          pointer.y += delta.dy;
-          var ifBreak = vertexShape.onDrag(delta.toVector2());
-          if (ifBreak) return;
-          if (graph.hoverVertex == null) {
-            offset.value += delta;
-          } else {
-            var dragDetail = delta.toVector2() / scale.value;
-            panDelta.add(dragDetail);
-            graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
+        if (details.pointerCount > 1) {
+          final double oldScale = scale.value;
+          final double k = 1 / (1 + oldScale * 0.2);
+          final double newScale = scaleVal * (1 + (details.scale - 1) * k);
+
+          void g(local) =>
+              keepCenter(oldScale, newScale, size.value, local, offset);
+
+          if (newScale >= scaleRange.x && newScale <= scaleRange.y) {
+            scale.value = newScale;
+
+            // if have a mause pointer, only zoom
+            if (_firstPointerDeviceKind != null) {
+              g(pointer.toOffset());
+              return;
+            }
+
+            g(details.localFocalPoint);
           }
         }
+
+        var delta = details.focalPointDelta;
+
+        pointer.x += delta.dx;
+        pointer.y += delta.dy;
+
+        var ifBreak = vertexShape.onDrag(delta.toVector2());
+
+        if (ifBreak) return;
+
+        if (graph.hoverVertex == null) {
+          offset.value += delta;
+
+          return;
+        }
+
+        var dragDetail = delta.toVector2() / scale.value;
+        panDelta.add(dragDetail);
+        graph.algorithm?.onDrag(graph.hoverVertex, delta.toVector2());
       };
+
   set onScaleUpdate(OnScaleUpdate? v) => _onScaleUpdate = v;
 
   // ---------------------------------------------------------------------------
