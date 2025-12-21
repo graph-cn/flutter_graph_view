@@ -20,7 +20,7 @@ class Vertex<I> {
   /// 节点首个标签
   late String tag;
 
-  bool solid = true; // the color
+  bool solid = false; // the color
   double radiusScale = 1.0;
 
   /// All the tags of vertex.

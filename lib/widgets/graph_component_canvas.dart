@@ -114,15 +114,7 @@ class _GraphComponentCanvasState extends State<GraphComponentCanvas>
             // 为了不让在拖动画面的过程中，触碰到点，变成拖动节点
             onScaleStart: options.onScaleStart,
             onScaleUpdate: options.onScaleUpdate,
-            onScaleEnd: (d) {
-              options.hoverable = true;
-              options.graph.hoverVertex = null;
-
-              // reset pointer in non-mouse mode for it dosen't hover vertex again
-              if (options.firstPointerDeviceKind == null) {
-                options.pointer.xy = Vector2.all((2 << 16) + 0.0);
-              }
-            },
+            onScaleEnd: options.onScaleEnd,
             onTapDown: options.onTapDown,
             onTapUp: options.onTapUp,
             behavior: HitTestBehavior.translucent,
