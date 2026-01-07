@@ -5,6 +5,7 @@
 import 'dart:async' show runZonedGuarded;
 
 import 'package:example/demos/custom_shape_demo/er_graph/er_graph_demo.dart';
+import 'package:example/demos/force_directed_parallel_demo.dart';
 import 'package:example/demos/object_graph_demo.dart' show ObjectGraphDemo;
 import 'package:flutter/material.dart';
 
@@ -44,6 +45,7 @@ class _ShowroomState extends State<Showroom>
     'DecoratorDemo',
     'PersistenceDemo',
     'ForceDirected',
+    'ForceDirectedParallel',
     'ExecutionPlan',
     'CircleLayout',
     'RandomLayout',
@@ -56,6 +58,7 @@ class _ShowroomState extends State<Showroom>
     const DecoratorDemo(),
     const PersistenceDemo(),
     ForceDirectedDemo(),
+    ForceDirectedParallelDemo(),
     ExecutionPlanDemo(),
     CircleLayoutDemo(),
     RandomAlgorithmDemo(),

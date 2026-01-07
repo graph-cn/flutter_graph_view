@@ -12,6 +12,20 @@ import 'package:flutter_graph_view/flutter_graph_view.dart';
 /// 接口：图的点位赋值算法
 ///
 abstract class GraphAlgorithm {
+
+  /// In case of serialization, call this method first, then override the items
+  /// as you see fit. If you call it later, it might override your entries.
+  /// do NOT override "type" value unless you know what you are doing
+  @mustCallSuper
+  Map<String, dynamic> serialize({Map<String, dynamic> params = const {}}) =>
+      {
+        "type": runtimeType.toString(),
+        "params": params,
+        "decorators": decorators?.map((d) => d.serialize()).toList(),
+      };
+
+
+
   ///
   /// Algorithm decorate support.
   /// 定位算法的装饰器，可多个算法同时使用。
