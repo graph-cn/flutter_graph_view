@@ -7,6 +7,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 
+export 'vertex_ext.dart';
+
 ///
 /// Data model of vertex component.
 /// 节点组件的数据模型
@@ -154,4 +156,17 @@ class Vertex<I> {
     var bc = b.position - position;
     return vc.angleTo(bc);
   }
+
+  Map<String, dynamic> serialize() =>
+  {
+    "id": id as String,
+    "position": position,
+    "radius": radius,
+    "tag": tag,
+    "tags": tags,
+    "neighbors": neighbors.map((n) => n.id as String).toList(),
+    "degree": degree,
+    // TODO: how do we safely pass in properties
+    // "properties": properties
+  };
 }

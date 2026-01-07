@@ -26,6 +26,8 @@ class MapConvertor extends DataConvertor<Map, Map> {
     vertex.data = v['data'];
     vertex.solid = v['solid'] ?? vertex.solid;
     vertex.radiusScale = v['scale'] ?? vertex.radiusScale;
+    vertex.force = Vector2.zero();
+    vertex.velocity = Vector2.zero();
     return vertex;
   }
 
