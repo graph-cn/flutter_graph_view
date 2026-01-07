@@ -46,12 +46,11 @@ class VertexCircleShape extends VertexShape {
     Paint paint = Paint();
     var colors = vertex.colors;
 
-    if (vertex.solid) {
-      paint.color = vertex.colors.first;
-      return paint;
+    if (vertex.solid && vertex.g?.options?.vertexSolidSetter != null) {
+      return vertex.g!.options!.vertexSolidSetter!(vertex, paint);
     }
 
-    if (isWeaken(vertex)) {
+    if (isWeaken(vertex) && !vertex.solid) {
       var hoverOpacity = vertex.g?.options?.graphStyle.hoverOpacity ?? 1.0;
       paint.shader = ui.Gradient.radial(
         ui.Offset.zero,
