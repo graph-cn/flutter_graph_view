@@ -6,10 +6,12 @@ homepage: https://graph-cn.github.io/flutter_graph_view
 
 
 environment:
-  sdk: ^3.0.3
+  sdk: ^3.8.0
 
 dependencies:
   vector_math: ^2.2.0
+  isolate_manager: ^6.1.2
+  intl: ^0.20.2
   flutter:
     sdk: flutter
 

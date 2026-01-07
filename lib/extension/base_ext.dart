@@ -21,8 +21,34 @@ extension Vector2Ext on Vector2 {
     transformMatrix.translateByVector3(Vector3(x, y, 0));
     return transformMatrix;
   }
+
+  Vector2 operator +(Vector2? other) =>
+      other == null ? this : this + other
+  ;
+}
+
+extension Vector2ExtNullable on Vector2? {
+  Vector2 operator +(Vector2? other) =>
+      this == null
+          ? (other ?? Vector2.zero())
+          : (other == null ? this! : this! + other)
+  ;
 }
 
 extension OffsetExt on ui.Offset {
   Vector2 toVector2() => Vector2(dx, dy);
 }
+
+
+
+extension ForceMap<T> on Map<T,Vector2>{
+  void addOrSet(T key, Vector2 val) {
+    this[key] = containsKey(key)
+        ? this[key]! + val
+        : val;
+  }
+}
+
+/// Used to represent a result of a Raw computation. the key is a Vertex ID
+/// the value is a Vector2 representing a force, position, velocity, etc...
+typedef ComputeRes = Map<String, Vector2>;
