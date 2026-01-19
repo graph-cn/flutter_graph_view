@@ -57,7 +57,7 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
     double initialTimestep = 1.0,
     this.minTimestep = 0.02,
     this.coolingFactor = 0.997,
-    this.stopTolerance = 5.0,
+    this.stopTolerance = 1.0,
     this.stableCyclesThreshold = 30, //
     Set<dynamic>? pinned,
   }) : 
