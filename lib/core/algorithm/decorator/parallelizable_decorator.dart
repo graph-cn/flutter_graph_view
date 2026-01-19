@@ -12,7 +12,8 @@ abstract interface class ParallelizableDecorator{
   /// look into isolate_manager package for more details
   String get isolateFuncWorkerName;
   /// A pointer to a static function inside the inheriting class that is
-  /// responsible for the isolate a sample is as follows:
+  /// responsible for the isolate. The parallelization entrypoint,
+  /// deserialization, and calculations live here. A sample is as follows:
   ///
   /// ```dart
   ///  @override

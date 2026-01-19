@@ -27,7 +27,15 @@ class ParallelizationDecorator extends ForceDecorator {
   /// This will be reset when all calculations of all isolates are done
   /// and when the force map of the vertexes is updated
   static DateTime _perCycleTimestamp = DateTime.now();
-  
+
+  /// whether to log messages from the isolates. Enabling this will slow
+  /// down the graph computation and dump the whole graph on every graph
+  /// calculation to the log/console.
+  final bool logIsolateMessages;
+
+  /// whether to log the cycle duration while running the app in debug Mode.
+  final bool logCycleDuration;
+
   /// List of all decorators to be run in parallel. This class only supports
   /// ParallelizableDecorator children
   List<ParallelizableDecorator> pDecorators;
@@ -41,7 +49,11 @@ class ParallelizationDecorator extends ForceDecorator {
   /// A map that links each Isolate to its equivalent ParallelizableDecorator
   final _isoDecoMap = <IsolateManager, ParallelizableDecorator>{};
 
-  ParallelizationDecorator({this.pDecorators = const []});
+  ParallelizationDecorator({
+    this.pDecorators = const [],
+    this.logIsolateMessages = false,
+    this.logCycleDuration = false,
+  });
 
   /// Once the entire graph is loaded or reloaded, remove the old isolates and
   /// add new ones
@@ -67,7 +79,7 @@ class ParallelizationDecorator extends ForceDecorator {
           pd.isolateAttachFunc, // The function this isolate is dedicated to
           workerName: pd.isolateFuncWorkerName, // For JS worker support.
           concurrent: 1, // 1 isolate per child decorator
-          isDebug: false, // for more logging
+          isDebug: logIsolateMessages, // for more logging
           queueStrategy: RejectIncomingStrategy(maxCount: 10) // prevents memory overflow
         );
       _isolateManagers.add(iso);
@@ -113,11 +125,16 @@ class ParallelizationDecorator extends ForceDecorator {
         }, callback: (res) {
           _parallelCalcRes.saveResult(iso, res);
           // print how much time a single run took
-          // if (kDebugMode) {
-          //   print("single calc time (${_isoDecoMap[iso]!.runtimeType}): ${
-          //     NumberFormat('#,##0.00').format(DateTime.now().difference(singleCalcStartTime).inMicroseconds / 1000.0)
-          //   }");
-          // }
+          if (kDebugMode) {
+            if(logCycleDuration) {
+              print("single calc time (${_isoDecoMap[iso]!.runtimeType}): ${
+                  NumberFormat('#,##0.00 ms').format(DateTime
+                      .now()
+                      .difference(singleCalcStartTime)
+                      .inMicroseconds / 1000.0)
+              }");
+            }
+          }
 
           if(_parallelCalcRes.allCalcsDone){
             // accumulate forces of all calculations
@@ -135,11 +152,16 @@ class ParallelizationDecorator extends ForceDecorator {
             });
 
             // print how much time all parallel runs took
-            // if (kDebugMode) {
-            //   print("----------Frame: $_currCycle - parallel calc time: ${
-            //     NumberFormat('#,##0.00').format(DateTime.now().difference(_perCycleTimestamp).inMicroseconds / 1000.0)
-            //   }");
-            // }
+            if (kDebugMode) {
+              if(logCycleDuration) {
+                print("----------Frame: $_currCycle - parallel calc time: ${
+                    NumberFormat('#,##0.00 ms').format(DateTime
+                        .now()
+                        .difference(_perCycleTimestamp)
+                        .inMicroseconds / 1000.0)
+                }");
+              }
+            }
 
             // update state for next cycle
             _currCycle++;
@@ -184,7 +206,6 @@ class ParallelizationDecorator extends ForceDecorator {
     } catch (_) {
       // If sending fails, just kill the isolate
     }
-    // _isolate?.kill(priority: Isolate.immediate);
   }
 }
 
@@ -204,11 +225,11 @@ class ParallelCalc<T>{
   ParallelCalc();
 
   /// all calculations are done
-  get allCalcsDone =>
+  bool get allCalcsDone =>
       doneMap.values.every((isDone) => isDone);
 
   /// stores the result of each isolate after it is done and flags it as done
-  saveResult(IsolateManager currIso, T res){
+  void saveResult(IsolateManager currIso, T res){
     doneMap[currIso] = true;
     accruedRes[currIso] = res;
   }
@@ -224,7 +245,7 @@ class ParallelCalc<T>{
   }
 
   /// clear out all data
-  reset(){
+  void reset(){
     doneMap.clear();
     accruedRes.clear();
     alreadyRunning = false;
