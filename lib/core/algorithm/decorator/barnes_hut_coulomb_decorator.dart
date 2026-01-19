@@ -6,7 +6,6 @@ import 'package:flutter_graph_view/core/algorithm/decorator/parallelization_deco
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 import 'package:intl/intl.dart';
 import 'package:isolate_manager/isolate_manager.dart';
-import 'package:vector_math/vector_math_lists.dart';
 
 /// Barnes–Hut Algorithm
 ///
@@ -172,10 +171,10 @@ class BarnesHutDecorator extends ForceDecorator implements ParallelizableDecorat
 
   @override
   void compute(Vertex v, Graph graph) {
-    // super.compute(v, graph);
     throw UnimplementedError("BarnesHutDecorator is not intended to be run in "
         "series yet. To use this decorator in parallel, place it in a "
         "ParallelizationDecorator");
+    super.compute(v, graph);
   }
 
 
@@ -247,7 +246,6 @@ class BarnesHutDecorator extends ForceDecorator implements ParallelizableDecorat
 
 
   /// The actual calculation is done inside here
-  @override
   @pragma('vm:entry-point')
   @isolateManagerCustomWorker
   static void isolateFunc(dynamic params) {

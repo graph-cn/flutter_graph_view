@@ -1,7 +1,7 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_graph_view/core/algorithm/decorator/parallelization_decorator.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
+import 'package:intl/intl.dart';
 
 /// A Decorator that translates the calculated forces on graph vertexes into 
 /// motion. This decorator reads and updates vertex velocity while damping it.
@@ -47,9 +47,24 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
   // Internal state
   /// how many Graph Cycles has the vertexes not moved above the [stopTolerance]
   /// look at [stableCyclesThreshold]
-  int stableCycleCount = 0;
+  int _stableCycleCount = 0;
   /// the max movement any vertex did this graph cycle
   double _maxMove = double.negativeInfinity;
+
+  /// Logging
+
+  /// only used for logging the time it took for the graph to reach stability.
+  /// whether to start the stability timer
+  bool _firstComputeRun = true;
+  /// only used for logging the time it took for the graph to reach stability
+  /// whether to log the time it took for the graph to reach stability
+  bool logTimeToStability = true;
+  /// only used for logging the time it took for the graph to reach stability
+  /// whether to log the max movement this cycle
+  bool logMaxMoveThisCycle = true;
+  /// only used for logging the time it took for the graph to reach stability
+  static DateTime _computeStartTimestamp = DateTime.now();
+
 
 
   DampenedForceMotionDecorator({
@@ -58,15 +73,15 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
     this.minTimestep = 0.02,
     this.coolingFactor = 0.997,
     this.stopTolerance = 1.0,
-    this.stableCyclesThreshold = 30, //
+    this.stableCyclesThreshold = 30,
     Set<dynamic>? pinned,
-  }) : 
+    this.logMaxMoveThisCycle = false,
+    this.logTimeToStability = false,
+  }) :
         pinnedVertexIds = pinned ?? {}, 
         _scaling=initialTimestep;
 
-  /// only used for logging the time it took for the graph to reach stability
-  bool firstRun = true;
-  static DateTime timestamp = DateTime.now();
+
 
 
   @override
@@ -75,9 +90,9 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
 
     /// used for logging the time it took for the graph to reach stability
     if (kDebugMode) {
-      if (firstRun) {
-        timestamp = DateTime.now();
-        firstRun = false;
+      if (logTimeToStability && _firstComputeRun) {
+        _computeStartTimestamp = DateTime.now();
+        _firstComputeRun = false;
       }
     }
     if (pinnedVertexIds.contains(v.id)) {
@@ -86,11 +101,14 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
       return;
     }
     if (v == graph.hoverVertex) {
+      v.velocity = Vector2.zero();
       return;
     }
 
     // Apply damping to existing velocity
+    // final vDeg = max(v.degree-1, 1.0);
     v.velocity *= damping;
+    // v.velocity *= damping / vDeg;
     // Update velocity by acceleration (force).
     // v.velocity += v.force * timestep;
     var a = v.force / v.radius;
@@ -114,10 +132,7 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
       return;
     }
 
-    // print max graph movement per cycle
-    // if (kDebugMode) {
-    //   print("----------Max move this graph cycle: $_maxMove");
-    // }
+
 
     // Cool down the scaling factor
     if (_scaling > minTimestep) {
@@ -127,22 +142,38 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
 
     // Check for stability (no significant movement)
     if (_maxMove < stopTolerance) {
-      stableCycleCount++;
+      _stableCycleCount++;
     } else {
-      stableCycleCount = 0;
+      _stableCycleCount = 0;
     }
 
-    // TODO: find a better way to stop the graph calculations
+    // print max graph movement per cycle
+    if (kDebugMode) {
+      if (logMaxMoveThisCycle && _stableCycleCount <= stableCyclesThreshold) {
+        print("----------Max move this graph cycle"
+            "${
+            _maxMove < stopTolerance
+                ? " (stable $_stableCycleCount/$stableCyclesThreshold)"
+                : ""
+        }"
+            ": $_maxMove");
+      }
+    }
+
     // If stable for many frames, signal a stop
-    // if (stableCycleCount > stableFramesThreshold) {
-    //   // Mark graph as converged (reached its final position).
-    //   graph.options?.pause.value = true;
-    //   if (kDebugMode) {
-    //     print("----------Cooldown time: ${
-    //         NumberFormat('#,##0.00').format(DateTime.now().difference(timestamp).inMicroseconds / 1000.0)
-    //     }");
-    //   }
-    // }
+    if (_stableCycleCount > stableCyclesThreshold) {
+      // Mark graph as converged (reached its final position).
+      graph.options?.pause.value = true;
+      if (kDebugMode) {
+        if (logTimeToStability) {
+          print("----------Cooldown time: ${
+              NumberFormat('#,##0.00 ms').format(
+                  DateTime.now().difference(_computeStartTimestamp)
+                      .inMicroseconds / 1000.0)
+          }");
+        }
+      }
+    }
 
     // reset max distance moved for this graph cycle
     _maxMove = double.negativeInfinity;

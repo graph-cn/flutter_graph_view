@@ -58,6 +58,7 @@ export 'core/algorithm/decorator/barnes_hut_coulomb_decorator.dart';
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/vertex/vertex_diamond_shape.dart';
 export 'core/options/shape/edge/edge_line_shape.dart';
+export 'core/options/shape/edge/edge_line_shape_variable_opacity.dart';
 export 'core/options/text/vertex_text_renderer_impl.dart';
 export 'core/options/text/edge_text_renderer_impl.dart';
 
