@@ -24,7 +24,7 @@ import 'package:intl/intl.dart';
 /// visible as oscillations or vertex orbiting in the graph animation (according
 /// to my testing). Increasingly damping these oscillations eventually makes you
 /// reach an acceptable result.
-class DampenedForceMotionDecorator extends ForceMotionDecorator {
+class DampedForceMotionDecorator extends ForceMotionDecorator {
   /// velocity damping factor per cycle (e.g. 0.90). change this to slow down
   /// already existing velocity inside the graph. Similar to friction in physics
   double damping;
@@ -67,7 +67,7 @@ class DampenedForceMotionDecorator extends ForceMotionDecorator {
 
 
 
-  DampenedForceMotionDecorator({
+  DampedForceMotionDecorator({
     this.damping = 0.98,
     double initialTimestep = 1.0,
     this.minTimestep = 0.02,

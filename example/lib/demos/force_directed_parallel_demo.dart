@@ -5,7 +5,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_graph_view/core/algorithm/decorator/dampened_force_motion_decorator.dart';
 import 'package:flutter_graph_view/core/algorithm/decorator/parallelizable_decorator.dart';
 import 'package:flutter_graph_view/core/algorithm/decorator/parallelization_decorator.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
@@ -26,7 +25,7 @@ class ForceDirectedParallelDemo extends StatelessWidget {
   static const _logMaxMoveThisCycle = true;
   static const _logTimeToStability = true;
 
-  var dampedMotion = DampenedForceMotionDecorator(
+  var dampedMotion = DampedForceMotionDecorator(
     damping: _damping,
     coolingFactor: _coolingFactor,
     logMaxMoveThisCycle: _logMaxMoveThisCycle,

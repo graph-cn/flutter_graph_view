@@ -39,6 +39,7 @@ export 'core/algorithm/circle_layout.dart';
 export 'core/algorithm/decorator/force_decorator.dart';
 export 'core/algorithm/decorator/pin_center_decorator.dart';
 export 'core/algorithm/decorator/force_motion_decorator.dart';
+export 'core/algorithm/decorator/damped_force_motion_decorator.dart';
 export 'core/algorithm/decorator/hooke_decorator.dart';
 export 'core/algorithm/decorator/hooke_border_decorator.dart';
 export 'core/algorithm/decorator/hooke_center_decorator.dart';
