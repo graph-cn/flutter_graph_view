@@ -58,12 +58,23 @@ typedef GraphComponentBuilder = Widget Function({
 
 typedef OnScaleStart = void Function(ScaleStartDetails);
 typedef OnScaleUpdate = void Function(ScaleUpdateDetails);
+typedef OnScaleEnd = void Function(ScaleEndDetails);
 typedef OnTapDown = void Function(TapDownDetails);
 typedef OnTapUp = void Function(TapUpDetails);
 typedef OnPointerSignal = void Function(PointerSignalEvent);
 typedef OnPointerUp = void Function(PointerUpEvent);
 typedef OnPointerDown = void Function(PointerDownEvent);
 typedef OnPointerHover = void Function(PointerHoverEvent);
+
+/// @en: When the solid of the vertex is true, color rendering settings can be made.
+///
+/// @zh: 当节点的 solid 为 true 时，可进行显色设置
+typedef VertexSolidSetter = Paint Function(Vertex, Paint);
+
+/// @en: When the solid of the edge is true, color rendering settings can be made.
+///
+/// @zh: 当边的 solid 为 true 时，可进行显色设置
+typedef EdgeSolidSetter = Paint Function(Edge, Paint);
 
 /// The core api for Graph Options.
 ///
@@ -88,10 +99,24 @@ class Options {
   /// 给点设置形状
   VertexShape vertexShape = VertexCircleShape();
 
+  /// Provide a solid setter for vertex,
+  /// when the solid of the vertex is true, it is called
+  ///
+  /// 提供一个节点的 solid 设置器，
+  /// 在节点的 solid 为 true 时被调用
+  VertexSolidSetter? vertexSolidSetter;
+
   /// set shape strategy for components of edge.
   ///
   /// 给边设置形状
   EdgeShape edgeShape = EdgeLineShape();
+
+  /// Provide a solid setter for vertex.
+  /// when the solid of the edge is true, it is called
+  ///
+  /// 提供一个节点的 solid 设置器
+  /// 在边的 solid 为 true 时被调用
+  EdgeSolidSetter? edgeSolidSetter;
 
   /// use for create background widget.
   ///
@@ -350,6 +375,28 @@ class Options {
       };
 
   set onScaleUpdate(OnScaleUpdate? v) => _onScaleUpdate = v;
+
+  /// onScaleEnd
+  OnScaleEnd? _onScaleEnd;
+
+  OnScaleEnd get onScaleEnd =>
+      _onScaleEnd ??
+      (ScaleEndDetails details) {
+        hoverable = true;
+        graph.hoverVertex = null;
+
+        // fix: after vertex be drag, `onVertexTapUp` can not be triggle again.
+        // Due to `onTapUp` determining the length of panDelta,
+        // the temporary value `panDelta` needs to be rolled back to a state of 0
+        panDelta.xy = Vector2.zero();
+
+        // reset pointer in non-mouse mode for it dosen't hover vertex again
+        if (firstPointerDeviceKind == null) {
+          pointer.xy = Vector2.all((2 << 16) + 0.0);
+        }
+      };
+
+  set onScaleEnd(OnScaleEnd? v) => _onScaleEnd = v;
 
   // ---------------------------------------------------------------------------
 

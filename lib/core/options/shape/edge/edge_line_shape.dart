@@ -123,13 +123,11 @@ class EdgeLineShape extends EdgeShape {
     var endPoint = Offset(len(edge), paint.strokeWidth);
     var hoverOpacity = edge.g?.options?.graphStyle.hoverOpacity ?? .5;
 
-    if (edge.solid) {
-      paint.color = edge.start.colors.lastOrNull ?? Colors.white;
-
-      return paint;
+    if (edge.solid && edge.g?.options?.edgeSolidSetter != null) {
+      return edge.g!.options!.edgeSolidSetter!(edge, paint);
     }
 
-    if (isWeaken(edge)) {
+    if (isWeaken(edge) && !edge.solid) {
       paint.shader = ui.Gradient.linear(
         startPoint,
         endPoint,
