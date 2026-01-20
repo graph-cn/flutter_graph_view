@@ -69,6 +69,8 @@ class CoulombDecorator extends ForceDecorator implements ParallelizableDecorator
 
 
         for (int i = 0; i < vertexes.length; i++) {
+          // starting from i+1 to avoid double counting. make the algorithm
+          // twice as fast
           for (int j = i+1; j < vertexes.length; j++) {
             final v = vertexes[i];
             final gv = vertexes[j];
@@ -82,9 +84,9 @@ class CoulombDecorator extends ForceDecorator implements ParallelizableDecorator
               // F = k * q1 * q2 / r^2
               final delta = vPos - gvPos;
               final distance = delta.length;
-              final vDeg = max(v["radius"]-1, 1.0);
-              final vGDeg = max(gv["radius"]-1, 1.0);
-              final force = k * vDeg * vGDeg / max((distance * distance), 1);
+              final vRad = v["radius"];
+              final vGRad = gv["radius"];
+              final force = (k * vRad * vGRad) / max((distance * distance * log(vertexes.length)), 1.0);
 
               perVertexCalcMap[v["id"]] += delta * force;
               perVertexCalcMap[gv["id"]] += -delta * force;

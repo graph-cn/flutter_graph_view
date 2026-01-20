@@ -83,9 +83,22 @@ class HookeDecorator extends ForceDecorator implements ParallelizableDecorator  
             Map<String, dynamic> n = vertexMap[nId]!;
             if (v["position"] != Vector2.zero()
                 && n["position"] != Vector2.zero()
+                && v["id"] != n["id"]
             ) {
               var hookRes = hookeRaw(v, n, length, k);
-              perVertexCalcMap[v["id"]] += hookRes;
+              // final vDeg = max(v["degree"], 2.0);
+              final vDeg = max(v["degree"], 1.0);
+              // final nDeg = max(n["degree"], 1.0);
+              // perVertexCalcMap[v["id"]] += hookRes/(vertexes.length*1.0); // bad...weak
+              // perVertexCalcMap[v["id"]] += hookRes/sqrt(vertexes.length*1.0); // bad...weak
+              // perVertexCalcMap[v["id"]] += hookRes/(vDeg * log(vDeg)); // bad...weak
+              // perVertexCalcMap[v["id"]] += hookRes/(vDeg * sqrt(vertexes.length)); // fine
+              perVertexCalcMap[v["id"]] += hookRes/(vDeg * log(vertexes.length)); // fine
+              // perVertexCalcMap[v["id"]] += hookRes/(vDeg); // fine
+              // perVertexCalcMap[v["id"]] += hookRes/log(vDeg*vertexes.length); // bad...strong
+              // perVertexCalcMap[v["id"]] += hookRes/(log(vertexes.length)); // bad...strong
+              // perVertexCalcMap[v["id"]] += hookRes/(log(vDeg * vDeg)); //bad...strong
+              // perVertexCalcMap[v["id"]] += hookRes;
             }
           }
         }
@@ -107,8 +120,7 @@ class HookeDecorator extends ForceDecorator implements ParallelizableDecorator  
     var len = length;
     var delta = s["position"] - d["position"];
     var distance = delta.length;
-    var force = -(distance - len + log(s["degree"] + d["degree"])) * k;
-    // var force = -(distance - len ) * k;
+    var force = -(distance - len - log(s["degree"] + d["degree"])) * k;
     return delta * force;
   }
 
