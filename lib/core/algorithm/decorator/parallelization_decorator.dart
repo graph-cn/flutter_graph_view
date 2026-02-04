@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_graph_view/core/algorithm/decorator/parallelizable_decorator.dart';
 import 'package:flutter_graph_view/flutter_graph_view.dart';
 import 'package:intl/intl.dart';
 import 'package:isolate_manager/isolate_manager.dart';
@@ -147,8 +146,11 @@ class ParallelizationDecorator extends ForceDecorator {
 
             // apply forces
             var vMap = graph.vertexByIdMap;
+            var k = vMap.entries.firstOrNull?.key;
+            var keyParser = k is num ? num.parse : (v) => v;
             totalForcePerVertex.forEach((key, force) {
-              setForceMap(vMap[key]!, vMap[key]!, force);
+              var v = vMap[keyParser(key)]!;
+              setForceMap(v, v, force);
             });
 
             // print how much time all parallel runs took

@@ -159,12 +159,12 @@ class Vertex<I> {
 
   Map<String, dynamic> serialize() =>
   {
-    "id": id as String,
+    "id": '$id',
     "position": position,
     "radius": radius,
     "tag": tag,
     "tags": tags,
-    "neighbors": neighbors.map((n) => n.id as String).toList(),
+    "neighbors": neighbors.map((n) => '${n.id}').toList(),
     "degree": degree,
     // TODO: how do we safely pass in properties
     // "properties": properties
