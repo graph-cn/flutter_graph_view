@@ -55,6 +55,8 @@ export 'core/algorithm/decorator/graph_route_decorator.dart';
 export 'core/algorithm/decorator/legend_decorator.dart';
 export 'core/algorithm/decorator/counter_decorator.dart';
 export 'core/algorithm/decorator/barnes_hut_coulomb_decorator.dart';
+export 'core/algorithm/decorator/parallelizable_decorator.dart';
+export 'core/algorithm/decorator/parallelization_decorator.dart';
 
 export 'core/options/shape/vertex/vertex_circle_shape.dart';
 export 'core/options/shape/vertex/vertex_diamond_shape.dart';

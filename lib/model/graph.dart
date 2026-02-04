@@ -136,6 +136,6 @@ class Graph<ID> {
   /// serialize the graph
   Map<String, dynamic> serialize() =>
     {
-      "vertexes": { for (var v in vertexes) v.id as String: v.serialize() },
+      "vertexes": { for (var v in vertexes) '${v.id}': v.serialize() },
     };
 }
